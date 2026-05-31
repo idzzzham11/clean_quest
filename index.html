@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>CleanQuest: Workplace Hero</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Portrait-mode nudge for phones -->
+    <div id="rotate-prompt">
+        <div id="rotate-inner">
+            <div id="rotate-icon">📱→🔄</div>
+            <p>Pusingkan peranti anda ke mod landskap untuk pengalaman terbaik.</p>
+            <p style="font-size:12px;opacity:0.7;margin-top:6px;">Rotate to landscape for best experience.</p>
+        </div>
+    </div>
+
+    <!-- Root layout — canvas above, controls bar below on mobile -->
+    <div id="layout">
+        <div id="game-container"></div>
+        <div id="controls-bar">
+            <!-- Mobile touch controls live here so they never overlap the canvas -->
+            <div id="mobile-controls" class="hidden">
+                <div class="dpad-group">
+                    <div class="dpad-btn" id="dpad-left">&#9664;</div>
+                    <div class="dpad-btn" id="dpad-right">&#9654;</div>
+                </div>
+                <div id="btn-jump">&#9650;</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz DOM overlay — fixed, above everything -->
+    <div id="quiz-overlay" class="hidden">
+        <div id="quiz-modal">
+            <div id="quiz-header">
+                <span id="quiz-icon">🧼</span>
+                <span id="quiz-level-badge">Level Quiz</span>
+            </div>
+            <h2 id="quiz-question"></h2>
+            <div id="quiz-options">
+                <button class="quiz-btn" data-index="0">
+                    <span class="option-letter">A</span>
+                    <span class="option-text"></span>
+                </button>
+                <button class="quiz-btn" data-index="1">
+                    <span class="option-letter">B</span>
+                    <span class="option-text"></span>
+                </button>
+                <button class="quiz-btn" data-index="2">
+                    <span class="option-letter">C</span>
+                    <span class="option-text"></span>
+                </button>
+                <button class="quiz-btn" data-index="3">
+                    <span class="option-letter">D</span>
+                    <span class="option-text"></span>
+                </button>
+            </div>
+            <div id="quiz-feedback" class="hidden"></div>
+            <div id="quiz-attempts"></div>
+        </div>
+    </div>
+
+    <!-- 1. Phaser engine -->
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"></script>
+
+    <!-- 2. Constants (no dependencies) -->
+    <script src="js/constants.js"></script>
+
+    <!-- 3. Utilities -->
+    <script src="js/utils/ColorPalette.js"></script>
+    <script src="js/utils/TextStyles.js"></script>
+    <script src="js/utils/TilemapBuilder.js"></script>
+
+    <!-- 4. Data -->
+    <script src="js/data/quizData.js"></script>
+    <script src="js/data/levelData.js"></script>
+    <script src="js/data/missionData.js"></script>
+
+    <!-- 5. Graphics generators -->
+    <script src="js/graphics/TileGraphics.js"></script>
+    <script src="js/graphics/PlayerGraphics.js"></script>
+    <script src="js/graphics/EnemyGraphics.js"></script>
+    <script src="js/graphics/ItemGraphics.js"></script>
+    <script src="js/graphics/BackgroundGraphics.js"></script>
+    <script src="js/graphics/UIGraphics.js"></script>
+
+    <!-- 6. Systems -->
+    <script src="js/systems/GameState.js"></script>
+    <script src="js/systems/SaveManager.js"></script>
+    <script src="js/systems/AudioManager.js"></script>
+    <script src="js/systems/QuizManager.js"></script>
+    <script src="js/systems/CheckpointSystem.js"></script>
+    <script src="js/systems/MissionManager.js"></script>
+    <script src="js/systems/RewardSystem.js"></script>
+
+    <!-- 7. UI components -->
+    <script src="js/ui/QuizOverlay.js"></script>
+    <script src="js/ui/DialogBox.js"></script>
+    <script src="js/ui/BadgeDisplay.js"></script>
+    <script src="js/ui/LoadingTips.js"></script>
+    <script src="js/ui/MobileControls.js"></script>
+
+    <!-- 8. Entities (base classes first) -->
+    <script src="js/entities/CollectibleItem.js"></script>
+    <script src="js/entities/HazardItem.js"></script>
+    <script src="js/entities/Enemy.js"></script>
+    <script src="js/entities/GermEnemy.js"></script>
+    <script src="js/entities/SmellCloudEnemy.js"></script>
+    <script src="js/entities/HairMonsterEnemy.js"></script>
+    <script src="js/entities/DirtyRobotEnemy.js"></script>
+    <script src="js/entities/Boss.js"></script>
+    <script src="js/entities/Player.js"></script>
+
+    <!-- 9. Scenes -->
+    <script src="js/scenes/BootScene.js"></script>
+    <script src="js/scenes/TitleScene.js"></script>
+    <script src="js/scenes/CharSelectScene.js"></script>
+    <script src="js/scenes/LevelSelectScene.js"></script>
+    <script src="js/scenes/HUDScene.js"></script>
+    <script src="js/scenes/Level1Scene.js"></script>
+    <script src="js/scenes/Level2Scene.js"></script>
+    <script src="js/scenes/Level3Scene.js"></script>
+    <script src="js/scenes/Level4Scene.js"></script>
+    <script src="js/scenes/Level5Scene.js"></script>
+    <script src="js/scenes/BossScene.js"></script>
+    <script src="js/scenes/QuizScene.js"></script>
+    <script src="js/scenes/ResultsScene.js"></script>
+    <script src="js/scenes/LeaderboardScene.js"></script>
+    <script src="js/scenes/CreditsScene.js"></script>
+
+    <!-- 10. Entry point — must be last -->
+    <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,407 @@
+/* CleanQuest: Workplace Hero — Global Styles */
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    background: #1a1a2e;
+    overflow: hidden;
+    font-family: 'Nunito', 'Segoe UI', system-ui, sans-serif;
+    /* Prevent iOS rubber-band scroll and accidental zoom on the game */
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* Restore touch interaction for DOM UI elements */
+#quiz-overlay, #quiz-overlay * {
+    touch-action: auto;
+    user-select: none;
+}
+
+button, .quiz-btn, .dpad-btn, #btn-jump {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Layout wrapper — stacks canvas above controls on mobile */
+#layout {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+#game-container {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+#game-container canvas {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}
+
+/* Portrait-mode rotate prompt — hidden by default, shown on narrow portrait phones */
+#rotate-prompt {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #1a1a2e;
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    font-family: 'Nunito', sans-serif;
+    padding: 32px;
+}
+
+#rotate-inner {
+    max-width: 280px;
+}
+
+#rotate-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    animation: rotateHint 2s ease-in-out infinite;
+}
+
+#rotate-inner p {
+    font-size: 15px;
+    line-height: 1.5;
+    color: #FFE8C0;
+}
+
+@keyframes rotateHint {
+    0%, 100% { transform: rotate(0deg); }
+    50%       { transform: rotate(15deg); }
+}
+
+/* Show rotate prompt on phones in portrait (width < 480px AND portrait) */
+@media (max-width: 480px) and (orientation: portrait) {
+    #rotate-prompt { display: flex; }
+    #layout { display: none; }
+}
+
+/* Controls bar sits below canvas — zero height on desktop */
+#controls-bar {
+    flex: 0 0 auto;
+    height: 0;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.6);
+    transition: height 0.15s ease;
+}
+
+/* When mobile controls are active, the bar expands */
+body.mobile-active #controls-bar {
+    height: 110px;
+}
+
+@media (max-height: 500px) {
+    /* Landscape phone — shorter controls bar */
+    body.mobile-active #controls-bar {
+        height: 80px;
+    }
+}
+
+/* ===== QUIZ OVERLAY ===== */
+#quiz-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.65);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(3px);
+}
+
+#quiz-overlay.hidden {
+    display: none !important;
+}
+
+#quiz-modal {
+    background: #fff8f0;
+    border: 4px solid #ffb347;
+    border-radius: 24px;
+    padding: 32px 36px;
+    max-width: 540px;
+    width: 92%;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    animation: modalIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes modalIn {
+    from { transform: scale(0.7) translateY(30px); opacity: 0; }
+    to   { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+#quiz-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+#quiz-icon {
+    font-size: 36px;
+    line-height: 1;
+}
+
+#quiz-level-badge {
+    background: #ffb347;
+    color: white;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 20px;
+}
+
+#quiz-question {
+    font-size: 18px;
+    font-weight: 700;
+    color: #2d2d2d;
+    line-height: 1.4;
+    margin-bottom: 20px;
+}
+
+#quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.quiz-btn {
+    width: 100%;
+    padding: 14px 18px;
+    border-radius: 14px;
+    border: 3px solid #e0d0c0;
+    background: #ffffff;
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+    cursor: pointer;
+    text-align: left;
+    transition: transform 0.1s, background 0.15s, border-color 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.quiz-btn:hover:not(:disabled) {
+    background: #fff3e0;
+    border-color: #ffb347;
+    transform: translateX(4px);
+}
+
+.quiz-btn:active:not(:disabled) {
+    transform: translateX(2px) scale(0.99);
+}
+
+.quiz-btn .option-letter {
+    width: 28px;
+    height: 28px;
+    background: #ffb347;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 800;
+    flex-shrink: 0;
+}
+
+.quiz-btn.correct {
+    background: #d4f8d4;
+    border-color: #2ecc71;
+    color: #1a7a2a;
+}
+
+.quiz-btn.correct .option-letter {
+    background: #2ecc71;
+}
+
+.quiz-btn.wrong {
+    background: #ffd4d4;
+    border-color: #e74c3c;
+    color: #8b0000;
+    animation: shake 0.45s ease-in-out;
+}
+
+.quiz-btn.wrong .option-letter {
+    background: #e74c3c;
+}
+
+.quiz-btn:disabled {
+    cursor: default;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%       { transform: translateX(-10px); }
+    40%       { transform: translateX(10px); }
+    60%       { transform: translateX(-7px); }
+    80%       { transform: translateX(7px); }
+}
+
+#quiz-feedback {
+    margin-top: 16px;
+    padding: 14px 18px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+#quiz-feedback.correct {
+    background: #d4f8d4;
+    color: #1a7a2a;
+    border-left: 4px solid #2ecc71;
+}
+
+#quiz-feedback.wrong {
+    background: #ffd4d4;
+    color: #8b0000;
+    border-left: 4px solid #e74c3c;
+}
+
+#quiz-feedback.hidden {
+    display: none;
+}
+
+#quiz-attempts {
+    margin-top: 10px;
+    font-size: 13px;
+    color: #888;
+    text-align: center;
+}
+
+/* ===== MOBILE CONTROLS ===== */
+#mobile-controls {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 20px;
+    pointer-events: none;
+}
+
+#mobile-controls.hidden {
+    display: none !important;
+}
+
+.dpad-group {
+    display: flex;
+    gap: 10px;
+    pointer-events: auto;
+}
+
+.dpad-btn {
+    width: 76px;
+    height: 76px;
+    background: rgba(255, 255, 255, 0.18);
+    border: 3px solid rgba(255, 255, 255, 0.45);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    color: white;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    cursor: pointer;
+    transition: background 0.08s;
+    /* Minimum 44px tap target (Apple HIG) — already exceeded */
+}
+
+.dpad-btn:active, .dpad-btn.pressed {
+    background: rgba(255, 180, 71, 0.55);
+    border-color: #ffb347;
+}
+
+#btn-jump {
+    width: 86px;
+    height: 86px;
+    background: rgba(255, 180, 71, 0.3);
+    border: 3px solid rgba(255, 180, 71, 0.65);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    color: white;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    cursor: pointer;
+    pointer-events: auto;
+    transition: background 0.08s;
+}
+
+#btn-jump:active, #btn-jump.pressed {
+    background: rgba(255, 180, 71, 0.75);
+    transform: scale(0.92);
+}
+
+/* Landscape phone — smaller buttons, tighter bar */
+@media (max-height: 500px) {
+    .dpad-btn {
+        width: 58px;
+        height: 58px;
+        font-size: 24px;
+    }
+    #btn-jump {
+        width: 66px;
+        height: 66px;
+        font-size: 26px;
+    }
+}
+
+/* ===== UTILITY ===== */
+.hidden {
+    display: none !important;
+}
+
+/* Quiz overlay responsive tweaks */
+@media (max-width: 600px) {
+    #quiz-modal {
+        padding: 20px 16px;
+        border-radius: 16px;
+    }
+    #quiz-question {
+        font-size: 15px;
+        margin-bottom: 14px;
+    }
+    .quiz-btn {
+        padding: 11px 12px;
+        font-size: 13px;
+        border-radius: 10px;
+    }
+    .quiz-btn .option-letter {
+        width: 24px;
+        height: 24px;
+        font-size: 11px;
+    }
+    #quiz-icon {
+        font-size: 28px;
+    }
+}

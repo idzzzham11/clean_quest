@@ -1,0 +1,28 @@
+// Hygiene tips displayed during loading screens
+var LoadingTips = [
+    "Always wear a clean, pressed uniform to show professionalism!",
+    "Wash your hands thoroughly for at least 20 seconds before handling food.",
+    "Keep your nails short and clean — long nails harbor harmful germs.",
+    "Apply deodorant daily, but avoid using excessive perfume at work.",
+    "Comb or brush your hair neatly before starting your shift.",
+    "A clean uniform shows respect for your workplace and colleagues.",
+    "Hairnets are essential in food service — they keep hair out of food!",
+    "Personal hygiene boosts customer confidence in your service.",
+    "Shower daily and maintain fresh, clean clothes every workday.",
+    "Follow your workplace dress code to create a professional image.",
+    "Regular hand washing is the single best way to prevent germ spread.",
+    "Keep your workstation clean — a tidy space reflects a tidy worker.",
+    "Wear gloves when handling food or chemicals to protect yourself.",
+    "Good grooming habits start at home and continue at the workplace.",
+    "A bright smile and clean appearance put customers at ease!",
+    "Report any personal health issues like skin infections to your supervisor.",
+    "Change your uniform daily — never wear the same clothes two days running.",
+    "Trim facial hair neatly; beards should be covered in food preparation areas.",
+    "Keep a small hygiene kit at work: comb, breath mints, hand sanitizer.",
+    "Your professional appearance is part of your company's brand image!",
+    "Clean shoes complete a professional look — polish them regularly.",
+    "Avoid touching your face while working in food service areas.",
+    "Tie back long hair securely to maintain a neat and safe appearance.",
+    "Wash your uniform in hot water to kill bacteria and odors.",
+    "A positive, clean appearance improves both self-confidence and performance."
+];
