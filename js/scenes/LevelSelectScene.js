@@ -73,20 +73,22 @@ var LevelSelectScene = class extends Phaser.Scene {
                 align: 'center', wordWrap: { width: 90 }
             }).setOrigin(0.5);
 
-            // Clickable
+            // Clickable — use IIFE to capture levelNum and pt correctly
             if (unlocked) {
-                circle.setInteractive({ useHandCursor: true });
-                circle.on('pointerdown', function () {
-                    scene._startLevel(levelNum);
-                });
-                circle.on('pointerover', function () {
-                    scene.tweens.add({ targets: circle, scaleX: 1.1, scaleY: 1.1, duration: 120 });
-                    scene._showLevelPreview(levelNum, pt.x, pt.y);
-                });
-                circle.on('pointerout', function () {
-                    scene.tweens.add({ targets: circle, scaleX: 1, scaleY: 1, duration: 120 });
-                    if (scene._previewCard) { scene._previewCard.destroy(); scene._previewCard = null; }
-                });
+                (function (lvl, node, circ) {
+                    circ.setInteractive({ useHandCursor: true });
+                    circ.on('pointerdown', function () {
+                        scene._startLevel(lvl);
+                    });
+                    circ.on('pointerover', function () {
+                        scene.tweens.add({ targets: circ, scaleX: 1.1, scaleY: 1.1, duration: 120 });
+                        scene._showLevelPreview(lvl, node.x, node.y);
+                    });
+                    circ.on('pointerout', function () {
+                        scene.tweens.add({ targets: circ, scaleX: 1, scaleY: 1, duration: 120 });
+                        if (scene._previewCard) { scene._previewCard.destroy(); scene._previewCard = null; }
+                    });
+                })(levelNum, pt, circle);
             }
         });
 
@@ -110,6 +112,17 @@ var LevelSelectScene = class extends Phaser.Scene {
             scene.scene.start(CONSTANTS.SCENES.TITLE);
         });
 
+        // Reset progress button
+        var resetBtn = this.add.text(W - 20, H - 25, '🔄 Reset', {
+            fontFamily: 'Nunito, sans-serif', fontSize: '15px', color: '#FF6666'
+        }).setOrigin(1, 0.5).setInteractive({ useHandCursor: true });
+
+        resetBtn.on('pointerover', function () { resetBtn.setAlpha(0.7); });
+        resetBtn.on('pointerout',  function () { resetBtn.setAlpha(1); });
+        resetBtn.on('pointerdown', function () {
+            scene._confirmReset();
+        });
+
         this.cameras.main.fadeIn(400);
     }
 
@@ -117,8 +130,56 @@ var LevelSelectScene = class extends Phaser.Scene {
         this.cameras.main.fadeOut(400);
         var scene = this;
         this.time.delayedCall(400, function () {
-            var sceneKey = 'Level' + levelNum + 'Scene';
-            scene.scene.start(sceneKey);
+            scene.scene.start(CONSTANTS.SCENES['LEVEL' + levelNum]);
+        });
+    }
+
+    _confirmReset() {
+        var scene = this;
+        var W = CONSTANTS.WIDTH, H = CONSTANTS.HEIGHT;
+
+        // Dim overlay
+        var overlay = this.add.rectangle(W / 2, H / 2, W, H, 0x000000, 0.75).setDepth(50);
+
+        // Dialog box
+        var box = this.add.graphics().setDepth(51);
+        box.fillStyle(0x1a1a2e, 1);
+        box.fillRoundedRect(W / 2 - 200, H / 2 - 90, 400, 180, 16);
+        box.lineStyle(3, 0xFF6666, 1);
+        box.strokeRoundedRect(W / 2 - 200, H / 2 - 90, 400, 180, 16);
+
+        var msg = this.add.text(W / 2, H / 2 - 45, 'Reset semua kemajuan?', {
+            fontFamily: 'Nunito, sans-serif', fontSize: '20px', fontStyle: 'bold',
+            color: '#FFFFFF'
+        }).setOrigin(0.5).setDepth(52);
+
+        var sub = this.add.text(W / 2, H / 2 - 10, 'Semua peringkat akan dikunci semula.', {
+            fontFamily: 'Nunito, sans-serif', fontSize: '13px', color: '#AAAAAA'
+        }).setOrigin(0.5).setDepth(52);
+
+        // Confirm button
+        var confirmBg = this.add.graphics().setDepth(52);
+        confirmBg.fillStyle(0xFF4444, 1);
+        confirmBg.fillRoundedRect(W / 2 - 190, H / 2 + 30, 170, 44, 10);
+        var confirmBtn = this.add.text(W / 2 - 105, H / 2 + 52, '✔  Ya, Reset', {
+            fontFamily: 'Nunito, sans-serif', fontSize: '16px', fontStyle: 'bold', color: '#FFFFFF'
+        }).setOrigin(0.5).setDepth(53).setInteractive({ useHandCursor: true });
+        confirmBtn.on('pointerdown', function () {
+            SaveManager.clearSave();
+            scene.scene.start(CONSTANTS.SCENES.LEVEL_SELECT);
+        });
+
+        // Cancel button
+        var cancelBg = this.add.graphics().setDepth(52);
+        cancelBg.fillStyle(0x555555, 1);
+        cancelBg.fillRoundedRect(W / 2 + 20, H / 2 + 30, 170, 44, 10);
+        var cancelBtn = this.add.text(W / 2 + 105, H / 2 + 52, '✖  Batal', {
+            fontFamily: 'Nunito, sans-serif', fontSize: '16px', fontStyle: 'bold', color: '#FFFFFF'
+        }).setOrigin(0.5).setDepth(53).setInteractive({ useHandCursor: true });
+        cancelBtn.on('pointerdown', function () {
+            overlay.destroy(); box.destroy(); msg.destroy();
+            sub.destroy(); confirmBg.destroy(); confirmBtn.destroy();
+            cancelBg.destroy(); cancelBtn.destroy();
         });
     }
 

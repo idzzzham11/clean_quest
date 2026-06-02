@@ -72,6 +72,12 @@ var TitleScene = class extends Phaser.Scene {
             scene.scene.start(CONSTANTS.SCENES.CREDITS);
         });
 
+        if (hasSave) {
+            this._makeMenuButton(W / 2, btnY + 240, '🔄  Reset Progress', 0xFF4444, function () {
+                scene._confirmReset();
+            });
+        }
+
         // Version + info
         this.add.text(W - 10, H - 10, 'CleanQuest v1.0 | Amalan Kebersihan Tempat Kerja', {
             fontFamily: 'Nunito, sans-serif', fontSize: '10px', color: '#444466'
@@ -134,6 +140,49 @@ var TitleScene = class extends Phaser.Scene {
                 }
             });
         }
+    }
+
+    _confirmReset() {
+        var scene = this;
+        var W = CONSTANTS.WIDTH, H = CONSTANTS.HEIGHT;
+
+        var overlay = this.add.rectangle(W / 2, H / 2, W, H, 0x000000, 0.8).setDepth(50);
+
+        var box = this.add.graphics().setDepth(51);
+        box.fillStyle(0x1a1a2e, 1);
+        box.fillRoundedRect(W / 2 - 200, H / 2 - 90, 400, 180, 16);
+        box.lineStyle(3, 0xFF4444, 1);
+        box.strokeRoundedRect(W / 2 - 200, H / 2 - 90, 400, 180, 16);
+
+        var msg = this.add.text(W / 2, H / 2 - 45, 'Reset semua kemajuan?', {
+            fontFamily: 'Nunito, sans-serif', fontSize: '20px', fontStyle: 'bold', color: '#FFFFFF'
+        }).setOrigin(0.5).setDepth(52);
+
+        var sub = this.add.text(W / 2, H / 2 - 10, 'Semua peringkat akan dikunci semula.', {
+            fontFamily: 'Nunito, sans-serif', fontSize: '13px', color: '#AAAAAA'
+        }).setOrigin(0.5).setDepth(52);
+
+        var confirmBg = this.add.graphics().setDepth(52);
+        confirmBg.fillStyle(0xFF4444, 1);
+        confirmBg.fillRoundedRect(W / 2 - 190, H / 2 + 30, 170, 44, 10);
+        var confirmBtn = this.add.text(W / 2 - 105, H / 2 + 52, '✔  Ya, Reset', {
+            fontFamily: 'Nunito, sans-serif', fontSize: '16px', fontStyle: 'bold', color: '#FFFFFF'
+        }).setOrigin(0.5).setDepth(53).setInteractive({ useHandCursor: true });
+        confirmBtn.on('pointerdown', function () {
+            SaveManager.clearSave();
+            scene.scene.restart();
+        });
+
+        var cancelBg = this.add.graphics().setDepth(52);
+        cancelBg.fillStyle(0x555555, 1);
+        cancelBg.fillRoundedRect(W / 2 + 20, H / 2 + 30, 170, 44, 10);
+        var cancelBtn = this.add.text(W / 2 + 105, H / 2 + 52, '✖  Batal', {
+            fontFamily: 'Nunito, sans-serif', fontSize: '16px', fontStyle: 'bold', color: '#FFFFFF'
+        }).setOrigin(0.5).setDepth(53).setInteractive({ useHandCursor: true });
+        cancelBtn.on('pointerdown', function () {
+            [overlay, box, msg, sub, confirmBg, confirmBtn, cancelBg, cancelBtn]
+                .forEach(function (o) { o.destroy(); });
+        });
     }
 
     _createDecoration(W, H) {

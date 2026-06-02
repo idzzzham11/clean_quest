@@ -32,10 +32,12 @@ var LevelData = (function () {
     // ── Level 1: Office ── 25 cols (1200px) ──────────────────────────────────
     // 1 quiz door evenly placed, then the exit
     // Segment width = 1200 / 2 = 600px → door at col 12, exit col 24
+    // Platforms at row 6 (surface y=288) and row 7 (surface y=336) — reachable heights
+    // Ground surface at row 9 top = y 432; entities stand at y 410 (feet near ground)
     var L1_MAP = buildMap(25, T.OF, T.PW,
         [
-            { cols: [5, 6, 7],    row: 6 },
-            { cols: [15, 16, 17], row: 7 }
+            { cols: [5, 6, 7],    row: 7 },
+            { cols: [15, 16, 17], row: 6 }
         ],
         [{ col: 12, row: 8 }],
         { col: 24, row: 8 }
@@ -55,7 +57,7 @@ var LevelData = (function () {
         { type: 'uniform_clean', x: 1080, y: 390 }
     ];
     var L1_HAZARDS = [
-        { type: 'dirty_cloud', x: 900, y: 400 }
+        { type: 'dirty_cloud', x: 900, y: 420 }
     ];
 
     // ── Level 2: Salon ── 34 cols (1632px) ───────────────────────────────────
@@ -63,9 +65,9 @@ var LevelData = (function () {
     // Door cols: 544/48≈11, 1088/48≈22 → cols 11 and 22, exit col 33
     var L2_MAP = buildMap(34, T.SF, T.SP,
         [
-            { cols: [5, 6, 7],    row: 6 },
-            { cols: [16, 17, 18], row: 7 },
-            { cols: [27, 28, 29], row: 6 }
+            { cols: [5, 6, 7],    row: 7 },
+            { cols: [16, 17, 18], row: 6 },
+            { cols: [27, 28, 29], row: 7 }
         ],
         [
             { col: 11, row: 8 },
@@ -92,8 +94,8 @@ var LevelData = (function () {
         { type: 'uniform_clean', x: 1580, y: 390 }
     ];
     var L2_HAZARDS = [
-        { type: 'dirty_cloud', x: 800,  y: 400 },  // between zones
-        { type: 'dirty_cloud', x: 1400, y: 400 }   // after zone 2
+        { type: 'dirty_cloud', x: 800,  y: 420 },  // between zones
+        { type: 'dirty_cloud', x: 1400, y: 420 }   // after zone 2
     ];
 
     // ── Level 3: Kitchen ── 44 cols (2112px) ─────────────────────────────────
@@ -101,10 +103,10 @@ var LevelData = (function () {
     // Door cols: 528/48=11, 1056/48=22, 1584/48=33 → cols 11, 22, 33, exit col 43
     var L3_MAP = buildMap(44, T.KF, T.PM,
         [
-            { cols: [5, 6, 7],    row: 5 },
-            { cols: [14, 15, 16], row: 7 },
-            { cols: [26, 27, 28], row: 5 },
-            { cols: [37, 38, 39], row: 7 }
+            { cols: [5, 6, 7],    row: 7 },
+            { cols: [14, 15, 16], row: 6 },
+            { cols: [26, 27, 28], row: 7 },
+            { cols: [37, 38, 39], row: 6 }
         ],
         [
             { col: 11, row: 8 },
@@ -138,9 +140,9 @@ var LevelData = (function () {
         { type: 'coin',          x: 2060, y: 390 }
     ];
     var L3_HAZARDS = [
-        { type: 'dirty_cloud', x: 280,  y: 400 },  // before zone 1
-        { type: 'dirty_cloud', x: 760,  y: 400 },  // between zones 1-2
-        { type: 'dirty_cloud', x: 1870, y: 400 }   // after zone 3
+        { type: 'dirty_cloud', x: 280,  y: 420 },  // before zone 1
+        { type: 'dirty_cloud', x: 760,  y: 420 },  // between zones 1-2
+        { type: 'dirty_cloud', x: 1870, y: 420 }   // after zone 3
     ];
 
     // ── Level 4: Customer Service ── 56 cols (2688px) ────────────────────────
@@ -148,11 +150,11 @@ var LevelData = (function () {
     // Door cols: 538/48≈11, 1075/48≈22, 1613/48≈33, 2150/48≈44 → cols 11,22,33,44, exit col 55
     var L4_MAP = buildMap(56, T.CF, T.PG,
         [
-            { cols: [5, 6, 7],    row: 5 },
-            { cols: [15, 16, 17], row: 7 },
-            { cols: [26, 27, 28], row: 5 },
+            { cols: [5, 6, 7],    row: 7 },
+            { cols: [15, 16, 17], row: 6 },
+            { cols: [26, 27, 28], row: 7 },
             { cols: [37, 38, 39], row: 6 },
-            { cols: [48, 49, 50], row: 5 }
+            { cols: [48, 49, 50], row: 7 }
         ],
         [
             { col: 11, row: 8 },
@@ -194,11 +196,11 @@ var LevelData = (function () {
         { type: 'coin',          x: 2650, y: 390 }
     ];
     var L4_HAZARDS = [
-        { type: 'dirty_cloud', x: 250,  y: 400 },  // before zone 1
-        { type: 'dirty_cloud', x: 820,  y: 400 },  // between zones 1-2
-        { type: 'dirty_cloud', x: 1310, y: 400 },  // between zones 2-3
-        { type: 'dirty_cloud', x: 1850, y: 400 },  // between zones 3-4
-        { type: 'dirty_cloud', x: 2400, y: 400 }   // after zone 4
+        { type: 'dirty_cloud', x: 250,  y: 420 },  // before zone 1
+        { type: 'dirty_cloud', x: 820,  y: 420 },  // between zones 1-2
+        { type: 'dirty_cloud', x: 1310, y: 420 },  // between zones 2-3
+        { type: 'dirty_cloud', x: 1850, y: 420 },  // between zones 3-4
+        { type: 'dirty_cloud', x: 2400, y: 420 }   // after zone 4
     ];
 
     return {
