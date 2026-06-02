@@ -48,17 +48,16 @@ var LevelData = (function () {
         { type: 'smell_cloud', x: 880,  y: 410 },
         { type: 'germ',        x: 1050, y: 410 }
     ];
-    // All items at y=400 (ground level, clear of platforms and obstacles)
     var L1_ITEMS = [
-        { type: 'coin',          x: 150,  y: 400 },
-        { type: 'coin',          x: 220,  y: 400 },
-        { type: 'soap',          x: 340,  y: 400 },
-        { type: 'hygiene_star',  x: 850,  y: 400 },
-        { type: 'coin',          x: 950,  y: 400 },
-        { type: 'uniform_clean', x: 1080, y: 400 }
+        { type: 'coin',          x: 150,  y: 395 },
+        { type: 'coin',          x: 220,  y: 395 },
+        { type: 'soap',          x: 340,  y: 395 },
+        { type: 'hygiene_star',  x: 850,  y: 395 },
+        { type: 'coin',          x: 1000, y: 395 },
+        { type: 'uniform_clean', x: 1080, y: 395 }
     ];
     var L1_HAZARDS = [
-        { type: 'dirty_cloud', x: 900, y: 420 }
+        { type: 'dirty_cloud', x: 950, y: 415 }
     ];
 
     // ── Level 2: Salon ── 34 cols (1632px) ───────────────────────────────────
@@ -85,18 +84,18 @@ var LevelData = (function () {
         { type: 'smell_cloud', x: 1580, y: 380 }
     ];
     var L2_ITEMS = [
-        { type: 'coin',          x: 130,  y: 400 },
-        { type: 'coin',          x: 200,  y: 400 },
-        { type: 'soap',          x: 290,  y: 400 },
-        { type: 'coin',          x: 790,  y: 400 },
-        { type: 'hygiene_star',  x: 1310, y: 400 },
-        { type: 'coin',          x: 1400, y: 400 },
-        { type: 'coin',          x: 1500, y: 400 },
-        { type: 'uniform_clean', x: 1580, y: 400 }
+        { type: 'coin',          x: 130,  y: 395 },
+        { type: 'coin',          x: 200,  y: 395 },
+        { type: 'soap',          x: 290,  y: 395 },
+        { type: 'coin',          x: 750,  y: 395 },  // shifted away from hazard at 860
+        { type: 'hygiene_star',  x: 1310, y: 395 },
+        { type: 'coin',          x: 1450, y: 395 },  // shifted away from hazard at 1500
+        { type: 'coin',          x: 1540, y: 395 },
+        { type: 'uniform_clean', x: 1580, y: 395 }
     ];
     var L2_HAZARDS = [
-        { type: 'dirty_cloud', x: 800,  y: 420 },  // between zones
-        { type: 'dirty_cloud', x: 1400, y: 420 }   // after zone 2
+        { type: 'dirty_cloud', x: 860,  y: 415 },
+        { type: 'dirty_cloud', x: 1500, y: 415 }
     ];
 
     // ── Level 3: Kitchen ── 44 cols (2112px) ─────────────────────────────────
@@ -128,22 +127,22 @@ var LevelData = (function () {
         { type: 'hair_monster',x: 2000, y: 410 }
     ];
     var L3_ITEMS = [
-        { type: 'coin',          x: 120,  y: 400 },
-        { type: 'coin',          x: 200,  y: 400 },
-        { type: 'soap',          x: 300,  y: 400 },
-        { type: 'coin',          x: 800,  y: 400 },
-        { type: 'hygiene_star',  x: 900,  y: 400 },
-        { type: 'coin',          x: 1280, y: 400 },
-        { type: 'uniform_clean', x: 1330, y: 400 },
-        { type: 'coin',          x: 1850, y: 400 },
-        { type: 'soap',          x: 1950, y: 400 },
-        { type: 'hygiene_star',  x: 2020, y: 400 },
-        { type: 'coin',          x: 2060, y: 400 }
+        { type: 'coin',          x: 120,  y: 395 },
+        { type: 'coin',          x: 200,  y: 395 },
+        { type: 'soap',          x: 380,  y: 395 },  // shifted away from hazard at 280
+        { type: 'coin',          x: 840,  y: 395 },  // shifted away from hazard at 760
+        { type: 'hygiene_star',  x: 950,  y: 395 },
+        { type: 'coin',          x: 1280, y: 395 },
+        { type: 'uniform_clean', x: 1330, y: 395 },
+        { type: 'coin',          x: 1790, y: 395 },  // shifted away from hazard at 1870
+        { type: 'soap',          x: 1950, y: 395 },
+        { type: 'hygiene_star',  x: 2020, y: 395 },
+        { type: 'coin',          x: 2060, y: 395 }
     ];
     var L3_HAZARDS = [
-        { type: 'dirty_cloud', x: 280,  y: 420 },  // before zone 1
-        { type: 'dirty_cloud', x: 760,  y: 420 },  // between zones 1-2
-        { type: 'dirty_cloud', x: 1870, y: 420 }   // after zone 3
+        { type: 'dirty_cloud', x: 280,  y: 415 },
+        { type: 'dirty_cloud', x: 760,  y: 415 },
+        { type: 'dirty_cloud', x: 1870, y: 415 }
     ];
 
     // ── Level 4: Customer Service ── 56 cols (2688px) ────────────────────────
@@ -180,28 +179,28 @@ var LevelData = (function () {
         { type: 'germ',        x: 2620, y: 410 }
     ];
     var L4_ITEMS = [
-        { type: 'coin',          x: 110,  y: 400 },
-        { type: 'coin',          x: 200,  y: 400 },
-        { type: 'soap',          x: 290,  y: 400 },
-        { type: 'coin',          x: 780,  y: 400 },
-        { type: 'hygiene_star',  x: 840,  y: 400 },
-        { type: 'uniform_clean', x: 1290, y: 400 },
-        { type: 'coin',          x: 1340, y: 400 },
-        { type: 'soap',          x: 1820, y: 400 },
-        { type: 'coin',          x: 1880, y: 400 },
-        { type: 'hygiene_star',  x: 2360, y: 400 },
-        { type: 'coin',          x: 2430, y: 400 },
-        { type: 'coin',          x: 2500, y: 400 },
-        { type: 'uniform_clean', x: 2560, y: 400 },
-        { type: 'hygiene_star',  x: 2620, y: 400 },
-        { type: 'coin',          x: 2650, y: 400 }
+        { type: 'coin',          x: 110,  y: 395 },
+        { type: 'coin',          x: 200,  y: 395 },
+        { type: 'soap',          x: 350,  y: 395 },  // shifted away from hazard at 250
+        { type: 'coin',          x: 730,  y: 395 },  // shifted away from hazard at 820
+        { type: 'hygiene_star',  x: 920,  y: 395 },
+        { type: 'uniform_clean', x: 1200, y: 395 },  // shifted away from hazard at 1310
+        { type: 'coin',          x: 1400, y: 395 },
+        { type: 'soap',          x: 1760, y: 395 },  // shifted away from hazard at 1850
+        { type: 'coin',          x: 1960, y: 395 },
+        { type: 'hygiene_star',  x: 2320, y: 395 },  // shifted away from hazard at 2400
+        { type: 'coin',          x: 2450, y: 395 },
+        { type: 'coin',          x: 2520, y: 395 },
+        { type: 'uniform_clean', x: 2600, y: 395 },
+        { type: 'hygiene_star',  x: 2650, y: 395 },
+        { type: 'coin',          x: 2680, y: 395 }
     ];
     var L4_HAZARDS = [
-        { type: 'dirty_cloud', x: 250,  y: 420 },  // before zone 1
-        { type: 'dirty_cloud', x: 820,  y: 420 },  // between zones 1-2
-        { type: 'dirty_cloud', x: 1310, y: 420 },  // between zones 2-3
-        { type: 'dirty_cloud', x: 1850, y: 420 },  // between zones 3-4
-        { type: 'dirty_cloud', x: 2400, y: 420 }   // after zone 4
+        { type: 'dirty_cloud', x: 250,  y: 415 },
+        { type: 'dirty_cloud', x: 820,  y: 415 },
+        { type: 'dirty_cloud', x: 1310, y: 415 },
+        { type: 'dirty_cloud', x: 1850, y: 415 },
+        { type: 'dirty_cloud', x: 2400, y: 415 }
     ];
 
     return {
