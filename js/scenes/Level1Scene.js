@@ -44,17 +44,7 @@ var LevelSceneCore = {
         scene.add.existing(scene._player);
 
         LevelSceneCore._setupColliders(scene);
-
-        // Stop HUD if already running before launching fresh
-        if (scene.scene.isActive(CONSTANTS.SCENES.HUD)) {
-            scene.scene.stop(CONSTANTS.SCENES.HUD);
-        }
-        scene.scene.launch(CONSTANTS.SCENES.HUD);
-        scene.time.delayedCall(100, function () {
-            var hud = scene.scene.get(CONSTANTS.SCENES.HUD);
-            if (hud && hud.refresh) hud.refresh();
-            GameState.emit('levelNameChanged', CONSTANTS.LEVEL_NAMES[scene._levelNum]);
-        });
+        LevelSceneCore._buildHUD(scene);
 
         scene._cursors = scene.input.keyboard.createCursorKeys();
         scene.input.keyboard.addKey('SPACE');
@@ -98,9 +88,88 @@ var LevelSceneCore = {
             GameState.off('playerDied', null, scene);
             GameState.off('gameOver', null, scene);
             GameState.off('pauseToggle', null, scene);
+            GameState.off('healthChanged', null, scene);
+            GameState.off('coinsChanged', null, scene);
+            GameState.off('starsChanged', null, scene);
+            GameState.off('scoreChanged', null, scene);
         } catch (e) {}
+        scene._hudHearts = null;
+        scene._hudCoins = null;
+        scene._hudStars = null;
+        scene._hudScore = null;
         MobileControls.hide();
         AudioManager.stopBGM();
+    },
+
+    _buildHUD: function (scene) {
+        var W = CONSTANTS.WIDTH;
+        var pad = 10;
+        var row1 = 16;
+        var row2 = 44;
+
+        // Dark bar background
+        scene.add.rectangle(0, 0, W, 62, 0x000000, 0.5)
+            .setOrigin(0, 0).setScrollFactor(0).setDepth(20);
+
+        // Hearts
+        scene._hudHearts = [];
+        for (var i = 0; i < CONSTANTS.PLAYER_MAX_HEALTH; i++) {
+            var heart = scene.add.image(pad + 14 + i * 32, row1, 'heart_full')
+                .setScrollFactor(0).setDepth(21).setScale(0.85);
+            scene._hudHearts.push(heart);
+        }
+
+        // Coin icon + count
+        scene.add.image(pad + 12, row2, 'coin_ui').setScrollFactor(0).setDepth(21).setScale(0.9);
+        scene._hudCoins = scene.add.text(pad + 26, row2, '0', TextStyles.hud)
+            .setOrigin(0, 0.5).setScrollFactor(0).setDepth(21);
+
+        // Star icon + count
+        scene.add.image(pad + 78, row2, 'star_ui').setScrollFactor(0).setDepth(21).setScale(0.9);
+        scene._hudStars = scene.add.text(pad + 92, row2, '0', TextStyles.hud)
+            .setOrigin(0, 0.5).setScrollFactor(0).setDepth(21);
+
+        // Score
+        scene._hudScore = scene.add.text(W - pad, row1, 'Score: 0', TextStyles.hud)
+            .setOrigin(1, 0.5).setScrollFactor(0).setDepth(21);
+
+        // Level name
+        scene._hudLevel = scene.add.text(W / 2, row2, CONSTANTS.LEVEL_NAMES[scene._levelNum], {
+            fontFamily: 'Nunito, sans-serif', fontSize: '13px', fontStyle: 'bold',
+            color: '#FFFFFF', stroke: '#000000', strokeThickness: 2
+        }).setOrigin(0.5, 0.5).setScrollFactor(0).setDepth(21);
+
+        // Pause button
+        scene._pauseBtn = scene.add.text(W - pad, row2, '⏸', {
+            fontFamily: 'Nunito, sans-serif', fontSize: '20px', color: '#FFFFFF'
+        }).setOrigin(1, 0.5).setScrollFactor(0).setDepth(21)
+            .setInteractive({ useHandCursor: true });
+        scene._pauseBtn.on('pointerdown', function () { GameState.emit('pauseToggle'); });
+
+        // Wire GameState events
+        GameState.on('healthChanged', function (h) {
+            if (!scene._hudHearts) return;
+            scene._hudHearts.forEach(function (hrt, i) {
+                hrt.setTexture(i < h ? 'heart_full' : 'heart_empty');
+            });
+        }, scene);
+        GameState.on('coinsChanged', function (c) {
+            scene._hudCoins && scene._hudCoins.setText(c);
+        }, scene);
+        GameState.on('starsChanged', function (s) {
+            scene._hudStars && scene._hudStars.setText(s);
+        }, scene);
+        GameState.on('scoreChanged', function (s) {
+            scene._hudScore && scene._hudScore.setText('Score: ' + s);
+        }, scene);
+
+        // Initial values
+        scene._hudHearts.forEach(function (hrt, i) {
+            hrt.setTexture(i < GameState.getHealth() ? 'heart_full' : 'heart_empty');
+        });
+        scene._hudCoins.setText(GameState.getCoins());
+        scene._hudStars.setText(GameState.getHygieneStars());
+        scene._hudScore.setText('Score: ' + GameState.getScore());
     },
 
     _buildBackground: function (scene, levelWidth, H) {
@@ -312,7 +381,6 @@ var LevelSceneCore = {
         }).setOrigin(0.5).setScrollFactor(0).setDepth(101).setInteractive({ useHandCursor: true });
         quitBtn.on('pointerdown', function () {
             AudioManager.stopBGM();
-            scene.scene.stop(CONSTANTS.SCENES.HUD);
             scene.scene.start(CONSTANTS.SCENES.TITLE);
         });
 
@@ -351,7 +419,6 @@ var LevelSceneCore = {
             onComplete: function () {
                 scene.time.delayedCall(700, function () {
                     var levelKey = scene.scene.key;
-                    scene.scene.stop(CONSTANTS.SCENES.HUD);
                     scene.scene.start(CONSTANTS.SCENES.RESULTS, {
                         levelNum: scene._levelNum,
                         fromLevelKey: levelKey,
@@ -388,7 +455,6 @@ var LevelSceneCore = {
             }).setOrigin(0.5).setScrollFactor(0).setDepth(91).setInteractive({ useHandCursor: true });
 
             restartBtn.on('pointerdown', function () {
-                scene.scene.stop(CONSTANTS.SCENES.HUD);
                 scene.scene.restart();
             });
 
@@ -398,7 +464,6 @@ var LevelSceneCore = {
             }).setOrigin(0.5).setScrollFactor(0).setDepth(91).setInteractive({ useHandCursor: true });
 
             menuBtn.on('pointerdown', function () {
-                scene.scene.stop(CONSTANTS.SCENES.HUD);
                 scene.scene.start(CONSTANTS.SCENES.TITLE);
             });
         });
