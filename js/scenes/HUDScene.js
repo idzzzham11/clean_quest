@@ -71,11 +71,26 @@ var HUDScene = class extends Phaser.Scene {
     }
 
     _bindEvents() {
-        GameState.on('healthChanged', this._updateHearts, this);
-        GameState.on('coinsChanged', this._updateCoins, this);
-        GameState.on('starsChanged', this._updateStars, this);
-        GameState.on('scoreChanged', this._updateScore, this);
+        var self = this;
+        GameState.on('healthChanged',    this._updateHearts,    this);
+        GameState.on('coinsChanged',     this._updateCoins,     this);
+        GameState.on('starsChanged',     this._updateStars,     this);
+        GameState.on('scoreChanged',     this._updateScore,     this);
         GameState.on('levelNameChanged', this._updateLevelName, this);
+
+        // Remove all GameState listeners when this scene instance is stopped
+        this.events.once('shutdown', function () {
+            GameState.off('healthChanged',    self._updateHearts,    self);
+            GameState.off('coinsChanged',     self._updateCoins,     self);
+            GameState.off('starsChanged',     self._updateStars,     self);
+            GameState.off('scoreChanged',     self._updateScore,     self);
+            GameState.off('levelNameChanged', self._updateLevelName, self);
+            self._hearts = [];
+            self._coinText = null;
+            self._starText = null;
+            self._scoreText = null;
+            self._levelText = null;
+        });
     }
 
     _updateHearts(health) {

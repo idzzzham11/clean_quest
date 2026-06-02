@@ -53,9 +53,8 @@ var LevelSceneCore = {
         scene.time.delayedCall(100, function () {
             var hud = scene.scene.get(CONSTANTS.SCENES.HUD);
             if (hud && hud.refresh) hud.refresh();
+            GameState.emit('levelNameChanged', CONSTANTS.LEVEL_NAMES[scene._levelNum]);
         });
-
-        GameState.emit('levelNameChanged', CONSTANTS.LEVEL_NAMES[scene._levelNum]);
 
         scene._cursors = scene.input.keyboard.createCursorKeys();
         scene.input.keyboard.addKey('SPACE');

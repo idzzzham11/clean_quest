@@ -160,14 +160,10 @@ var ResultsScene = class extends Phaser.Scene {
     }
 
     _stopOldLevel() {
-        // Stop the level scene that sent us here (it may still be in stopped-but-alive state)
-        if (this._fromLevelKey && this.scene.get(this._fromLevelKey)) {
-            this.scene.stop(this._fromLevelKey);
+        // Only stop the level scene that sent us here
+        if (this._fromLevelKey) {
+            try { this.scene.stop(this._fromLevelKey); } catch(e) {}
         }
-        // Also stop any level scenes that are sleeping/stopped
-        var levelKeys = ['Level1Scene','Level2Scene','Level3Scene','Level4Scene'];
-        var s = this.scene;
-        levelKeys.forEach(function (k) { try { s.stop(k); } catch(e) {} });
     }
 
     _showCertificate() {
