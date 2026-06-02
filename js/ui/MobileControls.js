@@ -8,9 +8,7 @@ var MobileControls = {
     _initialized: false,
 
     _isTouchDevice: function () {
-        return ('ontouchstart' in window) ||
-               (navigator.maxTouchPoints > 0) ||
-               window.innerWidth < 900;
+        return ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
     },
 
     init: function () {

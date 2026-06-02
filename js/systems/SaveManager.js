@@ -14,7 +14,7 @@ var SaveManager = {
             },
             progress: {
                 unlockedLevels: [1],
-                levelStars: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 },
+                levelStars: { 1: 0, 2: 0, 3: 0, 4: 0 },
                 collectedBadges: [],
                 certificates: [],
                 totalCoins: 0,
@@ -86,7 +86,7 @@ var SaveManager = {
         this.save(data);
 
         // Auto-unlock next level
-        if (levelNum < 5) {
+        if (levelNum < 4) {
             this.unlockLevel(levelNum + 1);
         }
     },

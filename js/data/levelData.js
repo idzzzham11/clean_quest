@@ -1,4 +1,4 @@
-// Level tilemap data — 25 cols x 12 rows = 1200px x 576px each
+// Level tilemap data — each level is wider and more complex than the previous
 var LevelData = (function () {
     var T = {
         _: 0,
@@ -7,57 +7,204 @@ var LevelData = (function () {
         DL: 50, LE: 53
     };
 
-    // Build a simple flat level: ground at rows 9-11, two platforms, 1 door, level end
-    function build(floor, platTile) {
-        var COLS = 25, ROWS = 12;
+    // Build a solid-ground map (no pits).
+    // cols: total columns, floor/platTile: tile IDs
+    // doors: [{col, row}] for quiz doors, end: {col, row} for level exit
+    // platforms: [{cols:[...], row}]
+    function buildMap(cols, floor, platTile, platforms, doors, end) {
+        var ROWS = 12;
         var map = [];
         for (var r = 0; r < ROWS; r++) {
             var row = [];
-            for (var c = 0; c < COLS; c++) {
+            for (var c = 0; c < cols; c++) {
                 row.push(r >= 9 ? floor : 0);
             }
             map.push(row);
         }
-        // Platform 1: cols 6-8 at row 6
-        [6, 7, 8].forEach(function (c) { map[6][c] = platTile; });
-        // Platform 2: cols 14-16 at row 7
-        [14, 15, 16].forEach(function (c) { map[7][c] = platTile; });
-        // Door (quiz) at col 20, row 8
-        map[8][20] = T.DL;
-        // Level end at col 24, row 8
-        map[8][24] = T.LE;
+        platforms.forEach(function (p) {
+            p.cols.forEach(function (c) { map[p.row][c] = platTile; });
+        });
+        doors.forEach(function (d) { map[d.row][d.col] = T.DL; });
+        map[end.row][end.col] = T.LE;
         return map;
     }
 
-    // 3 enemies spread across 1200px
-    // Ground surface y = row9 * 48 = 432; enemy standing y ≈ 410
-    var ENEMIES = [
-        { type: 'germ',        x: 250,  y: 410 },
-        { type: 'smell_cloud', x: 550,  y: 380 },
-        { type: 'germ',        x: 820,  y: 410 }
+    // ── Level 1: Office ── 25 cols (1200px) ──────────────────────────────────
+    // 1 quiz door evenly placed, then the exit
+    // Segment width = 1200 / 2 = 600px → door at col 12, exit col 24
+    var L1_MAP = buildMap(25, T.OF, T.PW,
+        [
+            { cols: [5, 6, 7],    row: 6 },
+            { cols: [15, 16, 17], row: 7 }
+        ],
+        [{ col: 12, row: 8 }],
+        { col: 24, row: 8 }
+    );
+    // L1 door at col 12 = 576px. Clear zone: 376-776px.
+    var L1_ENEMIES = [
+        { type: 'germ',        x: 280,  y: 410 },
+        { type: 'smell_cloud', x: 880,  y: 380 },
+        { type: 'germ',        x: 1050, y: 410 }
     ];
-
-    // Items scattered across level
-    var ITEMS = [
+    var L1_ITEMS = [
         { type: 'coin',          x: 150,  y: 390 },
-        { type: 'coin',          x: 200,  y: 390 },
-        { type: 'soap',          x: 380,  y: 390 },
-        { type: 'hygiene_star',  x: 660,  y: 350 },
-        { type: 'coin',          x: 900,  y: 390 },
-        { type: 'uniform_clean', x: 1050, y: 390 }
+        { type: 'coin',          x: 220,  y: 390 },
+        { type: 'soap',          x: 340,  y: 390 },
+        { type: 'hygiene_star',  x: 850,  y: 350 },
+        { type: 'coin',          x: 950,  y: 390 },
+        { type: 'uniform_clean', x: 1080, y: 390 }
+    ];
+    var L1_HAZARDS = [
+        { type: 'dirty_cloud', x: 900, y: 400 }
     ];
 
-    // 2 hazards
-    var HAZARDS = [
-        { type: 'oil_spill',   x: 320, y: 428 },
-        { type: 'dirty_cloud', x: 700, y: 400 }
+    // ── Level 2: Salon ── 34 cols (1632px) ───────────────────────────────────
+    // 2 quiz doors: split 1632 into 3 equal segments (~544px each)
+    // Door cols: 544/48≈11, 1088/48≈22 → cols 11 and 22, exit col 33
+    var L2_MAP = buildMap(34, T.SF, T.SP,
+        [
+            { cols: [5, 6, 7],    row: 6 },
+            { cols: [16, 17, 18], row: 7 },
+            { cols: [27, 28, 29], row: 6 }
+        ],
+        [
+            { col: 11, row: 8 },
+            { col: 22, row: 8 }
+        ],
+        { col: 33, row: 8 }
+    );
+    // L2 doors at col 11=528px, col 22=1056px. Clear zones: 328-728px and 856-1256px.
+    var L2_ENEMIES = [
+        { type: 'germ',        x: 200,  y: 410 },  // before zone 1
+        { type: 'smell_cloud', x: 800,  y: 380 },  // between zones
+        { type: 'germ',        x: 1320, y: 410 },  // after zone 2
+        { type: 'hair_monster',x: 1480, y: 410 },
+        { type: 'smell_cloud', x: 1580, y: 380 }
+    ];
+    var L2_ITEMS = [
+        { type: 'coin',          x: 130,  y: 390 },
+        { type: 'coin',          x: 200,  y: 390 },
+        { type: 'soap',          x: 290,  y: 390 },  // before zone 1
+        { type: 'coin',          x: 790,  y: 390 },  // between zones
+        { type: 'hygiene_star',  x: 1310, y: 350 },  // after zone 2
+        { type: 'coin',          x: 1400, y: 390 },
+        { type: 'coin',          x: 1500, y: 390 },
+        { type: 'uniform_clean', x: 1580, y: 390 }
+    ];
+    var L2_HAZARDS = [
+        { type: 'dirty_cloud', x: 800,  y: 400 },  // between zones
+        { type: 'dirty_cloud', x: 1400, y: 400 }   // after zone 2
+    ];
+
+    // ── Level 3: Kitchen ── 44 cols (2112px) ─────────────────────────────────
+    // 3 quiz doors: split 2112 into 4 equal segments (528px each)
+    // Door cols: 528/48=11, 1056/48=22, 1584/48=33 → cols 11, 22, 33, exit col 43
+    var L3_MAP = buildMap(44, T.KF, T.PM,
+        [
+            { cols: [5, 6, 7],    row: 5 },
+            { cols: [14, 15, 16], row: 7 },
+            { cols: [26, 27, 28], row: 5 },
+            { cols: [37, 38, 39], row: 7 }
+        ],
+        [
+            { col: 11, row: 8 },
+            { col: 22, row: 8 },
+            { col: 33, row: 8 }
+        ],
+        { col: 43, row: 8 }
+    );
+    // L3 doors at col 11=528px, 22=1056px, 33=1584px. Clear zones: 328-728, 856-1256, 1384-1784px.
+    var L3_ENEMIES = [
+        { type: 'germ',        x: 220,  y: 410 },  // before zone 1
+        { type: 'smell_cloud', x: 310,  y: 380 },
+        { type: 'hair_monster',x: 820,  y: 410 },  // between zones 1-2
+        { type: 'germ',        x: 1000, y: 410 },
+        { type: 'dirty_robot', x: 1300, y: 410 },  // between zones 2-3
+        { type: 'smell_cloud', x: 1330, y: 380 },
+        { type: 'germ',        x: 1850, y: 410 },  // after zone 3
+        { type: 'hair_monster',x: 2000, y: 410 }
+    ];
+    var L3_ITEMS = [
+        { type: 'coin',          x: 120,  y: 390 },
+        { type: 'coin',          x: 200,  y: 390 },
+        { type: 'soap',          x: 300,  y: 390 },  // before zone 1
+        { type: 'coin',          x: 800,  y: 390 },  // between zones 1-2
+        { type: 'hygiene_star',  x: 900,  y: 260 },
+        { type: 'coin',          x: 1280, y: 390 },  // between zones 2-3
+        { type: 'uniform_clean', x: 1330, y: 390 },
+        { type: 'coin',          x: 1850, y: 390 },  // after zone 3
+        { type: 'soap',          x: 1950, y: 390 },
+        { type: 'hygiene_star',  x: 2020, y: 350 },
+        { type: 'coin',          x: 2060, y: 390 }
+    ];
+    var L3_HAZARDS = [
+        { type: 'dirty_cloud', x: 280,  y: 400 },  // before zone 1
+        { type: 'dirty_cloud', x: 760,  y: 400 },  // between zones 1-2
+        { type: 'dirty_cloud', x: 1870, y: 400 }   // after zone 3
+    ];
+
+    // ── Level 4: Customer Service ── 56 cols (2688px) ────────────────────────
+    // 4 quiz doors: split 2688 into 5 equal segments (537.6px ≈ 538px each)
+    // Door cols: 538/48≈11, 1075/48≈22, 1613/48≈33, 2150/48≈44 → cols 11,22,33,44, exit col 55
+    var L4_MAP = buildMap(56, T.CF, T.PG,
+        [
+            { cols: [5, 6, 7],    row: 5 },
+            { cols: [15, 16, 17], row: 7 },
+            { cols: [26, 27, 28], row: 5 },
+            { cols: [37, 38, 39], row: 6 },
+            { cols: [48, 49, 50], row: 5 }
+        ],
+        [
+            { col: 11, row: 8 },
+            { col: 22, row: 8 },
+            { col: 33, row: 8 },
+            { col: 44, row: 8 }
+        ],
+        { col: 55, row: 8 }
+    );
+    // L4 doors at col 11=528, 22=1056, 33=1584, 44=2112px. Clear zones: 328-728, 856-1256, 1384-1784, 1912-2312px.
+    var L4_ENEMIES = [
+        { type: 'germ',        x: 180,  y: 410 },  // before zone 1
+        { type: 'smell_cloud', x: 300,  y: 380 },
+        { type: 'hair_monster',x: 800,  y: 410 },  // between zones 1-2
+        { type: 'germ',        x: 1310, y: 410 },  // between zones 2-3
+        { type: 'dirty_robot', x: 1350, y: 410 },
+        { type: 'smell_cloud', x: 1840, y: 380 },  // between zones 3-4
+        { type: 'germ',        x: 1880, y: 410 },
+        { type: 'hair_monster',x: 2380, y: 410 },  // after zone 4
+        { type: 'dirty_robot', x: 2460, y: 410 },
+        { type: 'smell_cloud', x: 2560, y: 380 },
+        { type: 'germ',        x: 2620, y: 410 }
+    ];
+    var L4_ITEMS = [
+        { type: 'coin',          x: 110,  y: 390 },
+        { type: 'coin',          x: 200,  y: 390 },
+        { type: 'soap',          x: 290,  y: 390 },  // before zone 1
+        { type: 'coin',          x: 780,  y: 390 },  // between zones 1-2
+        { type: 'hygiene_star',  x: 840,  y: 260 },
+        { type: 'uniform_clean', x: 1290, y: 390 },  // between zones 2-3
+        { type: 'coin',          x: 1340, y: 390 },
+        { type: 'soap',          x: 1820, y: 390 },  // between zones 3-4
+        { type: 'coin',          x: 1880, y: 390 },
+        { type: 'hygiene_star',  x: 2360, y: 300 },  // after zone 4
+        { type: 'coin',          x: 2430, y: 390 },
+        { type: 'coin',          x: 2500, y: 390 },
+        { type: 'uniform_clean', x: 2560, y: 390 },
+        { type: 'hygiene_star',  x: 2620, y: 350 },
+        { type: 'coin',          x: 2650, y: 390 }
+    ];
+    var L4_HAZARDS = [
+        { type: 'dirty_cloud', x: 250,  y: 400 },  // before zone 1
+        { type: 'dirty_cloud', x: 820,  y: 400 },  // between zones 1-2
+        { type: 'dirty_cloud', x: 1310, y: 400 },  // between zones 2-3
+        { type: 'dirty_cloud', x: 1850, y: 400 },  // between zones 3-4
+        { type: 'dirty_cloud', x: 2400, y: 400 }   // after zone 4
     ];
 
     return {
-        level1: { map: build(T.OF, T.PW), enemies: ENEMIES, items: ITEMS, hazards: HAZARDS },
-        level2: { map: build(T.SF, T.SP), enemies: ENEMIES, items: ITEMS, hazards: HAZARDS },
-        level3: { map: build(T.KF, T.PM), enemies: ENEMIES, items: ITEMS, hazards: HAZARDS },
-        level4: { map: build(T.CF, T.PG), enemies: ENEMIES, items: ITEMS, hazards: HAZARDS },
-        level5: { map: build(T.HF, T.HP), enemies: ENEMIES, items: ITEMS, hazards: HAZARDS }
+        level1: { map: L1_MAP, enemies: L1_ENEMIES, items: L1_ITEMS, hazards: L1_HAZARDS, doorsRequired: 1 },
+        level2: { map: L2_MAP, enemies: L2_ENEMIES, items: L2_ITEMS, hazards: L2_HAZARDS, doorsRequired: 2 },
+        level3: { map: L3_MAP, enemies: L3_ENEMIES, items: L3_ITEMS, hazards: L3_HAZARDS, doorsRequired: 3 },
+        level4: { map: L4_MAP, enemies: L4_ENEMIES, items: L4_ITEMS, hazards: L4_HAZARDS, doorsRequired: 4 }
     };
 })();

@@ -92,16 +92,16 @@ var ResultsScene = class extends Phaser.Scene {
 
         // Buttons — row 1
         var btnY1 = 430;
-        this._makeButton(W / 2 - 170, btnY1, this._levelNum < 5 ? 'Level Seterusnya' : 'Tamat!', function () {
-            var nextLevel = scene._levelNum + 1;
+        this._makeButton(W / 2 - 170, btnY1, this._levelNum < 4 ? 'Level Seterusnya' : 'Tamat!', function () {
             scene._stopOldLevel();
-            if (nextLevel <= 5) {
+            if (scene._levelNum < 4) {
+                var nextLevel = scene._levelNum + 1;
                 SaveManager.unlockLevel(nextLevel);
                 scene.scene.start(CONSTANTS.SCENES['LEVEL' + nextLevel]);
             } else {
-                scene.scene.start(CONSTANTS.SCENES.LEVEL_SELECT);
+                scene.scene.start(CONSTANTS.SCENES.CREDITS);
             }
-        }, this._levelNum < 5 ? 0x2ECC71 : 0x888888);
+        }, this._levelNum < 4 ? 0x2ECC71 : 0xFFD700);
 
         this._makeButton(W / 2 + 10, btnY1, 'Main Semula', function () {
             scene._stopOldLevel();
@@ -165,7 +165,7 @@ var ResultsScene = class extends Phaser.Scene {
             this.scene.stop(this._fromLevelKey);
         }
         // Also stop any level scenes that are sleeping/stopped
-        var levelKeys = ['Level1Scene','Level2Scene','Level3Scene','Level4Scene','Level5Scene'];
+        var levelKeys = ['Level1Scene','Level2Scene','Level3Scene','Level4Scene'];
         var s = this.scene;
         levelKeys.forEach(function (k) { try { s.stop(k); } catch(e) {} });
     }

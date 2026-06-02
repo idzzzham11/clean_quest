@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>CleanQuest: Workplace Hero</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -59,6 +62,7 @@
                     <span class="option-text"></span>
                 </button>
             </div>
+            <div id="quiz-progress"></div>
             <div id="quiz-feedback" class="hidden"></div>
             <div id="quiz-attempts"></div>
         </div>
@@ -125,7 +129,6 @@
     <script src="js/scenes/Level2Scene.js"></script>
     <script src="js/scenes/Level3Scene.js"></script>
     <script src="js/scenes/Level4Scene.js"></script>
-    <script src="js/scenes/Level5Scene.js"></script>
     <script src="js/scenes/BossScene.js"></script>
     <script src="js/scenes/QuizScene.js"></script>
     <script src="js/scenes/ResultsScene.js"></script>

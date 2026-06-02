@@ -18,8 +18,8 @@ var LevelSelectScene = class extends Phaser.Scene {
 
         // World map path
         var pathPoints = [
-            { x: 140, y: 260 }, { x: 310, y: 160 }, { x: 480, y: 230 },
-            { x: 650, y: 140 }, { x: 820, y: 240 }
+            { x: 150, y: 260 }, { x: 360, y: 160 }, { x: 580, y: 230 },
+            { x: 800, y: 150 }
         ];
         var path = this.add.graphics();
         path.lineStyle(6, 0x666666, 0.6);
@@ -36,8 +36,8 @@ var LevelSelectScene = class extends Phaser.Scene {
             }
         }
 
-        var levelColors = [0x4169E1, 0xCC44AA, 0xFF6600, 0x20B2AA, 0xC8A020];
-        var levelIcons = ['🏢', '✂️', '👨‍🍳', '🤝', '🏨'];
+        var levelColors = [0x4169E1, 0xCC44AA, 0xFF6600, 0x20B2AA];
+        var levelIcons = ['🏢', '✂️', '👨‍🍳', '🤝'];
 
         pathPoints.forEach(function (pt, i) {
             var levelNum = i + 1;
@@ -92,8 +92,8 @@ var LevelSelectScene = class extends Phaser.Scene {
 
         // Total progress
         var totalStars = 0;
-        for (var lv = 1; lv <= 5; lv++) { totalStars += SaveManager.getLevelStars(lv); }
-        this.add.text(W / 2, H - 80, '⭐ Total Stars: ' + totalStars + ' / 15', {
+        for (var lv = 1; lv <= 4; lv++) { totalStars += SaveManager.getLevelStars(lv); }
+        this.add.text(W / 2, H - 80, '⭐ Total Stars: ' + totalStars + ' / 12', {
             fontFamily: 'Nunito, sans-serif', fontSize: '16px', color: '#FFD700'
         }).setOrigin(0.5);
 

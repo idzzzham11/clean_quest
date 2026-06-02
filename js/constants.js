@@ -24,13 +24,12 @@ var CONSTANTS = {
     QUIZ_CORRECT_BONUS: 50,
     STOMP_BONUS: 25,
 
-    // Level dimensions (width in px) — 25 cols x 48px
+    // Level dimensions (width in px) — cols x 48px
     LEVEL_WIDTHS: {
-        1: 1200,
-        2: 1200,
-        3: 1200,
-        4: 1200,
-        5: 1200
+        1: 1200,   // 25 cols
+        2: 1632,   // 34 cols
+        3: 2112,   // 44 cols
+        4: 2688    // 56 cols
     },
     LEVEL_HEIGHT: 576,
 
@@ -138,7 +137,6 @@ var CONSTANTS = {
         LEVEL2: 'Level2Scene',
         LEVEL3: 'Level3Scene',
         LEVEL4: 'Level4Scene',
-        LEVEL5: 'Level5Scene',
         BOSS: 'BossScene',
         QUIZ: 'QuizScene',
         RESULTS: 'ResultsScene',
@@ -151,8 +149,7 @@ var CONSTANTS = {
         1: 'Office Hygiene Adventure',
         2: 'Salon Cleanliness Challenge',
         3: 'Restaurant Kitchen Safety',
-        4: 'Customer Service Professionalism',
-        5: 'Hotel Grooming Master'
+        4: 'Customer Service Professionalism'
     },
 
     // Boss types

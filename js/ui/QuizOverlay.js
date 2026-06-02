@@ -3,7 +3,7 @@ var QuizOverlay = {
     _answerCallback: null,
     _buttonsDisabled: false,
 
-    show: function (question, onAnswer) {
+    show: function (question, onAnswer, progressText) {
         this._answerCallback = onAnswer;
         this._buttonsDisabled = false;
 
@@ -13,11 +13,13 @@ var QuizOverlay = {
         var attemptsEl = document.getElementById('quiz-attempts');
         var iconEl = document.getElementById('quiz-icon');
         var badgeEl = document.getElementById('quiz-level-badge');
+        var progressEl = document.getElementById('quiz-progress');
 
         questionEl.textContent = question.question;
         feedbackEl.className = 'hidden';
         feedbackEl.textContent = '';
         attemptsEl.textContent = '3 attempts allowed';
+        if (progressEl) progressEl.textContent = progressText || '';
 
         if (iconEl) iconEl.textContent = question.icon || '🧼';
         if (badgeEl) badgeEl.textContent = 'Hygiene Quiz';

@@ -11,7 +11,8 @@ window.addEventListener('load', function () {
         backgroundColor: '#1a1a2e',
         scale: {
             mode: Phaser.Scale.FIT,
-            autoCenter: Phaser.Scale.CENTER_BOTH
+            autoCenter: Phaser.Scale.CENTER_BOTH,
+            expandParent: true
         },
         physics: {
             default: 'arcade',
@@ -30,7 +31,6 @@ window.addEventListener('load', function () {
             Level2Scene,
             Level3Scene,
             Level4Scene,
-            Level5Scene,
             BossScene,
             QuizScene,
             ResultsScene,

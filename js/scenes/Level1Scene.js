@@ -5,8 +5,8 @@ var LevelSceneCore = {
         var H = CONSTANTS.HEIGHT;
         var levelWidth = CONSTANTS.LEVEL_WIDTHS[scene._levelNum];
 
-        scene._doorsOpened = scene._doorsOpened || 0;
-        scene._doorsRequired = scene._doorsRequired || 1;
+        scene._doorsOpened = 0;
+        scene._doorsRequired = LevelData[scene._levelKey].doorsRequired || 1;
         scene._quizPassed = false;
         scene._noDamageTaken = true;
         scene._noHazardsTouched = true;
@@ -19,6 +19,7 @@ var LevelSceneCore = {
         scene._levelComplete = false;
 
         GameState.resetLevel();
+        QuizManager.initLevel(scene._quizLevelKey);
         CheckpointSystem.init();
         MobileControls.init();
         AudioManager.initOnGesture();
@@ -247,7 +248,8 @@ var LevelSceneCore = {
                 if (scene._doorsOpened >= scene._doorsRequired) {
                     LevelSceneCore._completeLevel(scene);
                 } else {
-                    LevelSceneCore._showHint(scene, 'Answer the quiz to unlock the door first!');
+                    var remaining = scene._doorsRequired - scene._doorsOpened;
+                    LevelSceneCore._showHint(scene, 'Jawab ' + remaining + ' soalan kuiz lagi untuk membuka pintu!');
                 }
             });
         }
@@ -425,7 +427,6 @@ var Level1Scene = class extends Phaser.Scene {
         this._bgFarKey = 'bg_office_far';
         this._bgMidKey = 'bg_office_mid';
         this._bgNearKey = 'bg_office_near';
-        this._doorsRequired = 1;
         LevelSceneCore.init(this);
     }
 
