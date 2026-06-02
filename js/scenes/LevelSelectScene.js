@@ -39,9 +39,6 @@ var LevelSelectScene = class extends Phaser.Scene {
         var levelColors = [0x4169E1, 0xCC44AA, 0xFF6600, 0x20B2AA];
         var levelIcons = ['🏢', '✂️', '👨‍🍳', '🤝'];
 
-        // Store node data for hit-testing in the global pointer handler
-        var nodes = [];
-
         pathPoints.forEach(function (pt, i) {
             var levelNum = i + 1;
             var unlocked = SaveManager.isLevelUnlocked(levelNum);
@@ -76,23 +73,19 @@ var LevelSelectScene = class extends Phaser.Scene {
                 align: 'center', wordWrap: { width: 90 }
             }).setOrigin(0.5);
 
-            nodes.push({ x: pt.x, y: pt.y, levelNum: levelNum, unlocked: unlocked, circle: circle });
-        });
-
-        // Single scene-level pointer handler — works reliably on all devices
-        this.input.on('pointerdown', function (pointer) {
-            // Convert screen pointer to game coordinates
-            var gx = pointer.x;
-            var gy = pointer.y;
-            for (var n = 0; n < nodes.length; n++) {
-                var nd = nodes[n];
-                if (!nd.unlocked) continue;
-                var dx = gx - nd.x, dy = gy - nd.y;
-                // Hit radius 60px covers circle + surrounding labels
-                if (dx * dx + dy * dy <= 60 * 60) {
-                    scene._startLevel(nd.levelNum);
-                    return;
-                }
+            if (unlocked) {
+                (function (lvl, node, circ) {
+                    circ.setInteractive({ useHandCursor: true });
+                    circ.on('pointerdown', function () { scene._startLevel(lvl); });
+                    circ.on('pointerover', function () {
+                        scene.tweens.add({ targets: circ, scaleX: 1.1, scaleY: 1.1, duration: 120 });
+                        scene._showLevelPreview(lvl, node.x, node.y);
+                    });
+                    circ.on('pointerout', function () {
+                        scene.tweens.add({ targets: circ, scaleX: 1, scaleY: 1, duration: 120 });
+                        if (scene._previewCard) { scene._previewCard.destroy(); scene._previewCard = null; }
+                    });
+                })(levelNum, pt, circle);
             }
         });
 
