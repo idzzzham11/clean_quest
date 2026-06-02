@@ -172,7 +172,7 @@ var ResultsScene = class extends Phaser.Scene {
     }
 
     _promptLeaderboard() {
-        var playerName = SaveManager.getCharacter().name || 'Hero';
+        var playerName = SaveManager.getCharacter().name || 'Player 1';
         SaveManager.addLeaderboardEntry(playerName, this._score);
     }
 };

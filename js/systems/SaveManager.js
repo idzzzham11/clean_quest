@@ -7,7 +7,7 @@ var SaveManager = {
         return {
             version: 1,
             character: {
-                name: 'Hero',
+                name: 'Player 1',
                 skinTone: 0xFFDBAC,
                 hairColor: 0x1C1C1C,
                 uniformColor: 0x4169E1

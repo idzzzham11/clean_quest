@@ -46,7 +46,7 @@ var LeaderboardScene = class extends Phaser.Scene {
                 scene.add.text(100, rowY, rankText, {
                     fontFamily: 'Nunito, sans-serif', fontSize: '18px', color: '#FFD700'
                 });
-                scene.add.text(220, rowY, entry.name || 'Hero', {
+                scene.add.text(220, rowY, entry.name || 'Player 1', {
                     fontFamily: 'Nunito, sans-serif', fontSize: '16px', color: '#FFFFFF'
                 });
                 scene.add.text(500, rowY, entry.score.toLocaleString(), {
