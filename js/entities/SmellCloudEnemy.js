@@ -12,8 +12,7 @@ var SmellCloudEnemy = class extends Enemy {
     update(time) {
         if (!this._alive) return;
         this._patrol();
-        // Float up and down
-        this._floatOffset = Math.sin(time * 0.002) * 20;
+        this._floatOffset = Math.sin(time * 0.0015) * 14;
         this.y = this._baseY + this._floatOffset;
     }
 };
