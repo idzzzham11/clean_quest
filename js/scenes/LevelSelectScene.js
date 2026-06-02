@@ -73,21 +73,20 @@ var LevelSelectScene = class extends Phaser.Scene {
                 align: 'center', wordWrap: { width: 90 }
             }).setOrigin(0.5).setDepth(1);
 
-            // Clickable — use a transparent zone over the whole node area so texts don't block clicks
+            // Clickable — invisible rectangle on top catches both mouse and touch
             if (unlocked) {
                 (function (lvl, node, circ) {
-                    // Large invisible hit zone covering circle + labels
-                    var zone = scene.add.zone(node.x, node.y, 110, 130).setOrigin(0.5).setDepth(2);
-                    scene.physics.add.existing(zone, true);
-                    zone.setInteractive({ useHandCursor: true });
-                    zone.on('pointerdown', function () {
+                    var hit = scene.add.rectangle(node.x, node.y, 110, 130, 0x000000, 0)
+                        .setOrigin(0.5).setDepth(2)
+                        .setInteractive({ useHandCursor: true });
+                    hit.on('pointerdown', function () {
                         scene._startLevel(lvl);
                     });
-                    zone.on('pointerover', function () {
+                    hit.on('pointerover', function () {
                         scene.tweens.add({ targets: circ, scaleX: 1.1, scaleY: 1.1, duration: 120 });
                         scene._showLevelPreview(lvl, node.x, node.y);
                     });
-                    zone.on('pointerout', function () {
+                    hit.on('pointerout', function () {
                         scene.tweens.add({ targets: circ, scaleX: 1, scaleY: 1, duration: 120 });
                         if (scene._previewCard) { scene._previewCard.destroy(); scene._previewCard = null; }
                     });
