@@ -11,6 +11,11 @@ var HUDScene = class extends Phaser.Scene {
 
     create() {
         var W = CONSTANTS.WIDTH;
+
+        // Fix camera to screen — never scroll with the level world
+        this.cameras.main.setScroll(0, 0);
+        this.cameras.main.setBounds(0, 0, CONSTANTS.WIDTH, CONSTANTS.HEIGHT);
+
         BadgeDisplay.setScene(this);
 
         this._buildHUD();
@@ -36,9 +41,14 @@ var HUDScene = class extends Phaser.Scene {
     }
 
     _buildHUD() {
+        var W = CONSTANTS.WIDTH;
         var pad = 10;
-        var row1 = 14;  // y centre for hearts row
-        var row2 = 42;  // y centre for coins/stars row
+        var row1 = 16;  // y centre for hearts / score row
+        var row2 = 44;  // y centre for coins / stars / level-name row
+
+        // Dark background bar so HUD is always readable
+        this.add.rectangle(0, 0, W, 62, 0x000000, 0.45)
+            .setOrigin(0, 0).setScrollFactor(0).setDepth(9);
 
         // Health hearts — top-left, row 1
         for (var i = 0; i < CONSTANTS.PLAYER_MAX_HEALTH; i++) {
@@ -47,26 +57,26 @@ var HUDScene = class extends Phaser.Scene {
             this._hearts.push(heart);
         }
 
-        // Coin icon + count — top-left, row 2
+        // Coin icon + count — row 2
         this.add.image(pad + 12, row2, 'coin_ui')
             .setScrollFactor(0).setDepth(10).setScale(0.9);
-        this._coinText = this.add.text(pad + 24, row2, '0', TextStyles.hud)
+        this._coinText = this.add.text(pad + 26, row2, '0', TextStyles.hud)
             .setOrigin(0, 0.5).setScrollFactor(0).setDepth(10);
 
-        // Star icon + count — next to coins
-        this.add.image(pad + 74, row2, 'star_ui')
+        // Star icon + count — row 2, after coins
+        this.add.image(pad + 78, row2, 'star_ui')
             .setScrollFactor(0).setDepth(10).setScale(0.9);
-        this._starText = this.add.text(pad + 86, row2, '0', TextStyles.hud)
+        this._starText = this.add.text(pad + 92, row2, '0', TextStyles.hud)
             .setOrigin(0, 0.5).setScrollFactor(0).setDepth(10);
 
         // Score — right side, row 1
-        this._scoreText = this.add.text(CONSTANTS.WIDTH - pad, row1, 'Score: 0', TextStyles.hud)
-            .setOrigin(1, 0).setScrollFactor(0).setDepth(10);
+        this._scoreText = this.add.text(W - pad, row1, 'Score: 0', TextStyles.hud)
+            .setOrigin(1, 0.5).setScrollFactor(0).setDepth(10);
 
         // Level name — centre, row 2
-        this._levelText = this.add.text(CONSTANTS.WIDTH / 2, row2, '', {
+        this._levelText = this.add.text(W / 2, row2, '', {
             fontFamily: 'Nunito, sans-serif',
-            fontSize: '14px',
+            fontSize: '13px',
             fontStyle: 'bold',
             color: '#FFFFFF',
             stroke: '#000000',
