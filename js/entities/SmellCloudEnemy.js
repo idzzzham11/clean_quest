@@ -4,8 +4,7 @@ var SmellCloudEnemy = class extends Enemy {
         this._patrolSpeed = 60;
         this._patrolRange = 180;
         this._floatOffset = 0;
-        this._floatSpeed = 2;
-        this._baseY = y;
+        this._baseY = y - 40;  // hover above ground level
         this.body.allowGravity = false;
         this.body.setVelocityY(0);
     }
