@@ -35,15 +35,15 @@ var ResultsScene = class extends Phaser.Scene {
             stroke: '#000000', strokeThickness: 2
         }).setOrigin(0.5);
 
-        // Stars display
-        var starY = 155;
-        var starSpacing = 60;
+        // Stars display — 3 stars evenly centred
+        var starY = 160;
+        var starSpacing = 70;
         for (var i = 0; i < 3; i++) {
             var starKey = i < this._stars ? 'star_rating_gold' : 'star_rating_empty';
-            var starX = W / 2 - starSpacing + i * starSpacing;
-            var star = this.add.image(starX, starY, starKey).setScale(1.8).setAlpha(0);
+            var starX = W / 2 + (i - 1) * starSpacing;
+            var star = this.add.image(starX, starY, starKey).setScale(2).setAlpha(0);
             this.tweens.add({
-                targets: star, alpha: 1, scaleX: 2, scaleY: 2,
+                targets: star, alpha: 1, scaleX: 2.5, scaleY: 2.5,
                 delay: 300 + i * 200, duration: 400, ease: 'Back.easeOut'
             });
         }

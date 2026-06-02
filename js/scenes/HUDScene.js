@@ -36,38 +36,42 @@ var HUDScene = class extends Phaser.Scene {
     }
 
     _buildHUD() {
-        var padding = 14;
+        var pad = 10;
+        var row1 = 14;  // y centre for hearts row
+        var row2 = 42;  // y centre for coins/stars row
 
-        // Health hearts
+        // Health hearts — top-left, row 1
         for (var i = 0; i < CONSTANTS.PLAYER_MAX_HEALTH; i++) {
-            var heart = this.add.image(padding + i * 30, 16, 'heart_full')
+            var heart = this.add.image(pad + 14 + i * 32, row1, 'heart_full')
                 .setScrollFactor(0).setDepth(10).setScale(0.85);
             this._hearts.push(heart);
         }
 
-        // Coin icon + count
-        this.add.image(padding, 44, 'coin_ui').setScrollFactor(0).setDepth(10).setScale(0.9);
-        this._coinText = this.add.text(padding + 16, 44, '0', TextStyles.hud)
+        // Coin icon + count — top-left, row 2
+        this.add.image(pad + 12, row2, 'coin_ui')
+            .setScrollFactor(0).setDepth(10).setScale(0.9);
+        this._coinText = this.add.text(pad + 24, row2, '0', TextStyles.hud)
             .setOrigin(0, 0.5).setScrollFactor(0).setDepth(10);
 
-        // Star icon + count
-        this.add.image(padding + 80, 44, 'star_ui').setScrollFactor(0).setDepth(10).setScale(0.9);
-        this._starText = this.add.text(padding + 96, 44, '0', TextStyles.hud)
+        // Star icon + count — next to coins
+        this.add.image(pad + 74, row2, 'star_ui')
+            .setScrollFactor(0).setDepth(10).setScale(0.9);
+        this._starText = this.add.text(pad + 86, row2, '0', TextStyles.hud)
             .setOrigin(0, 0.5).setScrollFactor(0).setDepth(10);
 
-        // Score — right side
-        this._scoreText = this.add.text(CONSTANTS.WIDTH - 14, 16, 'Score: 0', TextStyles.hud)
+        // Score — right side, row 1
+        this._scoreText = this.add.text(CONSTANTS.WIDTH - pad, row1, 'Score: 0', TextStyles.hud)
             .setOrigin(1, 0).setScrollFactor(0).setDepth(10);
 
-        // Level name — center
-        this._levelText = this.add.text(CONSTANTS.WIDTH / 2, 16, '', {
+        // Level name — centre, row 2
+        this._levelText = this.add.text(CONSTANTS.WIDTH / 2, row2, '', {
             fontFamily: 'Nunito, sans-serif',
-            fontSize: '15px',
+            fontSize: '14px',
             fontStyle: 'bold',
             color: '#FFFFFF',
             stroke: '#000000',
             strokeThickness: 2
-        }).setOrigin(0.5, 0).setScrollFactor(0).setDepth(10);
+        }).setOrigin(0.5, 0.5).setScrollFactor(0).setDepth(10);
     }
 
     _bindEvents() {
