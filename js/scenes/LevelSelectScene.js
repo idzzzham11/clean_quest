@@ -39,6 +39,9 @@ var LevelSelectScene = class extends Phaser.Scene {
         var levelColors = [0x4169E1, 0xCC44AA, 0xFF6600, 0x20B2AA];
         var levelIcons = ['🏢', '✂️', '👨‍🍳', '🤝'];
 
+        // Store node data for hit-testing in the global pointer handler
+        var nodes = [];
+
         pathPoints.forEach(function (pt, i) {
             var levelNum = i + 1;
             var unlocked = SaveManager.isLevelUnlocked(levelNum);
@@ -51,46 +54,45 @@ var LevelSelectScene = class extends Phaser.Scene {
 
             // Lock/icon
             var iconText = unlocked ? levelIcons[i] : '🔒';
-            scene.add.text(pt.x, pt.y - 8, iconText, { fontSize: '28px' }).setOrigin(0.5).setDepth(1);
+            scene.add.text(pt.x, pt.y - 8, iconText, { fontSize: '28px' }).setOrigin(0.5);
 
             // Level number
             scene.add.text(pt.x, pt.y + 20, 'Lv.' + levelNum, {
                 fontFamily: 'Nunito, sans-serif', fontSize: '13px', fontStyle: 'bold',
                 color: unlocked ? '#FFFFFF' : '#666666'
-            }).setOrigin(0.5).setDepth(1);
+            }).setOrigin(0.5);
 
             // Stars below node
             for (var s = 0; s < 3; s++) {
                 var starColor = s < stars ? '#FFD700' : '#333333';
                 scene.add.text(pt.x - 12 + s * 13, pt.y + 52, '★', {
                     fontFamily: 'Nunito, sans-serif', fontSize: '14px', color: starColor
-                }).setOrigin(0.5).setDepth(1);
+                }).setOrigin(0.5);
             }
 
             // Level name
             scene.add.text(pt.x, pt.y + 70, CONSTANTS.LEVEL_NAMES[levelNum], {
                 fontFamily: 'Nunito, sans-serif', fontSize: '10px', color: '#AAAAAA',
                 align: 'center', wordWrap: { width: 90 }
-            }).setOrigin(0.5).setDepth(1);
+            }).setOrigin(0.5);
 
-            // Clickable — invisible rectangle on top catches both mouse and touch
-            if (unlocked) {
-                (function (lvl, node, circ) {
-                    var hit = scene.add.rectangle(node.x, node.y, 110, 130, 0x000000, 0)
-                        .setOrigin(0.5).setDepth(2)
-                        .setInteractive({ useHandCursor: true });
-                    hit.on('pointerdown', function () {
-                        scene._startLevel(lvl);
-                    });
-                    hit.on('pointerover', function () {
-                        scene.tweens.add({ targets: circ, scaleX: 1.1, scaleY: 1.1, duration: 120 });
-                        scene._showLevelPreview(lvl, node.x, node.y);
-                    });
-                    hit.on('pointerout', function () {
-                        scene.tweens.add({ targets: circ, scaleX: 1, scaleY: 1, duration: 120 });
-                        if (scene._previewCard) { scene._previewCard.destroy(); scene._previewCard = null; }
-                    });
-                })(levelNum, pt, circle);
+            nodes.push({ x: pt.x, y: pt.y, levelNum: levelNum, unlocked: unlocked, circle: circle });
+        });
+
+        // Single scene-level pointer handler — works reliably on all devices
+        this.input.on('pointerdown', function (pointer) {
+            // Convert screen pointer to game coordinates
+            var gx = pointer.x;
+            var gy = pointer.y;
+            for (var n = 0; n < nodes.length; n++) {
+                var nd = nodes[n];
+                if (!nd.unlocked) continue;
+                var dx = gx - nd.x, dy = gy - nd.y;
+                // Hit radius 60px covers circle + surrounding labels
+                if (dx * dx + dy * dy <= 60 * 60) {
+                    scene._startLevel(nd.levelNum);
+                    return;
+                }
             }
         });
 
