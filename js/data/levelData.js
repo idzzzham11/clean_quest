@@ -45,16 +45,17 @@ var LevelData = (function () {
     // L1 door at col 12 = 576px. Clear zone: 376-776px.
     var L1_ENEMIES = [
         { type: 'germ',        x: 280,  y: 410 },
-        { type: 'smell_cloud', x: 880,  y: 380 },
+        { type: 'smell_cloud', x: 880,  y: 410 },
         { type: 'germ',        x: 1050, y: 410 }
     ];
+    // All items at y=400 (ground level, clear of platforms and obstacles)
     var L1_ITEMS = [
-        { type: 'coin',          x: 150,  y: 390 },
-        { type: 'coin',          x: 220,  y: 390 },
-        { type: 'soap',          x: 340,  y: 390 },
-        { type: 'hygiene_star',  x: 850,  y: 350 },
-        { type: 'coin',          x: 950,  y: 390 },
-        { type: 'uniform_clean', x: 1080, y: 390 }
+        { type: 'coin',          x: 150,  y: 400 },
+        { type: 'coin',          x: 220,  y: 400 },
+        { type: 'soap',          x: 340,  y: 400 },
+        { type: 'hygiene_star',  x: 850,  y: 400 },
+        { type: 'coin',          x: 950,  y: 400 },
+        { type: 'uniform_clean', x: 1080, y: 400 }
     ];
     var L1_HAZARDS = [
         { type: 'dirty_cloud', x: 900, y: 420 }
@@ -78,20 +79,20 @@ var LevelData = (function () {
     // L2 doors at col 11=528px, col 22=1056px. Clear zones: 328-728px and 856-1256px.
     var L2_ENEMIES = [
         { type: 'germ',        x: 200,  y: 410 },  // before zone 1
-        { type: 'smell_cloud', x: 800,  y: 380 },  // between zones
+        { type: 'smell_cloud', x: 800,  y: 410 },  // between zones
         { type: 'germ',        x: 1320, y: 410 },  // after zone 2
         { type: 'hair_monster',x: 1480, y: 410 },
         { type: 'smell_cloud', x: 1580, y: 380 }
     ];
     var L2_ITEMS = [
-        { type: 'coin',          x: 130,  y: 390 },
-        { type: 'coin',          x: 200,  y: 390 },
-        { type: 'soap',          x: 290,  y: 390 },  // before zone 1
-        { type: 'coin',          x: 790,  y: 390 },  // between zones
-        { type: 'hygiene_star',  x: 1310, y: 350 },  // after zone 2
-        { type: 'coin',          x: 1400, y: 390 },
-        { type: 'coin',          x: 1500, y: 390 },
-        { type: 'uniform_clean', x: 1580, y: 390 }
+        { type: 'coin',          x: 130,  y: 400 },
+        { type: 'coin',          x: 200,  y: 400 },
+        { type: 'soap',          x: 290,  y: 400 },
+        { type: 'coin',          x: 790,  y: 400 },
+        { type: 'hygiene_star',  x: 1310, y: 400 },
+        { type: 'coin',          x: 1400, y: 400 },
+        { type: 'coin',          x: 1500, y: 400 },
+        { type: 'uniform_clean', x: 1580, y: 400 }
     ];
     var L2_HAZARDS = [
         { type: 'dirty_cloud', x: 800,  y: 420 },  // between zones
@@ -118,26 +119,26 @@ var LevelData = (function () {
     // L3 doors at col 11=528px, 22=1056px, 33=1584px. Clear zones: 328-728, 856-1256, 1384-1784px.
     var L3_ENEMIES = [
         { type: 'germ',        x: 220,  y: 410 },  // before zone 1
-        { type: 'smell_cloud', x: 310,  y: 380 },
+        { type: 'smell_cloud', x: 310,  y: 410 },
         { type: 'hair_monster',x: 820,  y: 410 },  // between zones 1-2
         { type: 'germ',        x: 1000, y: 410 },
         { type: 'dirty_robot', x: 1300, y: 410 },  // between zones 2-3
-        { type: 'smell_cloud', x: 1330, y: 380 },
+        { type: 'smell_cloud', x: 1330, y: 410 },
         { type: 'germ',        x: 1850, y: 410 },  // after zone 3
         { type: 'hair_monster',x: 2000, y: 410 }
     ];
     var L3_ITEMS = [
-        { type: 'coin',          x: 120,  y: 390 },
-        { type: 'coin',          x: 200,  y: 390 },
-        { type: 'soap',          x: 300,  y: 390 },  // before zone 1
-        { type: 'coin',          x: 800,  y: 390 },  // between zones 1-2
-        { type: 'hygiene_star',  x: 900,  y: 260 },
-        { type: 'coin',          x: 1280, y: 390 },  // between zones 2-3
-        { type: 'uniform_clean', x: 1330, y: 390 },
-        { type: 'coin',          x: 1850, y: 390 },  // after zone 3
-        { type: 'soap',          x: 1950, y: 390 },
-        { type: 'hygiene_star',  x: 2020, y: 350 },
-        { type: 'coin',          x: 2060, y: 390 }
+        { type: 'coin',          x: 120,  y: 400 },
+        { type: 'coin',          x: 200,  y: 400 },
+        { type: 'soap',          x: 300,  y: 400 },
+        { type: 'coin',          x: 800,  y: 400 },
+        { type: 'hygiene_star',  x: 900,  y: 400 },
+        { type: 'coin',          x: 1280, y: 400 },
+        { type: 'uniform_clean', x: 1330, y: 400 },
+        { type: 'coin',          x: 1850, y: 400 },
+        { type: 'soap',          x: 1950, y: 400 },
+        { type: 'hygiene_star',  x: 2020, y: 400 },
+        { type: 'coin',          x: 2060, y: 400 }
     ];
     var L3_HAZARDS = [
         { type: 'dirty_cloud', x: 280,  y: 420 },  // before zone 1
@@ -167,33 +168,33 @@ var LevelData = (function () {
     // L4 doors at col 11=528, 22=1056, 33=1584, 44=2112px. Clear zones: 328-728, 856-1256, 1384-1784, 1912-2312px.
     var L4_ENEMIES = [
         { type: 'germ',        x: 180,  y: 410 },  // before zone 1
-        { type: 'smell_cloud', x: 300,  y: 380 },
+        { type: 'smell_cloud', x: 300,  y: 410 },
         { type: 'hair_monster',x: 800,  y: 410 },  // between zones 1-2
         { type: 'germ',        x: 1310, y: 410 },  // between zones 2-3
         { type: 'dirty_robot', x: 1350, y: 410 },
-        { type: 'smell_cloud', x: 1840, y: 380 },  // between zones 3-4
+        { type: 'smell_cloud', x: 1840, y: 410 },  // between zones 3-4
         { type: 'germ',        x: 1880, y: 410 },
         { type: 'hair_monster',x: 2380, y: 410 },  // after zone 4
         { type: 'dirty_robot', x: 2460, y: 410 },
-        { type: 'smell_cloud', x: 2560, y: 380 },
+        { type: 'smell_cloud', x: 2560, y: 410 },
         { type: 'germ',        x: 2620, y: 410 }
     ];
     var L4_ITEMS = [
-        { type: 'coin',          x: 110,  y: 390 },
-        { type: 'coin',          x: 200,  y: 390 },
-        { type: 'soap',          x: 290,  y: 390 },  // before zone 1
-        { type: 'coin',          x: 780,  y: 390 },  // between zones 1-2
-        { type: 'hygiene_star',  x: 840,  y: 260 },
-        { type: 'uniform_clean', x: 1290, y: 390 },  // between zones 2-3
-        { type: 'coin',          x: 1340, y: 390 },
-        { type: 'soap',          x: 1820, y: 390 },  // between zones 3-4
-        { type: 'coin',          x: 1880, y: 390 },
-        { type: 'hygiene_star',  x: 2360, y: 300 },  // after zone 4
-        { type: 'coin',          x: 2430, y: 390 },
-        { type: 'coin',          x: 2500, y: 390 },
-        { type: 'uniform_clean', x: 2560, y: 390 },
-        { type: 'hygiene_star',  x: 2620, y: 350 },
-        { type: 'coin',          x: 2650, y: 390 }
+        { type: 'coin',          x: 110,  y: 400 },
+        { type: 'coin',          x: 200,  y: 400 },
+        { type: 'soap',          x: 290,  y: 400 },
+        { type: 'coin',          x: 780,  y: 400 },
+        { type: 'hygiene_star',  x: 840,  y: 400 },
+        { type: 'uniform_clean', x: 1290, y: 400 },
+        { type: 'coin',          x: 1340, y: 400 },
+        { type: 'soap',          x: 1820, y: 400 },
+        { type: 'coin',          x: 1880, y: 400 },
+        { type: 'hygiene_star',  x: 2360, y: 400 },
+        { type: 'coin',          x: 2430, y: 400 },
+        { type: 'coin',          x: 2500, y: 400 },
+        { type: 'uniform_clean', x: 2560, y: 400 },
+        { type: 'hygiene_star',  x: 2620, y: 400 },
+        { type: 'coin',          x: 2650, y: 400 }
     ];
     var L4_HAZARDS = [
         { type: 'dirty_cloud', x: 250,  y: 420 },  // before zone 1
