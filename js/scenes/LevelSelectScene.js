@@ -51,40 +51,43 @@ var LevelSelectScene = class extends Phaser.Scene {
 
             // Lock/icon
             var iconText = unlocked ? levelIcons[i] : '🔒';
-            scene.add.text(pt.x, pt.y - 8, iconText, { fontSize: '28px' }).setOrigin(0.5);
+            scene.add.text(pt.x, pt.y - 8, iconText, { fontSize: '28px' }).setOrigin(0.5).setDepth(1);
 
             // Level number
             scene.add.text(pt.x, pt.y + 20, 'Lv.' + levelNum, {
                 fontFamily: 'Nunito, sans-serif', fontSize: '13px', fontStyle: 'bold',
                 color: unlocked ? '#FFFFFF' : '#666666'
-            }).setOrigin(0.5);
+            }).setOrigin(0.5).setDepth(1);
 
             // Stars below node
             for (var s = 0; s < 3; s++) {
                 var starColor = s < stars ? '#FFD700' : '#333333';
                 scene.add.text(pt.x - 12 + s * 13, pt.y + 52, '★', {
                     fontFamily: 'Nunito, sans-serif', fontSize: '14px', color: starColor
-                }).setOrigin(0.5);
+                }).setOrigin(0.5).setDepth(1);
             }
 
             // Level name
             scene.add.text(pt.x, pt.y + 70, CONSTANTS.LEVEL_NAMES[levelNum], {
                 fontFamily: 'Nunito, sans-serif', fontSize: '10px', color: '#AAAAAA',
                 align: 'center', wordWrap: { width: 90 }
-            }).setOrigin(0.5);
+            }).setOrigin(0.5).setDepth(1);
 
-            // Clickable — use IIFE to capture levelNum and pt correctly
+            // Clickable — use a transparent zone over the whole node area so texts don't block clicks
             if (unlocked) {
                 (function (lvl, node, circ) {
-                    circ.setInteractive({ useHandCursor: true });
-                    circ.on('pointerdown', function () {
+                    // Large invisible hit zone covering circle + labels
+                    var zone = scene.add.zone(node.x, node.y, 110, 130).setOrigin(0.5).setDepth(2);
+                    scene.physics.add.existing(zone, true);
+                    zone.setInteractive({ useHandCursor: true });
+                    zone.on('pointerdown', function () {
                         scene._startLevel(lvl);
                     });
-                    circ.on('pointerover', function () {
+                    zone.on('pointerover', function () {
                         scene.tweens.add({ targets: circ, scaleX: 1.1, scaleY: 1.1, duration: 120 });
                         scene._showLevelPreview(lvl, node.x, node.y);
                     });
-                    circ.on('pointerout', function () {
+                    zone.on('pointerout', function () {
                         scene.tweens.add({ targets: circ, scaleX: 1, scaleY: 1, duration: 120 });
                         if (scene._previewCard) { scene._previewCard.destroy(); scene._previewCard = null; }
                     });
