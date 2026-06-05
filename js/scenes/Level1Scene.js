@@ -73,6 +73,16 @@ var LevelSceneCore = {
             MobileControls.jumpJustPressed = false;
             scene._player.update(scene._cursors, mobileInput, delta);
 
+            // Update timer display
+            if (scene._hudTimer && scene._levelStartTime) {
+                var elapsed = Math.floor((Date.now() - scene._levelStartTime) / 1000);
+                var m = Math.floor(elapsed / 60);
+                var s = elapsed % 60;
+                var col = elapsed > 240 ? '#FF6666' : elapsed > 180 ? '#FFB347' : '#AAFFAA';
+                scene._hudTimer.setText(m + ':' + (s < 10 ? '0' : '') + s);
+                scene._hudTimer.setColor(col);
+            }
+
             // Fell into a hole — respawn at last passed door
             if (scene._player.y > CONSTANTS.LEVEL_HEIGHT + 20 && !scene._fallingRespawn) {
                 scene._fallingRespawn = true;
@@ -135,6 +145,12 @@ var LevelSceneCore = {
             color: '#FFFFFF', stroke: '#000000', strokeThickness: 2
         }).setOrigin(0.5, 0.5).setScrollFactor(0).setDepth(21);
 
+        // Timer display
+        scene._hudTimer = scene.add.text(W / 2, row1, '0:00', {
+            fontFamily: 'Nunito, sans-serif', fontSize: '15px', fontStyle: 'bold',
+            color: '#AAFFAA', stroke: '#000000', strokeThickness: 2
+        }).setOrigin(0.5, 0.5).setScrollFactor(0).setDepth(21);
+
         // Pause button
         scene._pauseBtn = scene.add.text(W - pad, row2, '⏸', {
             fontFamily: 'Nunito, sans-serif', fontSize: '20px', color: '#FFFFFF'
@@ -171,6 +187,7 @@ var LevelSceneCore = {
             scene._hudCoins  = null;
             scene._hudStars  = null;
             scene._hudScore  = null;
+            scene._hudTimer  = null;
         });
 
         // Initial values
