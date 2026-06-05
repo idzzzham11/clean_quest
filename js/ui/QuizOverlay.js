@@ -74,7 +74,7 @@ var QuizOverlay = {
                 document.querySelectorAll('.quiz-btn').forEach(function (b) { b.disabled = true; });
                 var feedbackEl = document.getElementById('quiz-feedback');
                 if (feedbackEl) {
-                    feedbackEl.textContent = '⌛ Masa tamat! Nyawa berkurangan.';
+                    feedbackEl.textContent = '⌛ Masa tamat! -50 markah.';
                     feedbackEl.className   = 'quiz-feedback wrong';
                 }
                 if (self._onTimeout) self._onTimeout();

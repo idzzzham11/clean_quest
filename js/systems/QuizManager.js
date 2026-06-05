@@ -67,9 +67,9 @@ var QuizManager = {
         QuizOverlay.show(this._currentQuestion, function (selectedIndex) {
             QuizManager._handleAnswer(scene, selectedIndex);
         }, progress, function () {
-            // Timer ran out — lose a heart, mark wrong, fail door
+            // Timer ran out — deduct 50 points, fail door
             self._allCorrect = false;
-            GameState.takeDamage(1);
+            GameState.drainScore(50);
             GameState.quizWrong();
             setTimeout(function () {
                 QuizOverlay.hide();
