@@ -1,8 +1,8 @@
 // CleanQuest: Workplace Hero - Global Constants
 var CONSTANTS = {
-    // Canvas
+    // Canvas — 4:3 ratio fills portrait screens better
     WIDTH: 960,
-    HEIGHT: 540,
+    HEIGHT: 720,
     TILE_SIZE: 48,
 
     // Physics
@@ -37,7 +37,7 @@ var CONSTANTS = {
         3: 2976,   // 62 cols
         4: 3840    // 80 cols
     },
-    LEVEL_HEIGHT: 576,
+    LEVEL_HEIGHT: 720,
 
     // Tile IDs
     TILES: {

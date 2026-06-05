@@ -9,11 +9,12 @@ function resizeGameContainer() {
     var availW = window.innerWidth;
     var availH = window.innerHeight;
 
+    // 4:3 ratio (960x720)
     var w = availW;
-    var h = Math.round(w * 9 / 16);
+    var h = Math.round(w * 3 / 4);
     if (h > availH) {
         h = availH;
-        w = Math.round(h * 16 / 9);
+        w = Math.round(h * 4 / 3);
     }
 
     container.style.width  = w + 'px';

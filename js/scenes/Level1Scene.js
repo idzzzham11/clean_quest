@@ -1,4 +1,4 @@
-// Shared level logic module (used by all 5 level scenes)
+﻿// Shared level logic module (used by all 5 level scenes)
 var LevelSceneCore = {
     init: function (scene) {
         var W = CONSTANTS.WIDTH;
@@ -27,7 +27,7 @@ var LevelSceneCore = {
         AudioManager.initOnGesture();
 
         var levelHeight = CONSTANTS.LEVEL_HEIGHT;
-        // No bottom bound — player can fall through holes (detected in update)
+        // No bottom bound â€” player can fall through holes (detected in update)
         scene.physics.world.setBounds(0, 0, levelWidth, levelHeight * 4, true, true, true, false);
         scene.cameras.main.setBounds(0, 0, levelWidth, levelHeight);
 
@@ -42,7 +42,7 @@ var LevelSceneCore = {
         LevelSceneCore._spawnHazards(scene, data.hazards);
 
         // Spawn just above the ground (row 9 * 48 = 432; player height ~44px)
-        scene._player = new Player(scene, 80, 380, null);
+        scene._player = new Player(scene, 80, 524, null);
         scene._player.body.setCollideWorldBounds(true);
         scene.add.existing(scene._player);
 
@@ -101,7 +101,7 @@ var LevelSceneCore = {
                 scene._hudTimer.setColor(col);
             }
 
-            // Fell into a hole — respawn at last passed door
+            // Fell into a hole â€” respawn at last passed door
             if (scene._player.y > CONSTANTS.LEVEL_HEIGHT + 20 && !scene._fallingRespawn) {
                 scene._fallingRespawn = true;
                 LevelSceneCore._respawnAtLastDoor(scene);
@@ -170,13 +170,13 @@ var LevelSceneCore = {
         }).setOrigin(0.5, 0.5).setScrollFactor(0).setDepth(21);
 
         // Pause button
-        scene._pauseBtn = scene.add.text(W - pad, row2, '⏸', {
+        scene._pauseBtn = scene.add.text(W - pad, row2, 'â¸', {
             fontFamily: 'Nunito, sans-serif', fontSize: '20px', color: '#FFFFFF'
         }).setOrigin(1, 0.5).setScrollFactor(0).setDepth(21)
             .setInteractive({ useHandCursor: true });
         scene._pauseBtn.on('pointerdown', function () { GameState.emit('pauseToggle'); });
 
-        // Wire GameState events — store references so we can remove them on shutdown
+        // Wire GameState events â€” store references so we can remove them on shutdown
         scene._onHealthChanged = function (h) {
             if (!scene._hudHearts) return;
             scene._hudHearts.forEach(function (hrt, i) {
@@ -221,7 +221,7 @@ var LevelSceneCore = {
     _respawnAtLastDoor: function (scene) {
         // Find the last opened door's x position as respawn point
         var respawnX = 80;  // default: level start
-        var respawnY = 380;
+        var respawnY = 524;
         if (scene._doors && scene._doors.length > 0) {
             for (var i = scene._doors.length - 1; i >= 0; i--) {
                 if (scene._doors[i].opened) {
@@ -235,7 +235,7 @@ var LevelSceneCore = {
         GameState.takeDamage(1);
 
         if (GameState.getHealth() <= 0) {
-            // Out of health — trigger normal death
+            // Out of health â€” trigger normal death
             scene._fallingRespawn = false;
             GameState.emit('playerDied');
             return;
@@ -260,7 +260,7 @@ var LevelSceneCore = {
     },
 
     _buildBackground: function (scene, levelWidth, H) {
-        // Use plain images with scroll factor for parallax — tileSprite needs canvas textures
+        // Use plain images with scroll factor for parallax â€” tileSprite needs canvas textures
         var W = CONSTANTS.WIDTH;
         scene.add.image(W / 2, H / 2, scene._bgFarKey)
             .setScrollFactor(0.05).setDepth(-3).setDisplaySize(levelWidth, H);
@@ -487,16 +487,16 @@ var LevelSceneCore = {
 
         scene._player.body.setVelocity(0, 0);
 
-        // Time bonus — always awarded, faster = higher (1000 down to 50)
+        // Time bonus â€” always awarded, faster = higher (1000 down to 50)
         var elapsed = Date.now() - (scene._levelStartTime || Date.now());
         var cap = CONSTANTS.TIME_BONUS_CAP;
-        var ratio = Math.max(0, 1 - elapsed / cap);  // 1.0 at 0s → 0.0 at 5min
+        var ratio = Math.max(0, 1 - elapsed / cap);  // 1.0 at 0s â†’ 0.0 at 5min
         var timeBonus = Math.round(
             CONSTANTS.TIME_BONUS_MIN +
             (CONSTANTS.TIME_BONUS_MAX - CONSTANTS.TIME_BONUS_MIN) * ratio
         );
 
-        // Heart bonus — remaining health × 100
+        // Heart bonus â€” remaining health Ã— 100
         var heartBonus = GameState.getHealth() * CONSTANTS.HEART_BONUS;
 
         // Apply bonuses to score
@@ -511,7 +511,7 @@ var LevelSceneCore = {
         SaveManager.saveLevelResult(scene._levelNum, stars, GameState.getScore());
         MissionManager.checkLevelComplete(scene._levelNum, scene._noHazardsTouched, scene._noDamageTaken);
 
-        var celebration = scene.add.text(CONSTANTS.WIDTH / 2, CONSTANTS.HEIGHT / 2, '✨ Level Complete! ✨', {
+        var celebration = scene.add.text(CONSTANTS.WIDTH / 2, CONSTANTS.HEIGHT / 2, 'âœ¨ Level Complete! âœ¨', {
             fontFamily: 'Nunito, sans-serif', fontSize: '36px', fontStyle: 'bold',
             color: '#FFD700', stroke: '#000000', strokeThickness: 5
         }).setOrigin(0.5).setScrollFactor(0).setDepth(50).setAlpha(0);
@@ -555,7 +555,7 @@ var LevelSceneCore = {
                 color: '#FF4444', stroke: '#000000', strokeThickness: 5
             }).setOrigin(0.5).setScrollFactor(0).setDepth(91);
 
-            var restartBtn = scene.add.text(W / 2, H / 2 + 30, '▶  Mula Semula', {
+            var restartBtn = scene.add.text(W / 2, H / 2 + 30, 'â–¶  Mula Semula', {
                 fontFamily: 'Nunito, sans-serif', fontSize: '24px', fontStyle: 'bold',
                 color: '#FFFFFF', backgroundColor: '#FF8800', padding: { x: 20, y: 10 }
             }).setOrigin(0.5).setScrollFactor(0).setDepth(91).setInteractive({ useHandCursor: true });
@@ -581,7 +581,7 @@ var LevelSceneCore = {
 };
 
 // ==========================================
-// Level 1 — Office Hygiene Adventure
+// Level 1 â€” Office Hygiene Adventure
 // ==========================================
 var Level1Scene = class extends Phaser.Scene {
     constructor() {
