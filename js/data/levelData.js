@@ -77,31 +77,31 @@ var LevelData = (function () {
             L2_MAP[r][21] = 0;
         }
     })();
+    // L2 exclusions — doors:448-848,1072-1472 | hole:810-1158
     var L2_ENEMIES = [
         { type: 'germ',        x: 200,  y: 410 },
         { type: 'smell_cloud', x: 420,  y: 410 },
-        { type: 'germ',        x: 700,  y: 410 },
-        { type: 'hair_monster',x: 960,  y: 410 },
-        { type: 'smell_cloud', x: 1200, y: 410 },
-        { type: 'germ',        x: 1500, y: 410 },
-        { type: 'hair_monster',x: 1720, y: 410 },
-        { type: 'smell_cloud', x: 1860, y: 410 }
+        { type: 'germ',        x: 700,  y: 410 },  // before door1 zone
+        { type: 'hair_monster',x: 1180, y: 410 },  // moved from 960 (hole)
+        { type: 'smell_cloud', x: 1500, y: 410 },  // after door2 zone
+        { type: 'germ',        x: 1700, y: 410 },
+        { type: 'hair_monster',x: 1860, y: 410 }
     ];
     var L2_ITEMS = [
         { type: 'coin',          x: 130,  y: 395 },
         { type: 'coin',          x: 210,  y: 395 },
         { type: 'soap',          x: 320,  y: 395 },
         { type: 'coin',          x: 560,  y: 395 },
-        { type: 'hygiene_star',  x: 800,  y: 395 },
-        { type: 'coin',          x: 1080, y: 395 },
-        { type: 'uniform_clean', x: 1380, y: 395 },
-        { type: 'coin',          x: 1600, y: 395 },
-        { type: 'hygiene_star',  x: 1800, y: 395 }
+        { type: 'hygiene_star',  x: 740,  y: 395 },  // before hole zone
+        { type: 'coin',          x: 1200, y: 395 },  // moved from 1080 (hole+door zone)
+        { type: 'uniform_clean', x: 1500, y: 395 },  // moved from 1380 (door2 zone)
+        { type: 'coin',          x: 1650, y: 395 },
+        { type: 'hygiene_star',  x: 1820, y: 395 }
     ];
     var L2_HAZARDS = [
         { type: 'dirty_cloud', x: 480,  y: 415 },
-        { type: 'dirty_cloud', x: 1050, y: 415 },
-        { type: 'dirty_cloud', x: 1640, y: 415 }
+        { type: 'dirty_cloud', x: 1200, y: 415 },  // moved from 1050 (hole zone)
+        { type: 'dirty_cloud', x: 1700, y: 415 }   // moved from 1640
     ];
 
     // ── Level 3: Kitchen ── 52 cols (2496px) — MOVING PLATFORMS ─────────────
@@ -129,37 +129,38 @@ var LevelData = (function () {
             }
         });
     })();
+    // L3 exclusions — doors:448-848,1072-1472,1696-2096 | holes:810-1158,1434-1782,2058-2406
     var L3_ENEMIES = [
         { type: 'germ',        x: 200,  y: 410 },
         { type: 'smell_cloud', x: 380,  y: 410 },
-        { type: 'hair_monster',x: 620,  y: 410 },
-        { type: 'germ',        x: 900,  y: 410 },
-        { type: 'dirty_robot', x: 1150, y: 410 },
-        { type: 'smell_cloud', x: 1380, y: 410 },
-        { type: 'germ',        x: 1650, y: 410 },
-        { type: 'hair_monster',x: 1900, y: 410 },
-        { type: 'dirty_robot', x: 2150, y: 410 },
-        { type: 'smell_cloud', x: 2380, y: 410 }
+        { type: 'hair_monster',x: 620,  y: 410 },  // before door1 zone
+        { type: 'germ',        x: 900,  y: 410 },  // before hole1 zone
+        { type: 'dirty_robot', x: 1200, y: 410 },  // after hole1, before door2
+        { type: 'smell_cloud', x: 1500, y: 410 },  // moved from 1380 (door2 zone)
+        { type: 'germ',        x: 1650, y: 410 },  // after door2, before hole2
+        { type: 'hair_monster',x: 2120, y: 410 },  // moved from 1900 (door3 zone)
+        { type: 'dirty_robot', x: 2430, y: 410 },  // after hole3
+        { type: 'smell_cloud', x: 2450, y: 410 }
     ];
     var L3_ITEMS = [
         { type: 'coin',          x: 130,  y: 395 },
         { type: 'coin',          x: 210,  y: 395 },
         { type: 'soap',          x: 320,  y: 395 },
         { type: 'coin',          x: 540,  y: 395 },
-        { type: 'hygiene_star',  x: 780,  y: 395 },
-        { type: 'coin',          x: 1020, y: 395 },
-        { type: 'uniform_clean', x: 1280, y: 395 },
-        { type: 'coin',          x: 1520, y: 395 },
-        { type: 'soap',          x: 1780, y: 395 },
-        { type: 'hygiene_star',  x: 2040, y: 395 },
-        { type: 'coin',          x: 2280, y: 395 },
-        { type: 'coin',          x: 2420, y: 395 }
+        { type: 'hygiene_star',  x: 750,  y: 395 },  // before hole1 zone
+        { type: 'coin',          x: 1200, y: 395 },  // after hole1
+        { type: 'uniform_clean', x: 1500, y: 395 },  // moved from 1280 (door2 zone)
+        { type: 'coin',          x: 1650, y: 395 },  // moved from 1520 (hole2 zone)
+        { type: 'soap',          x: 1820, y: 395 },  // moved from 1780
+        { type: 'hygiene_star',  x: 2120, y: 395 },  // after hole3 zone
+        { type: 'coin',          x: 2430, y: 395 },
+        { type: 'coin',          x: 2460, y: 395 }
     ];
     var L3_HAZARDS = [
-        { type: 'dirty_cloud', x: 460,  y: 415 },
-        { type: 'dirty_cloud', x: 1050, y: 415 },
-        { type: 'dirty_cloud', x: 1700, y: 415 },
-        { type: 'dirty_cloud', x: 2300, y: 415 }
+        { type: 'dirty_cloud', x: 420,  y: 415 },
+        { type: 'dirty_cloud', x: 1200, y: 415 },  // moved from 1050 (hole1 zone)
+        { type: 'dirty_cloud', x: 1800, y: 415 },  // moved from 1700
+        { type: 'dirty_cloud', x: 2430, y: 415 }   // moved from 2300
     ];
 
     // ── Level 4: Customer Service ── 68 cols (3264px) — MORE MOVING PLATFORMS ─
@@ -189,45 +190,47 @@ var LevelData = (function () {
             }
         });
     })();
+    // L4 exclusions — doors:448-848,1072-1472,1696-2096,2320-2720
+    // holes:810-1158,1434-1782,2058-2406,2634-2982,2874-3222
     var L4_ENEMIES = [
         { type: 'germ',        x: 180,  y: 410 },
         { type: 'smell_cloud', x: 340,  y: 410 },
-        { type: 'hair_monster',x: 560,  y: 410 },
-        { type: 'germ',        x: 800,  y: 410 },
-        { type: 'dirty_robot', x: 1050, y: 410 },
-        { type: 'smell_cloud', x: 1280, y: 410 },
-        { type: 'germ',        x: 1550, y: 410 },
-        { type: 'hair_monster',x: 1800, y: 410 },
-        { type: 'dirty_robot', x: 2050, y: 410 },
-        { type: 'smell_cloud', x: 2300, y: 410 },
-        { type: 'germ',        x: 2600, y: 410 },
-        { type: 'hair_monster',x: 2850, y: 410 },
-        { type: 'dirty_robot', x: 3100, y: 410 }
+        { type: 'hair_monster',x: 560,  y: 410 },  // before door1 zone
+        { type: 'germ',        x: 750,  y: 410 },  // before hole1 zone
+        { type: 'dirty_robot', x: 1200, y: 410 },  // after hole1, before door2
+        { type: 'smell_cloud', x: 1500, y: 410 },  // after door2, before hole2
+        { type: 'germ',        x: 1820, y: 410 },  // after hole2, before door3
+        { type: 'hair_monster',x: 2120, y: 410 },  // after door3, before hole3
+        { type: 'dirty_robot', x: 2450, y: 410 },  // after hole3, before door4
+        { type: 'smell_cloud', x: 2750, y: 410 },  // moved from 2600 (hole3 zone)
+        { type: 'germ',        x: 3050, y: 410 },  // moved from 2850 (hole4 zone)
+        { type: 'hair_monster',x: 3150, y: 410 },  // moved from 3100
+        { type: 'dirty_robot', x: 3220, y: 410 }
     ];
     var L4_ITEMS = [
         { type: 'coin',          x: 110,  y: 395 },
         { type: 'coin',          x: 200,  y: 395 },
         { type: 'soap',          x: 310,  y: 395 },
         { type: 'coin',          x: 490,  y: 395 },
-        { type: 'hygiene_star',  x: 720,  y: 395 },
-        { type: 'coin',          x: 960,  y: 395 },
-        { type: 'uniform_clean', x: 1180, y: 395 },
-        { type: 'coin',          x: 1440, y: 395 },
-        { type: 'soap',          x: 1680, y: 395 },
-        { type: 'coin',          x: 1920, y: 395 },
-        { type: 'hygiene_star',  x: 2160, y: 395 },
-        { type: 'coin',          x: 2420, y: 395 },
-        { type: 'uniform_clean', x: 2700, y: 395 },
-        { type: 'hygiene_star',  x: 2960, y: 395 },
-        { type: 'coin',          x: 3150, y: 395 }
+        { type: 'hygiene_star',  x: 720,  y: 395 },  // before hole1 zone
+        { type: 'coin',          x: 1190, y: 395 },  // moved from 960 (hole1)
+        { type: 'uniform_clean', x: 1200, y: 395 },
+        { type: 'coin',          x: 1510, y: 395 },  // moved from 1440 (hole2 zone)
+        { type: 'soap',          x: 1820, y: 395 },  // after hole2
+        { type: 'coin',          x: 2130, y: 395 },  // after door3
+        { type: 'hygiene_star',  x: 2460, y: 395 },  // moved from 2420 (hole3 zone)
+        { type: 'coin',          x: 2750, y: 395 },  // after hole4
+        { type: 'uniform_clean', x: 3050, y: 395 },  // moved from 2700
+        { type: 'hygiene_star',  x: 3150, y: 395 },  // moved from 2960
+        { type: 'coin',          x: 3220, y: 395 }   // moved from 3150
     ];
     var L4_HAZARDS = [
         { type: 'dirty_cloud', x: 420,  y: 415 },
-        { type: 'dirty_cloud', x: 980,  y: 415 },
-        { type: 'dirty_cloud', x: 1600, y: 415 },
-        { type: 'dirty_cloud', x: 2200, y: 415 },
-        { type: 'dirty_cloud', x: 2780, y: 415 },
-        { type: 'dirty_cloud', x: 3050, y: 415 }
+        { type: 'dirty_cloud', x: 1200, y: 415 },  // moved from 980 (hole1 zone)
+        { type: 'dirty_cloud', x: 1820, y: 415 },  // moved from 1600
+        { type: 'dirty_cloud', x: 2460, y: 415 },  // moved from 2200
+        { type: 'dirty_cloud', x: 2750, y: 415 },  // moved from 2780
+        { type: 'dirty_cloud', x: 3150, y: 415 }   // moved from 3050
     ];
 
     return {
