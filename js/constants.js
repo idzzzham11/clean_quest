@@ -28,7 +28,7 @@ var CONSTANTS = {
     TIME_BONUS_MIN: 50,     // minimum bonus even for very slow completion
     TIME_BONUS_CAP: 300000, // 5 minutes — at this point bonus = TIME_BONUS_MIN
     SCORE_DRAIN_INTERVAL: 20000,  // every 20 seconds
-    SCORE_DRAIN_AMOUNT: 25        // points deducted each interval
+    SCORE_DRAIN_AMOUNT: 25,       // points deducted each interval
 
     // Level dimensions (width in px) — cols x 48px
     LEVEL_WIDTHS: {
