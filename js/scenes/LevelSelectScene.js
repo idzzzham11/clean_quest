@@ -11,30 +11,29 @@ var LevelSelectScene = class extends Phaser.Scene {
         bg.fillGradientStyle(0x0a1a2a, 0x0a1a2a, 0x1a2a3a, 0x1a2a3a, 1);
         bg.fillRect(0, 0, W, H);
 
-        this.add.text(W / 2, 28, '🗺  Select Level', {
-            fontFamily: 'Nunito, sans-serif', fontSize: '30px', fontStyle: 'bold',
-            color: '#FFB347', stroke: '#000000', strokeThickness: 3
+        this.add.text(W / 2, 36, '🗺  Pilih Peringkat', {
+            fontFamily: 'Nunito, sans-serif', fontSize: '42px', fontStyle: 'bold',
+            color: '#FFB347', stroke: '#000000', strokeThickness: 4
         }).setOrigin(0.5);
 
-        // World map path
+        // 2×2 grid layout filling the canvas
         var pathPoints = [
-            { x: 150, y: 260 }, { x: 360, y: 160 }, { x: 580, y: 230 },
-            { x: 800, y: 150 }
+            { x: W * 0.25, y: H * 0.32 },
+            { x: W * 0.75, y: H * 0.32 },
+            { x: W * 0.25, y: H * 0.68 },
+            { x: W * 0.75, y: H * 0.68 }
         ];
+
+        // Draw connecting path lines
         var path = this.add.graphics();
-        path.lineStyle(6, 0x666666, 0.6);
-        for (var i = 0; i < pathPoints.length - 1; i++) {
-            var from = pathPoints[i], to = pathPoints[i + 1];
-            // Dotted path
-            var steps = 8;
-            for (var s = 0; s < steps; s++) {
-                var t1 = s / steps, t2 = (s + 0.5) / steps;
-                path.beginPath();
-                path.moveTo(from.x + (to.x - from.x) * t1, from.y + (to.y - from.y) * t1);
-                path.lineTo(from.x + (to.x - from.x) * t2, from.y + (to.y - from.y) * t2);
-                path.strokePath();
-            }
-        }
+        path.lineStyle(5, 0x555577, 0.5);
+        [[0,1],[0,2],[1,3],[2,3]].forEach(function (pair) {
+            var a = pathPoints[pair[0]], b = pathPoints[pair[1]];
+            path.beginPath();
+            path.moveTo(a.x, a.y);
+            path.lineTo(b.x, b.y);
+            path.strokePath();
+        });
 
         var levelColors = [0x4169E1, 0xCC44AA, 0xFF6600, 0x20B2AA];
         var levelIcons = ['🏢', '✂️', '👨‍🍳', '🤝'];
@@ -47,26 +46,26 @@ var LevelSelectScene = class extends Phaser.Scene {
             var stars = SaveManager.getLevelStars(levelNum);
             var color = unlocked ? levelColors[i] : 0x444444;
 
-            scene.add.circle(pt.x, pt.y, 44, color, unlocked ? 0.9 : 0.4)
-                .setStrokeStyle(3, unlocked ? 0xFFFFFF : 0x666666, unlocked ? 0.8 : 0.4);
+            scene.add.circle(pt.x, pt.y, 64, color, unlocked ? 0.9 : 0.4)
+                .setStrokeStyle(4, unlocked ? 0xFFFFFF : 0x666666, unlocked ? 0.8 : 0.3);
 
-            scene.add.text(pt.x, pt.y - 8, unlocked ? levelIcons[i] : '🔒', { fontSize: '28px' }).setOrigin(0.5);
+            scene.add.text(pt.x, pt.y - 14, unlocked ? levelIcons[i] : '🔒', { fontSize: '40px' }).setOrigin(0.5);
 
-            scene.add.text(pt.x, pt.y + 20, 'Lv.' + levelNum, {
-                fontFamily: 'Nunito, sans-serif', fontSize: '13px', fontStyle: 'bold',
+            scene.add.text(pt.x, pt.y + 30, 'Lv.' + levelNum, {
+                fontFamily: 'Nunito, sans-serif', fontSize: '18px', fontStyle: 'bold',
                 color: unlocked ? '#FFFFFF' : '#666666'
             }).setOrigin(0.5);
 
             for (var s = 0; s < 3; s++) {
-                scene.add.text(pt.x - 12 + s * 13, pt.y + 52, '★', {
-                    fontFamily: 'Nunito, sans-serif', fontSize: '14px',
+                scene.add.text(pt.x - 18 + s * 18, pt.y + 74, '★', {
+                    fontFamily: 'Nunito, sans-serif', fontSize: '20px',
                     color: s < stars ? '#FFD700' : '#333333'
                 }).setOrigin(0.5);
             }
 
-            scene.add.text(pt.x, pt.y + 70, CONSTANTS.LEVEL_NAMES[levelNum], {
-                fontFamily: 'Nunito, sans-serif', fontSize: '10px', color: '#AAAAAA',
-                align: 'center', wordWrap: { width: 90 }
+            scene.add.text(pt.x, pt.y + 100, CONSTANTS.LEVEL_NAMES[levelNum], {
+                fontFamily: 'Nunito, sans-serif', fontSize: '14px', color: '#AAAAAA',
+                align: 'center', wordWrap: { width: 130 }
             }).setOrigin(0.5);
 
             nodes.push({ x: pt.x, y: pt.y, levelNum: levelNum, unlocked: unlocked });
@@ -81,7 +80,7 @@ var LevelSelectScene = class extends Phaser.Scene {
                 var nd = nodes[n];
                 if (!nd.unlocked) continue;
                 var dx = gx - nd.x, dy = gy - nd.y;
-                if (dx * dx + dy * dy <= 70 * 70) {
+                if (dx * dx + dy * dy <= 90 * 90) {
                     scene._startLevel(nd.levelNum);
                     return;
                 }
@@ -91,26 +90,20 @@ var LevelSelectScene = class extends Phaser.Scene {
         // Total progress
         var totalStars = 0;
         for (var lv = 1; lv <= 4; lv++) { totalStars += SaveManager.getLevelStars(lv); }
-        this.add.text(W / 2, H - 80, '⭐ Total Stars: ' + totalStars + ' / 12', {
-            fontFamily: 'Nunito, sans-serif', fontSize: '16px', color: '#FFD700'
-        }).setOrigin(0.5);
-
-        // Badges count
-        var badges = (SaveManager.get('progress.collectedBadges') || []).length;
-        this.add.text(W / 2, H - 52, '🏅 Badges: ' + badges, {
-            fontFamily: 'Nunito, sans-serif', fontSize: '14px', color: '#FFB347'
+        this.add.text(W / 2, H - 62, '⭐ Total Stars: ' + totalStars + ' / 12', {
+            fontFamily: 'Nunito, sans-serif', fontSize: '22px', color: '#FFD700'
         }).setOrigin(0.5);
 
         // Back
-        this.add.text(30, H - 25, '← Back', {
-            fontFamily: 'Nunito, sans-serif', fontSize: '15px', color: '#888888'
+        this.add.text(30, H - 30, '← Back', {
+            fontFamily: 'Nunito, sans-serif', fontSize: '22px', color: '#888888'
         }).setInteractive({ useHandCursor: true }).on('pointerdown', function () {
             scene.scene.start(CONSTANTS.SCENES.TITLE);
         });
 
         // Reset progress button
-        var resetBtn = this.add.text(W - 20, H - 25, '🔄 Reset', {
-            fontFamily: 'Nunito, sans-serif', fontSize: '15px', color: '#FF6666'
+        var resetBtn = this.add.text(W - 20, H - 30, '🔄 Reset', {
+            fontFamily: 'Nunito, sans-serif', fontSize: '22px', color: '#FF6666'
         }).setOrigin(1, 0.5).setInteractive({ useHandCursor: true });
 
         resetBtn.on('pointerover', function () { resetBtn.setAlpha(0.7); });
