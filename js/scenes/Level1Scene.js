@@ -177,53 +177,49 @@ var LevelSceneCore = {
     },
 
     _spawnMovingPlatforms: function (scene, platformData) {
-        scene._movingPlatforms = scene._movingPlatforms || [];
-        platformData.forEach(function (pd) {
-            // Draw platform graphic
-            var gfx = scene.add.graphics();
-            gfx.fillStyle(0x99A8B0, 1);
-            gfx.fillRect(0, 0, pd.width, 16);
-            gfx.lineStyle(2, 0xFFFFFF, 0.3);
-            gfx.strokeLineShape(new Phaser.Geom.Line(3, 4, pd.width - 6, 4));
+        scene._movingPlatforms = [];
+        var tileKey = scene._bgFarKey.replace('_far', '_floor') || 'tile_kitchen_floor';
 
-            // Physics body
-            var plat = scene.physics.add.image(pd.x + pd.width / 2, pd.y, '__DEFAULT');
-            plat.setDisplaySize(pd.width, 16);
-            plat.setAlpha(0);
+        platformData.forEach(function (pd) {
+            // Use a rectangle as a static-looking but tween-driven platform
+            var plat = scene.add.rectangle(
+                pd.x + pd.width / 2,
+                pd.y,
+                pd.width, 14,
+                0x99A8B0
+            );
+            // Add shine line
+            var shine = scene.add.rectangle(
+                pd.x + pd.width / 2,
+                pd.y - 3,
+                pd.width - 8, 3,
+                0xFFFFFF, 0.3
+            );
+
+            scene.physics.add.existing(plat, false);
             plat.body.allowGravity = false;
             plat.body.immovable = true;
-            plat.body.setSize(pd.width, 16);
 
-            // Visible graphic follows physics body
-            var update = function () {
-                gfx.setPosition(plat.x - pd.width / 2, plat.y - 8);
-            };
-            scene.events.on('update', update);
-
-            // Tween the physics body
-            var tweenProps = {};
-            var targetKey = pd.moveAxis === 'x' ? 'x' : 'y';
-            tweenProps[targetKey] = pd.moveAxis === 'x'
-                ? pd.x + pd.width / 2 + pd.distance
-                : pd.y + pd.distance;
+            var startX = plat.x, startY = plat.y;
+            var endX = pd.moveAxis === 'x' ? startX + pd.distance : startX;
+            var endY = pd.moveAxis === 'y' ? startY + pd.distance : startY;
 
             scene.tweens.add({
-                targets: plat,
-                props: tweenProps,
+                targets: [plat, shine],
+                x: endX,
+                y: pd.moveAxis === 'y' ? { from: startY, to: endY } : undefined,
                 duration: pd.speed,
                 yoyo: true,
                 repeat: -1,
-                ease: 'Sine.easeInOut'
-            });
-
-            // Player collider
-            scene.physics.add.collider(scene._player, plat, function () {
-                if (pd.moveAxis === 'x') {
-                    scene._player.body.x += plat.body.velocity.x * (1 / 60);
+                ease: 'Sine.easeInOut',
+                onUpdate: function () {
+                    // Sync physics body position to visual
+                    plat.body.reset(plat.x, plat.y);
                 }
             });
 
-            scene._movingPlatforms.push({ plat: plat, gfx: gfx });
+            scene.physics.add.collider(scene._player, plat);
+            scene._movingPlatforms.push(plat);
         });
     },
 
