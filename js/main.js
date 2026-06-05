@@ -22,6 +22,11 @@ function resizeGameContainer() {
     container.style.width  = w + 'px';
     container.style.height = h + 'px';
     container.style.flex   = 'none';
+
+    // Tell Phaser to re-fit its canvas into the resized container
+    if (window._game && window._game.scale) {
+        window._game.scale.refresh();
+    }
 }
 
 window.addEventListener('resize', resizeGameContainer);
@@ -43,8 +48,7 @@ window.addEventListener('load', function () {
         scale: {
             mode: Phaser.Scale.FIT,
             autoCenter: Phaser.Scale.CENTER_BOTH,
-            expandParent: true,
-            parent: 'game-container'
+            expandParent: false
         },
         physics: {
             default: 'arcade',
