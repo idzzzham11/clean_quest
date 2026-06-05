@@ -145,15 +145,6 @@ var LevelData = (function () {
         { type: 'dirty_cloud', x: 1700, y: 415 },
         { type: 'dirty_cloud', x: 2300, y: 415 }
     ];
-    // Moving platforms: {x, y, width, moveAxis, distance, speed}
-    // x/y = starting position (px), width = tile widths * 48
-    // moveAxis: 'x' or 'y', distance: how far it travels, speed: ms for full trip
-    var L3_MOVING = [
-        { x: 600,  y: 340, width: 144, moveAxis: 'x', distance: 150, speed: 2000 },
-        { x: 1100, y: 300, width: 96,  moveAxis: 'y', distance: 80,  speed: 1800 },
-        { x: 1700, y: 340, width: 144, moveAxis: 'x', distance: 160, speed: 2200 },
-        { x: 2200, y: 300, width: 96,  moveAxis: 'y', distance: 90,  speed: 1600 }
-    ];
 
     // ── Level 4: Customer Service ── 68 cols (3264px) — MORE MOVING PLATFORMS ─
     // 4 doors: col 13, 26, 39, 52 → exit col 67
@@ -213,19 +204,11 @@ var LevelData = (function () {
         { type: 'dirty_cloud', x: 2780, y: 415 },
         { type: 'dirty_cloud', x: 3050, y: 415 }
     ];
-    var L4_MOVING = [
-        { x: 550,  y: 340, width: 144, moveAxis: 'x', distance: 160, speed: 1800 },
-        { x: 1000, y: 300, width: 96,  moveAxis: 'y', distance: 90,  speed: 1600 },
-        { x: 1480, y: 340, width: 144, moveAxis: 'x', distance: 180, speed: 2000 },
-        { x: 2000, y: 300, width: 96,  moveAxis: 'y', distance: 80,  speed: 1500 },
-        { x: 2500, y: 340, width: 144, moveAxis: 'x', distance: 160, speed: 1700 },
-        { x: 3000, y: 300, width: 96,  moveAxis: 'y', distance: 100, speed: 1400 }
-    ];
 
     return {
         level1: { map: L1_MAP, enemies: L1_ENEMIES, items: L1_ITEMS, hazards: L1_HAZARDS, doorsRequired: 1 },
         level2: { map: L2_MAP, enemies: L2_ENEMIES, items: L2_ITEMS, hazards: L2_HAZARDS, doorsRequired: 2 },
-        level3: { map: L3_MAP, enemies: L3_ENEMIES, items: L3_ITEMS, hazards: L3_HAZARDS, doorsRequired: 3, movingPlatforms: L3_MOVING },
-        level4: { map: L4_MAP, enemies: L4_ENEMIES, items: L4_ITEMS, hazards: L4_HAZARDS, doorsRequired: 4, movingPlatforms: L4_MOVING }
+        level3: { map: L3_MAP, enemies: L3_ENEMIES, items: L3_ITEMS, hazards: L3_HAZARDS, doorsRequired: 3 },
+        level4: { map: L4_MAP, enemies: L4_ENEMIES, items: L4_ITEMS, hazards: L4_HAZARDS, doorsRequired: 4 }
     };
 })();

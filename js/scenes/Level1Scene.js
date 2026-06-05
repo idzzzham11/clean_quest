@@ -37,9 +37,6 @@ var LevelSceneCore = {
         LevelSceneCore._spawnEnemies(scene, data.enemies);
         LevelSceneCore._spawnItems(scene, data.items);
         LevelSceneCore._spawnHazards(scene, data.hazards);
-        if (data.movingPlatforms) {
-            LevelSceneCore._spawnMovingPlatforms(scene, data.movingPlatforms);
-        }
 
         // Spawn just above the ground (row 9 * 48 = 432; player height ~44px)
         scene._player = new Player(scene, 80, 380, null);
@@ -100,7 +97,6 @@ var LevelSceneCore = {
         scene._hudCoins = null;
         scene._hudStars = null;
         scene._hudScore = null;
-        scene._movingPlatforms = null;
         MobileControls.hide();
         AudioManager.stopBGM();
     },
@@ -174,53 +170,6 @@ var LevelSceneCore = {
         scene._hudCoins.setText(GameState.getCoins());
         scene._hudStars.setText(GameState.getHygieneStars());
         scene._hudScore.setText('Score: ' + GameState.getScore());
-    },
-
-    _spawnMovingPlatforms: function (scene, platformData) {
-        scene._movingPlatforms = [];
-        var tileKey = scene._bgFarKey.replace('_far', '_floor') || 'tile_kitchen_floor';
-
-        platformData.forEach(function (pd) {
-            // Use a rectangle as a static-looking but tween-driven platform
-            var plat = scene.add.rectangle(
-                pd.x + pd.width / 2,
-                pd.y,
-                pd.width, 14,
-                0x99A8B0
-            );
-            // Add shine line
-            var shine = scene.add.rectangle(
-                pd.x + pd.width / 2,
-                pd.y - 3,
-                pd.width - 8, 3,
-                0xFFFFFF, 0.3
-            );
-
-            scene.physics.add.existing(plat, false);
-            plat.body.allowGravity = false;
-            plat.body.immovable = true;
-
-            var startX = plat.x, startY = plat.y;
-            var endX = pd.moveAxis === 'x' ? startX + pd.distance : startX;
-            var endY = pd.moveAxis === 'y' ? startY + pd.distance : startY;
-
-            scene.tweens.add({
-                targets: [plat, shine],
-                x: endX,
-                y: pd.moveAxis === 'y' ? { from: startY, to: endY } : undefined,
-                duration: pd.speed,
-                yoyo: true,
-                repeat: -1,
-                ease: 'Sine.easeInOut',
-                onUpdate: function () {
-                    // Sync physics body position to visual
-                    plat.body.reset(plat.x, plat.y);
-                }
-            });
-
-            scene.physics.add.collider(scene._player, plat);
-            scene._movingPlatforms.push(plat);
-        });
     },
 
     _buildBackground: function (scene, levelWidth, H) {
