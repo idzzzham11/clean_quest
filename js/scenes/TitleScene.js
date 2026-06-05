@@ -43,22 +43,38 @@ var TitleScene = class extends Phaser.Scene {
             yoyo: true, repeat: -1, ease: 'Sine.easeInOut'
         });
 
-        // Player name display
+        // Player name box — looks like an input field, tap to change
         var currentName = SaveManager.getCharacter().name || '';
-        var nameDisplay = this.add.text(W / 2, 192, currentName ? '👤 ' + currentName : '👤 Tetapkan nama anda', {
-            fontFamily: 'Nunito, sans-serif', fontSize: '15px',
-            color: currentName ? '#AAFFAA' : '#FFAAAA'
+        var hasName = currentName && currentName !== 'Player 1';
+
+        var nameBg = this.add.graphics();
+        var nameBoxW = 280, nameBoxH = 36, nameBoxX = W / 2 - nameBoxW / 2, nameBoxY = 178;
+        nameBg.fillStyle(0x0a0a2e, 0.85);
+        nameBg.fillRoundedRect(nameBoxX, nameBoxY, nameBoxW, nameBoxH, 8);
+        nameBg.lineStyle(2, hasName ? 0x44FF88 : 0xFF6644, 1);
+        nameBg.strokeRoundedRect(nameBoxX, nameBoxY, nameBoxW, nameBoxH, 8);
+
+        var nameDisplay = this.add.text(W / 2, nameBoxY + nameBoxH / 2,
+            hasName ? '👤  ' + currentName : '👤  Klik untuk masukkan nama...', {
+            fontFamily: 'Nunito, sans-serif', fontSize: '15px', fontStyle: hasName ? 'bold' : 'normal',
+            color: hasName ? '#AAFFAA' : '#FFB347'
         }).setOrigin(0.5).setInteractive({ useHandCursor: true });
+
         nameDisplay.on('pointerdown', function () {
             scene._showNameInput(function (name) {
-                nameDisplay.setText('👤 ' + name);
-                nameDisplay.setColor('#AAFFAA');
+                nameDisplay.setText('👤  ' + name);
+                nameDisplay.setStyle({ fontStyle: 'bold', color: '#AAFFAA' });
+                nameBg.clear();
+                nameBg.fillStyle(0x0a0a2e, 0.85);
+                nameBg.fillRoundedRect(nameBoxX, nameBoxY, nameBoxW, nameBoxH, 8);
+                nameBg.lineStyle(2, 0x44FF88, 1);
+                nameBg.strokeRoundedRect(nameBoxX, nameBoxY, nameBoxW, nameBoxH, 8);
             });
         });
 
-        // ── Buttons — evenly spaced from y=220 ───────────────────
+        // ── Buttons — evenly spaced from y=232 ───────────────────
         var GAP = 52;
-        var startY = 228;
+        var startY = 236;
         var row = 0;
 
         var doPlay = function () {
