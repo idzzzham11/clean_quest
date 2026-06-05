@@ -195,13 +195,22 @@ var TitleScene = class extends Phaser.Scene {
             'position:fixed',
             'left:50%', 'top:50%',
             'transform:translate(-50%,-50%) translateY(-10px)',
-            'width:280px', 'padding:12px 16px',
-            'font-size:18px', 'font-family:Nunito,sans-serif',
-            'border:3px solid #FFB347', 'border-radius:10px',
-            'background:#0a0a2e', 'color:#FFFFFF',
+            'width:300px', 'padding:14px 18px',
+            'font-size:20px', 'font-family:Nunito,sans-serif',
+            'border:3px solid #FFB347', 'border-radius:12px',
+            'background:#1a1a3e', 'color:#FFFFFF',
             'text-align:center', 'outline:none',
-            'z-index:9000'
+            'z-index:9000', 'letter-spacing:1px'
         ].join(';');
+
+        // Inject placeholder style once
+        if (!document.getElementById('cq-input-style')) {
+            var style = document.createElement('style');
+            style.id = 'cq-input-style';
+            style.textContent = 'input[placeholder]::placeholder { color: #FFB347; opacity: 0.8; }';
+            document.head.appendChild(style);
+        }
+
         document.body.appendChild(input);
         input.focus();
 
