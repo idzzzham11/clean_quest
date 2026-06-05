@@ -173,6 +173,9 @@ var ResultsScene = class extends Phaser.Scene {
 
     _promptLeaderboard() {
         var playerName = SaveManager.getCharacter().name || 'Player 1';
+        // Submit to Supabase global leaderboard
+        SupabaseService.submitScore(playerName, this._score, this._levelNum);
+        // Also keep local copy as fallback
         SaveManager.addLeaderboardEntry(playerName, this._score);
     }
 };
