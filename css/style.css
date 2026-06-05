@@ -49,25 +49,21 @@ button, .quiz-btn, .dpad-btn, #btn-jump {
 }
 
 #game-container {
-    flex: 1 1 0;
-    min-height: 0;
-    position: relative;
+    /* Always full width; height = width * 9/16 */
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    flex-shrink: 0;
     background: #1a1a2e;
-    /* Lock the container itself to 16:9 using aspect-ratio,
-       then let it grow to fill all available space */
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
 }
 
-/* The canvas Phaser creates: fill the container, maintain 16:9 via object-fit */
 #game-container canvas {
     display: block;
     width: 100% !important;
     height: 100% !important;
-    object-fit: contain;        /* letterbox if container isn't exactly 16:9 */
-    aspect-ratio: 16 / 9;
     image-rendering: pixelated;
     image-rendering: crisp-edges;
 }
