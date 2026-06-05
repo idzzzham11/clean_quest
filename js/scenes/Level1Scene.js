@@ -59,6 +59,24 @@ var LevelSceneCore = {
         scene.cameras.main.startFollow(scene._player, true, 0.1, 0.1);
         AudioManager.playBGM(scene._bgmKey);
         LevelSceneCore._showLevelBanner(scene);
+
+        // Score drain every 20 seconds
+        scene._scoreDrainTimer = scene.time.addEvent({
+            delay: CONSTANTS.SCORE_DRAIN_INTERVAL,
+            loop: true,
+            callback: function () {
+                if (!scene._levelComplete && !scene._paused) {
+                    GameState.drainScore(CONSTANTS.SCORE_DRAIN_AMOUNT);
+                    // Brief red flash on score text to signal drain
+                    if (scene._hudScore) {
+                        scene._hudScore.setColor('#FF4444');
+                        scene.time.delayedCall(400, function () {
+                            if (scene._hudScore) scene._hudScore.setColor('#FFFFFF');
+                        });
+                    }
+                }
+            }
+        });
     },
 
     update: function (scene, time, delta) {
@@ -174,7 +192,7 @@ var LevelSceneCore = {
         GameState.on('starsChanged',  scene._onStarsChanged,  scene);
         GameState.on('scoreChanged',  scene._onScoreChanged,  scene);
 
-        // Remove listeners when scene shuts down
+        // Remove listeners and timers when scene shuts down
         scene.events.once('shutdown', function () {
             GameState.off('healthChanged', scene._onHealthChanged, scene);
             GameState.off('coinsChanged',  scene._onCoinsChanged,  scene);
@@ -183,6 +201,7 @@ var LevelSceneCore = {
             GameState.off('playerDied',    null, scene);
             GameState.off('gameOver',      null, scene);
             GameState.off('pauseToggle',   null, scene);
+            if (scene._scoreDrainTimer) scene._scoreDrainTimer.remove();
             scene._hudHearts = null;
             scene._hudCoins  = null;
             scene._hudStars  = null;

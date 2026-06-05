@@ -86,6 +86,11 @@ var GameState = (function () {
             _emitter && _emitter.emit('scoreChanged', _state.score);
         },
 
+        drainScore: function (amount) {
+            _state.score = Math.max(0, _state.score - amount);
+            _emitter && _emitter.emit('scoreChanged', _state.score);
+        },
+
         addCoins: function (amount) {
             _state.coins += amount;
             _state.score += amount * CONSTANTS.COIN_VALUE;
