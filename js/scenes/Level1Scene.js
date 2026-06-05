@@ -7,6 +7,7 @@ var LevelSceneCore = {
 
         scene._doorsOpened = 0;
         scene._doorsRequired = LevelData[scene._levelKey].doorsRequired || 1;
+        scene._fallingRespawn = false;
         scene._quizPassed = false;
         scene._noDamageTaken = true;
         scene._noHazardsTouched = true;
@@ -69,6 +70,12 @@ var LevelSceneCore = {
             };
             MobileControls.jumpJustPressed = false;
             scene._player.update(scene._cursors, mobileInput, delta);
+
+            // Fell into a hole — respawn at last passed door
+            if (scene._player.y > CONSTANTS.LEVEL_HEIGHT + 32 && !scene._fallingRespawn) {
+                scene._fallingRespawn = true;
+                LevelSceneCore._respawnAtLastDoor(scene);
+            }
         }
 
         scene._enemies.forEach(function (e) {
@@ -170,6 +177,47 @@ var LevelSceneCore = {
         scene._hudCoins.setText(GameState.getCoins());
         scene._hudStars.setText(GameState.getHygieneStars());
         scene._hudScore.setText('Score: ' + GameState.getScore());
+    },
+
+    _respawnAtLastDoor: function (scene) {
+        // Find the last opened door's x position as respawn point
+        var respawnX = 80;  // default: level start
+        var respawnY = 380;
+        if (scene._doors && scene._doors.length > 0) {
+            for (var i = scene._doors.length - 1; i >= 0; i--) {
+                if (scene._doors[i].opened) {
+                    respawnX = scene._doors[i].x - 100;  // just before the door
+                    break;
+                }
+            }
+        }
+
+        // Lose 1 health
+        GameState.takeDamage(1);
+
+        if (GameState.getHealth() <= 0) {
+            // Out of health — trigger normal death
+            scene._fallingRespawn = false;
+            GameState.emit('playerDied');
+            return;
+        }
+
+        // Flash and reposition player
+        scene._player._invincible = true;
+        scene._player.body.setVelocity(0, 0);
+        scene._player.setPosition(respawnX, respawnY);
+
+        // Brief camera flash
+        scene.cameras.main.flash(300, 255, 100, 0, false);
+
+        // Show "Jatuh!" hint
+        LevelSceneCore._showHint(scene, 'Jatuh! Kembali ke pintu terakhir.');
+
+        // Reset fall flag after a short delay
+        scene.time.delayedCall(600, function () {
+            scene._player._invincible = false;
+            scene._fallingRespawn = false;
+        });
     },
 
     _buildBackground: function (scene, levelWidth, H) {
