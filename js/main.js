@@ -4,7 +4,10 @@
 function resizeGameContainer() {
     var controlsBar = document.getElementById('controls-bar');
     var container = document.getElementById('game-container');
-    var barH = controlsBar ? controlsBar.offsetHeight : 0;
+    // Use actual rendered height; fallback to 120 when mobile controls are active
+    var barH = (controlsBar && controlsBar.offsetHeight > 0)
+        ? controlsBar.offsetHeight
+        : (document.body.classList.contains('mobile-active') ? 120 : 0);
     var availW = window.innerWidth;
     var availH = window.innerHeight - barH;
 

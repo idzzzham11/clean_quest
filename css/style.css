@@ -126,14 +126,13 @@ button, .quiz-btn, .dpad-btn, #btn-jump {
 }
 
 body.mobile-active #controls-bar {
-    /* Base 100px + safe area at bottom */
-    height: calc(100px + env(safe-area-inset-bottom, 0px));
+    height: calc(120px + env(safe-area-inset-bottom, 0px));
 }
 
-/* Very short landscape phones (e.g. iPhone SE landscape) */
+/* Very short landscape phones */
 @media (max-height: 420px) {
     body.mobile-active #controls-bar {
-        height: calc(76px + env(safe-area-inset-bottom, 0px));
+        height: calc(90px + env(safe-area-inset-bottom, 0px));
     }
 }
 
@@ -160,9 +159,8 @@ body.mobile-active #controls-bar {
 }
 
 .dpad-btn {
-    /* Fluid size: 68px on tiny phones, 80px on tablets */
-    width: clamp(64px, 12vw, 84px);
-    height: clamp(64px, 12vw, 84px);
+    width: 80px;
+    height: 80px;
     background: rgba(255, 255, 255, 0.18);
     border: 3px solid rgba(255, 255, 255, 0.45);
     border-radius: 16px;
@@ -184,8 +182,8 @@ body.mobile-active #controls-bar {
 }
 
 #btn-jump {
-    width: clamp(72px, 14vw, 92px);
-    height: clamp(72px, 14vw, 92px);
+    width: 90px;
+    height: 90px;
     background: rgba(255, 180, 71, 0.3);
     border: 3px solid rgba(255, 180, 71, 0.65);
     border-radius: 50%;
@@ -207,18 +205,18 @@ body.mobile-active #controls-bar {
     transform: scale(0.92);
 }
 
-/* Very short landscape — shrink buttons to fit */
+/* Very short landscape — shrink buttons */
 @media (max-height: 420px) {
     .dpad-btn {
-        width: clamp(52px, 10vw, 64px);
-        height: clamp(52px, 10vw, 64px);
-        font-size: clamp(20px, 4vw, 26px);
+        width: 60px;
+        height: 60px;
+        font-size: 22px;
         border-radius: 12px;
     }
     #btn-jump {
-        width: clamp(60px, 11vw, 72px);
-        height: clamp(60px, 11vw, 72px);
-        font-size: clamp(22px, 4.5vw, 28px);
+        width: 68px;
+        height: 68px;
+        font-size: 24px;
     }
 }
 
