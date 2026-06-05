@@ -74,36 +74,38 @@ var LevelData = (function () {
         ],
         { col: 47, row: 8 }
     );
+    // hole at cols 26-27, center=1296px. Clear zone 1146-1446.
+    // Segments: 0-448(before door1), 848-1146(between door1 and hole), 1446-1264...
+    // Actually safe zones: 0-448, 848-1146, 1446-1616(before door2 zone), 1664-2080, 2080+ exit zone
     (function () {
         for (var r = 9; r <= 11; r++) {
-            L2_MAP[r][23] = 0;
-            L2_MAP[r][24] = 0;
+            L2_MAP[r][26] = 0;
+            L2_MAP[r][27] = 0;
         }
     })();
-    // hole center=1128px, clear 978-1278. door2=1464px clear 1264-1664. exit=2280px clear 2080-2304
     var L2_ENEMIES = [
         { type: 'germ',        x: 200,  y: 410 },
         { type: 'smell_cloud', x: 340,  y: 410 },
-        { type: 'germ',        x: 920,  y: 410 },
-        { type: 'hair_monster',x: 1700, y: 410 },
-        { type: 'smell_cloud', x: 1860, y: 410 },
-        { type: 'germ',        x: 1980, y: 410 }
+        { type: 'germ',        x: 960,  y: 410 },
+        { type: 'hair_monster',x: 1720, y: 410 },
+        { type: 'smell_cloud', x: 1900, y: 410 },
+        { type: 'germ',        x: 2000, y: 410 }
     ];
     var L2_ITEMS = [
         { type: 'coin',          x: 130,  y: 395 },
         { type: 'coin',          x: 220,  y: 395 },
-        { type: 'soap',          x: 340,  y: 395 },
-        { type: 'coin',          x: 480,  y: 395 },
-        { type: 'hygiene_star',  x: 880,  y: 395 },
-        { type: 'coin',          x: 1000, y: 395 },
-        { type: 'coin',          x: 1720, y: 395 },
-        { type: 'uniform_clean', x: 1860, y: 395 },
-        { type: 'coin',          x: 1980, y: 395 }
+        { type: 'soap',          x: 360,  y: 395 },
+        { type: 'coin',          x: 500,  y: 395 },
+        { type: 'hygiene_star',  x: 900,  y: 395 },
+        { type: 'coin',          x: 1040, y: 395 },
+        { type: 'coin',          x: 1740, y: 395 },
+        { type: 'uniform_clean', x: 1900, y: 395 },
+        { type: 'coin',          x: 2000, y: 395 }
     ];
     var L2_HAZARDS = [
         { type: 'dirty_cloud', x: 300,  y: 415 },
-        { type: 'dirty_cloud', x: 900,  y: 415 },
-        { type: 'dirty_cloud', x: 1780, y: 415 }
+        { type: 'dirty_cloud', x: 980,  y: 415 },
+        { type: 'dirty_cloud', x: 1820, y: 415 }
     ];
 
     // ── Level 3 ── 62 cols (2976px) ──────────────────────────────────────────
@@ -124,45 +126,46 @@ var LevelData = (function () {
         ],
         { col: 61, row: 8 }
     );
+    // holes at cols 25-26 (center=1224), 41-42 (center=1992), 57-58 (center=2760)
+    // hole clear zones: 1074-1374, 1842-2142, 2610-2910
     (function () {
-        [[21,22],[37,38],[53,54]].forEach(function (pair) {
+        [[25,26],[41,42],[57,58]].forEach(function (pair) {
             for (var r = 9; r <= 11; r++) {
                 L3_MAP[r][pair[0]] = 0;
                 L3_MAP[r][pair[1]] = 0;
             }
         });
     })();
-    // hole1 center=1056px clear 906-1206, hole2=1824 clear 1674-1974, hole3=2592 clear 2442-2742
     var L3_ENEMIES = [
         { type: 'germ',        x: 200,  y: 410 },
         { type: 'smell_cloud', x: 340,  y: 410 },
         { type: 'hair_monster',x: 920,  y: 410 },
-        { type: 'germ',        x: 1050, y: 410 },
+        { type: 'germ',        x: 1040, y: 410 },
         { type: 'dirty_robot', x: 1700, y: 410 },
-        { type: 'smell_cloud', x: 1840, y: 410 },
+        { type: 'smell_cloud', x: 1800, y: 410 },
         { type: 'germ',        x: 2460, y: 410 },
-        { type: 'hair_monster',x: 2600, y: 410 },
-        { type: 'dirty_robot', x: 2760, y: 410 }
+        { type: 'hair_monster',x: 2580, y: 410 },
+        { type: 'dirty_robot', x: 2960, y: 410 }
     ];
     var L3_ITEMS = [
         { type: 'coin',          x: 130,  y: 395 },
         { type: 'coin',          x: 220,  y: 395 },
         { type: 'soap',          x: 360,  y: 395 },
-        { type: 'coin',          x: 480,  y: 395 },
-        { type: 'hygiene_star',  x: 880,  y: 395 },
-        { type: 'coin',          x: 1000, y: 395 },
-        { type: 'coin',          x: 1680, y: 395 },
-        { type: 'uniform_clean', x: 1840, y: 395 },
-        { type: 'coin',          x: 2460, y: 395 },
-        { type: 'hygiene_star',  x: 2600, y: 395 },
-        { type: 'coin',          x: 2760, y: 395 },
-        { type: 'coin',          x: 2880, y: 395 }
+        { type: 'coin',          x: 500,  y: 395 },
+        { type: 'hygiene_star',  x: 900,  y: 395 },
+        { type: 'coin',          x: 1140, y: 395 },
+        { type: 'coin',          x: 1620, y: 395 },
+        { type: 'uniform_clean', x: 1900, y: 395 },
+        { type: 'coin',          x: 2380, y: 395 },
+        { type: 'hygiene_star',  x: 2660, y: 395 },
+        { type: 'coin',          x: 2860, y: 395 },
+        { type: 'coin',          x: 2960, y: 395 }
     ];
     var L3_HAZARDS = [
         { type: 'dirty_cloud', x: 300,  y: 415 },
-        { type: 'dirty_cloud', x: 900,  y: 415 },
+        { type: 'dirty_cloud', x: 980,  y: 415 },
         { type: 'dirty_cloud', x: 1760, y: 415 },
-        { type: 'dirty_cloud', x: 2560, y: 415 }
+        { type: 'dirty_cloud', x: 2520, y: 415 }
     ];
 
     // ── Level 4 ── 80 cols (3840px) ──────────────────────────────────────────
@@ -185,8 +188,10 @@ var LevelData = (function () {
         ],
         { col: 79, row: 8 }
     );
+    // holes at cols 25-26 (1224px), 41-42 (1992px), 57-58 (2760px), 71-72 (3432px), 77-78 (3720px)
+    // hole clear zones: 1074-1374, 1842-2142, 2610-2910, 3282-3582, 3570-3870
     (function () {
-        [[21,22],[37,38],[53,54],[69,70],[75,76]].forEach(function (pair) {
+        [[25,26],[41,42],[57,58],[71,72],[77,78]].forEach(function (pair) {
             for (var r = 9; r <= 11; r++) {
                 L4_MAP[r][pair[0]] = 0;
                 L4_MAP[r][pair[1]] = 0;
@@ -197,41 +202,41 @@ var LevelData = (function () {
         { type: 'germ',        x: 180,  y: 410 },
         { type: 'smell_cloud', x: 320,  y: 410 },
         { type: 'hair_monster',x: 920,  y: 410 },
-        { type: 'germ',        x: 1060, y: 410 },
-        { type: 'dirty_robot', x: 1680, y: 410 },
-        { type: 'smell_cloud', x: 1820, y: 410 },
+        { type: 'germ',        x: 1040, y: 410 },
+        { type: 'dirty_robot', x: 1700, y: 410 },
+        { type: 'smell_cloud', x: 1800, y: 410 },
         { type: 'germ',        x: 2460, y: 410 },
-        { type: 'hair_monster',x: 2600, y: 410 },
-        { type: 'dirty_robot', x: 3220, y: 410 },
-        { type: 'smell_cloud', x: 3360, y: 410 },
-        { type: 'germ',        x: 3480, y: 410 },
-        { type: 'hair_monster',x: 3600, y: 410 },
-        { type: 'dirty_robot', x: 3720, y: 410 }
+        { type: 'hair_monster',x: 2560, y: 410 },
+        { type: 'dirty_robot', x: 3160, y: 410 },
+        { type: 'smell_cloud', x: 3240, y: 410 },
+        { type: 'germ',        x: 3440, y: 410 },
+        { type: 'hair_monster',x: 3540, y: 410 },
+        { type: 'dirty_robot', x: 3640, y: 410 }
     ];
     var L4_ITEMS = [
         { type: 'coin',          x: 110,  y: 395 },
         { type: 'coin',          x: 200,  y: 395 },
-        { type: 'soap',          x: 320,  y: 395 },
-        { type: 'coin',          x: 460,  y: 395 },
-        { type: 'hygiene_star',  x: 880,  y: 395 },
-        { type: 'coin',          x: 1000, y: 395 },
-        { type: 'coin',          x: 1660, y: 395 },
-        { type: 'uniform_clean', x: 1820, y: 395 },
-        { type: 'coin',          x: 2460, y: 395 },
-        { type: 'hygiene_star',  x: 2620, y: 395 },
-        { type: 'coin',          x: 3220, y: 395 },
-        { type: 'coin',          x: 3380, y: 395 },
-        { type: 'uniform_clean', x: 3500, y: 395 },
-        { type: 'hygiene_star',  x: 3620, y: 395 },
-        { type: 'coin',          x: 3740, y: 395 }
+        { type: 'soap',          x: 360,  y: 395 },
+        { type: 'coin',          x: 500,  y: 395 },
+        { type: 'hygiene_star',  x: 900,  y: 395 },
+        { type: 'coin',          x: 1140, y: 395 },
+        { type: 'coin',          x: 1620, y: 395 },
+        { type: 'uniform_clean', x: 1900, y: 395 },
+        { type: 'coin',          x: 2380, y: 395 },
+        { type: 'hygiene_star',  x: 2660, y: 395 },
+        { type: 'coin',          x: 3160, y: 395 },
+        { type: 'coin',          x: 3260, y: 395 },
+        { type: 'uniform_clean', x: 3440, y: 395 },
+        { type: 'hygiene_star',  x: 3540, y: 395 },
+        { type: 'coin',          x: 3640, y: 395 }
     ];
     var L4_HAZARDS = [
         { type: 'dirty_cloud', x: 280,  y: 415 },
-        { type: 'dirty_cloud', x: 940,  y: 415 },
+        { type: 'dirty_cloud', x: 980,  y: 415 },
         { type: 'dirty_cloud', x: 1760, y: 415 },
-        { type: 'dirty_cloud', x: 2560, y: 415 },
-        { type: 'dirty_cloud', x: 3300, y: 415 },
-        { type: 'dirty_cloud', x: 3560, y: 415 }
+        { type: 'dirty_cloud', x: 2520, y: 415 },
+        { type: 'dirty_cloud', x: 3200, y: 415 },
+        { type: 'dirty_cloud', x: 3480, y: 415 }
     ];
 
     return {
