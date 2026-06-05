@@ -26,7 +26,8 @@ var LevelSceneCore = {
         AudioManager.initOnGesture();
 
         var levelHeight = CONSTANTS.LEVEL_HEIGHT;
-        scene.physics.world.setBounds(0, 0, levelWidth, levelHeight);
+        // No bottom bound — player can fall through holes (detected in update)
+        scene.physics.world.setBounds(0, 0, levelWidth, levelHeight * 4, true, true, true, false);
         scene.cameras.main.setBounds(0, 0, levelWidth, levelHeight);
 
         LevelSceneCore._buildBackground(scene, levelWidth, H);
@@ -72,7 +73,7 @@ var LevelSceneCore = {
             scene._player.update(scene._cursors, mobileInput, delta);
 
             // Fell into a hole — respawn at last passed door
-            if (scene._player.y > CONSTANTS.LEVEL_HEIGHT + 32 && !scene._fallingRespawn) {
+            if (scene._player.y > CONSTANTS.LEVEL_HEIGHT + 20 && !scene._fallingRespawn) {
                 scene._fallingRespawn = true;
                 LevelSceneCore._respawnAtLastDoor(scene);
             }
