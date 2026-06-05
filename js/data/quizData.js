@@ -143,18 +143,10 @@ var _sharedQuestions = [
     }
 ];
 
-// Randomly distribute all 10 questions across the 4 levels (1/2/3/4 per level)
-// Fisher-Yates shuffle so every playthrough gets a different assignment
-var QuizData = (function () {
-    var pool = _sharedQuestions.slice();
-    for (var i = pool.length - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * (i + 1));
-        var tmp = pool[i]; pool[i] = pool[j]; pool[j] = tmp;
-    }
-    return {
-        level1: pool.slice(0, 1),    // 1 question
-        level2: pool.slice(1, 3),    // 2 questions
-        level3: pool.slice(3, 6),    // 3 questions
-        level4: pool.slice(6, 10)    // 4 questions
-    };
-})();
+// Fixed question assignment per level
+var QuizData = {
+    level1: _sharedQuestions.slice(0, 1),   // Q1
+    level2: _sharedQuestions.slice(1, 3),   // Q2, Q3
+    level3: _sharedQuestions.slice(3, 6),   // Q4, Q5, Q6
+    level4: _sharedQuestions.slice(6, 10)   // Q7, Q8, Q9, Q10
+};
