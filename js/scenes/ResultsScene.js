@@ -88,8 +88,12 @@ var ResultsScene = class extends Phaser.Scene {
         div.strokeLineShape(new Phaser.Geom.Line(panelX + 12, row, panelX + panelW - 12, row));
         row += 10;
 
-        this.add.text(panelX + 16, row, 'Jumlah Markah', { fontFamily: 'Nunito, sans-serif', fontSize: '16px', fontStyle: 'bold', color: '#FFB347' });
-        this.add.text(panelX + panelW - 16, row, this._score, { fontFamily: 'Nunito, sans-serif', fontSize: '20px', fontStyle: 'bold', color: '#FFD700' }).setOrigin(1, 0);
+        this.add.text(panelX + 16, row, 'Markah Peringkat Ini', { fontFamily: 'Nunito, sans-serif', fontSize: '14px', fontStyle: 'bold', color: '#FFB347' });
+        this.add.text(panelX + panelW - 16, row, this._score, { fontFamily: 'Nunito, sans-serif', fontSize: '18px', fontStyle: 'bold', color: '#FFD700' }).setOrigin(1, 0);
+        row += 26;
+        var totalScore = SaveManager.getTotalScore();
+        this.add.text(panelX + 16, row, '🏆 Jumlah Keseluruhan', { fontFamily: 'Nunito, sans-serif', fontSize: '16px', fontStyle: 'bold', color: '#FFFFFF' });
+        this.add.text(panelX + panelW - 16, row, totalScore, { fontFamily: 'Nunito, sans-serif', fontSize: '22px', fontStyle: 'bold', color: '#FFD700' }).setOrigin(1, 0);
 
         // 4 buttons in a 2x2 grid
         var btnY1 = 390;
@@ -176,9 +180,9 @@ var ResultsScene = class extends Phaser.Scene {
 
     _promptLeaderboard() {
         var playerName = SaveManager.getCharacter().name || 'Player 1';
-        // Submit to Supabase global leaderboard
-        SupabaseService.submitScore(playerName, this._score, this._levelNum);
-        // Also keep local copy as fallback
-        SaveManager.addLeaderboardEntry(playerName, this._score);
+        // Submit cumulative total score so higher levels always rank higher
+        var totalScore = SaveManager.getTotalScore();
+        SupabaseService.submitScore(playerName, totalScore, this._levelNum);
+        SaveManager.addLeaderboardEntry(playerName, totalScore);
     }
 };

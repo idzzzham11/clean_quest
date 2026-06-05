@@ -18,6 +18,7 @@ var SaveManager = {
                 collectedBadges: [],
                 certificates: [],
                 totalCoins: 0,
+                totalScore: 0,
                 missions: {}
             },
             settings: {
@@ -83,12 +84,18 @@ var SaveManager = {
             data.progress.levelStars[levelNum] = stars;
         }
         data.progress.totalCoins = (data.progress.totalCoins || 0) + GameState.getCoins();
+        // Accumulate total score across all levels
+        data.progress.totalScore = (data.progress.totalScore || 0) + score;
         this.save(data);
 
         // Auto-unlock next level
         if (levelNum < 4) {
             this.unlockLevel(levelNum + 1);
         }
+    },
+
+    getTotalScore: function () {
+        return this.load().progress.totalScore || 0;
     },
 
     addBadge: function (badgeKey) {
