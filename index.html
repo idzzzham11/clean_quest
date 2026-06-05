@@ -21,19 +21,18 @@
         </div>
     </div>
 
-    <!-- Root layout — canvas above, controls bar below on mobile -->
+    <!-- Root layout — canvas fills screen -->
     <div id="layout">
         <div id="game-container"></div>
-        <div id="controls-bar">
-            <!-- Mobile touch controls live here so they never overlap the canvas -->
-            <div id="mobile-controls" class="hidden">
-                <div class="dpad-group">
-                    <div class="dpad-btn" id="dpad-left">&#9664;</div>
-                    <div class="dpad-btn" id="dpad-right">&#9654;</div>
-                </div>
-                <div id="btn-jump">&#9650;</div>
-            </div>
+    </div>
+
+    <!-- Mobile controls overlay — floats over the bottom of the canvas -->
+    <div id="mobile-controls" class="hidden">
+        <div class="dpad-group">
+            <div class="dpad-btn" id="dpad-left">&#9664;</div>
+            <div class="dpad-btn" id="dpad-right">&#9654;</div>
         </div>
+        <div id="btn-jump">&#9650;</div>
     </div>
 
     <!-- Quiz DOM overlay — fixed, above everything -->
