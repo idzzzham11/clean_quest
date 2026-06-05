@@ -95,6 +95,7 @@ var MobileControls = {
             this._visible = true;
         }
         document.body.classList.add('mobile-active');
+        if (typeof resizeGameContainer === 'function') resizeGameContainer();
     },
 
     hide: function () {
@@ -104,5 +105,6 @@ var MobileControls = {
             this._visible = false;
         }
         document.body.classList.remove('mobile-active');
+        if (typeof resizeGameContainer === 'function') resizeGameContainer();
     }
 };
