@@ -213,17 +213,40 @@ var TitleScene = class extends Phaser.Scene {
             fontFamily: 'Nunito, sans-serif', fontSize: '18px', fontStyle: 'bold', color: '#FFFFFF'
         }).setOrigin(0.5).setDepth(63).setInteractive({ useHandCursor: true });
 
+        var oldName = SaveManager.getCharacter().name || '';
+
         var doSave = function () {
             var name = input.value.trim();
             if (!name) { input.style.borderColor = '#FF4444'; return; }
             document.body.removeChild(input);
+
+            var nameChanged = name !== oldName && oldName !== '' && oldName !== 'Player 1';
             SaveManager.saveCharacter(name,
                 SaveManager.getCharacter().skinTone,
                 SaveManager.getCharacter().hairColor,
                 SaveManager.getCharacter().uniformColor
             );
+
+            // Generate a new session ID when the name changes
+            if (nameChanged) {
+                var newSession = 'sess_' + Date.now() + '_' + Math.random().toString(36).substr(2, 8);
+                localStorage.setItem('cq_session', newSession);
+                SaveManager.clearSave();
+                // Re-save the new name after clearing
+                SaveManager.saveCharacter(name,
+                    SaveManager.getCharacter().skinTone,
+                    SaveManager.getCharacter().hairColor,
+                    SaveManager.getCharacter().uniformColor
+                );
+            }
+
             [overlay, box, title, sub, saveBg, saveBtn].forEach(function (o) { o.destroy(); });
             if (onSave) onSave(name);
+
+            // Restart title scene to reflect reset state
+            if (nameChanged) {
+                scene.scene.restart();
+            }
         };
 
         saveBtn.on('pointerdown', doSave);
