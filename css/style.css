@@ -41,7 +41,6 @@ button, .quiz-btn, .dpad-btn, #btn-jump {
 }
 
 /* ===== LAYOUT ===== */
-/* Stacks game canvas above controls; fills the whole screen */
 #layout {
     display: flex;
     flex-direction: column;
@@ -51,18 +50,24 @@ button, .quiz-btn, .dpad-btn, #btn-jump {
 
 #game-container {
     flex: 1 1 0;
-    min-height: 0;          /* allow shrinking below natural size */
+    min-height: 0;
+    position: relative;
+    background: #1a1a2e;
+    /* Lock the container itself to 16:9 using aspect-ratio,
+       then let it grow to fill all available space */
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    background: #1a1a2e;
 }
 
+/* The canvas Phaser creates: fill the container, maintain 16:9 via object-fit */
 #game-container canvas {
     display: block;
-    max-width: 100%;
-    max-height: 100%;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain;        /* letterbox if container isn't exactly 16:9 */
+    aspect-ratio: 16 / 9;
     image-rendering: pixelated;
     image-rendering: crisp-edges;
 }
