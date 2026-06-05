@@ -90,9 +90,13 @@ var ResultsScene = class extends Phaser.Scene {
             }).setOrigin(0.5);
         }
 
-        // Buttons — row 1
-        var btnY1 = 430;
-        this._makeButton(W / 2 - 170, btnY1, this._levelNum < 4 ? 'Level Seterusnya' : 'Tamat!', function () {
+        // 4 buttons in a 2x2 grid
+        var btnY1 = 420;
+        var btnY2 = 475;
+        var btnL  = W / 2 - 175;
+        var btnR  = W / 2 + 15;
+
+        this._makeButton(btnL, btnY1, this._levelNum < 4 ? 'Level Seterusnya ▶' : 'Tamat! 🎉', function () {
             scene._stopOldLevel();
             if (scene._levelNum < 4) {
                 var nextLevel = scene._levelNum + 1;
@@ -103,20 +107,18 @@ var ResultsScene = class extends Phaser.Scene {
             }
         }, this._levelNum < 4 ? 0x2ECC71 : 0xFFD700);
 
-        this._makeButton(W / 2 + 10, btnY1, 'Main Semula', function () {
-            scene._stopOldLevel();
-            scene.scene.start(CONSTANTS.SCENES['LEVEL' + scene._levelNum]);
-        }, 0x4169E1);
-
-        // Buttons — row 2
-        var btnY2 = 490;
-        this._makeButton(W / 2 - 170, btnY2, 'Pilih Peringkat', function () {
+        this._makeButton(btnR, btnY1, '🗺  Pilih Peringkat', function () {
             scene.scene.start(CONSTANTS.SCENES.LEVEL_SELECT);
         }, 0xFFB347);
 
-        this._makeButton(W / 2 + 10, btnY2, 'Sijil', function () {
-            scene._showCertificate();
-        }, 0xC8A020);
+        this._makeButton(btnL, btnY2, '🏆  Leaderboard', function () {
+            scene.scene.start(CONSTANTS.SCENES.LEADERBOARD);
+        }, 0x4169E1);
+
+        this._makeButton(btnR, btnY2, '🏠  Menu Utama', function () {
+            scene._stopOldLevel();
+            scene.scene.start(CONSTANTS.SCENES.TITLE);
+        }, 0x666666);
 
         // Leaderboard entry
         this._promptLeaderboard();
