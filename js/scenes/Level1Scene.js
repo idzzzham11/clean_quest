@@ -19,6 +19,7 @@ var LevelSceneCore = {
         scene._paused = false;
         scene._levelComplete = false;
 
+        scene._levelStartTime = Date.now();
         GameState.resetLevel();
         QuizManager.initLevel(scene._quizLevelKey);
         CheckpointSystem.init();
@@ -450,6 +451,22 @@ var LevelSceneCore = {
 
         scene._player.body.setVelocity(0, 0);
 
+        // Time bonus — faster completion = more points
+        var elapsed = Date.now() - (scene._levelStartTime || Date.now());
+        var timeBonus = 0;
+        if (elapsed < CONSTANTS.TIME_BONUS_THRESHOLD) {
+            timeBonus = Math.round(
+                CONSTANTS.TIME_BONUS_MAX * (1 - elapsed / CONSTANTS.TIME_BONUS_THRESHOLD)
+            );
+        }
+
+        // Heart bonus — remaining health × 100
+        var heartBonus = GameState.getHealth() * CONSTANTS.HEART_BONUS;
+
+        // Apply bonuses to score
+        if (timeBonus > 0)  GameState.addScore(timeBonus);
+        if (heartBonus > 0) GameState.addScore(heartBonus);
+
         var stars = RewardSystem.calculateStars(
             GameState.getScore(), GameState.getCoins(), GameState.getHygieneStars(),
             scene._quizPassed, scene._noDamageTaken
@@ -474,7 +491,10 @@ var LevelSceneCore = {
                         fromLevelKey: levelKey,
                         stars: stars,
                         score: GameState.getScore(),
-                        coins: GameState.getCoins()
+                        coins: GameState.getCoins(),
+                        timeBonus: timeBonus,
+                        heartBonus: heartBonus,
+                        timeTaken: Math.round(elapsed / 1000)
                     });
                 });
             }

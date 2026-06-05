@@ -4,10 +4,13 @@ var ResultsScene = class extends Phaser.Scene {
     }
 
     init(data) {
-        this._levelNum = data.levelNum || 1;
-        this._stars = data.stars || 0;
-        this._score = data.score || GameState.getScore();
-        this._coins = data.coins || GameState.getCoins();
+        this._levelNum    = data.levelNum    || 1;
+        this._stars       = data.stars       || 0;
+        this._score       = data.score       || GameState.getScore();
+        this._coins       = data.coins       || GameState.getCoins();
+        this._timeBonus   = data.timeBonus   || 0;
+        this._heartBonus  = data.heartBonus  || 0;
+        this._timeTaken   = data.timeTaken   || 0;
         this._fromLevelKey = data.fromLevelKey || null;
     }
 
@@ -48,51 +51,49 @@ var ResultsScene = class extends Phaser.Scene {
             });
         }
 
-        // Score panel
-        var panelX = W / 2 - 160;
-        var panelY = 210;
-        var panelW = 320;
+        // Score panel — shows breakdown
+        var panelX = W / 2 - 200;
+        var panelY = 205;
+        var panelW = 400;
+        var panelH = 155;
         var panelBg = this.add.graphics();
         panelBg.fillStyle(0x000000, 0.4);
-        panelBg.fillRoundedRect(panelX, panelY, panelW, 120, 12);
+        panelBg.fillRoundedRect(panelX, panelY, panelW, panelH, 12);
         panelBg.lineStyle(2, 0xFFB347, 0.6);
-        panelBg.strokeRoundedRect(panelX, panelY, panelW, 120, 12);
+        panelBg.strokeRoundedRect(panelX, panelY, panelW, panelH, 12);
 
-        this.add.text(W / 2, panelY + 20, 'Score: ' + this._score, {
-            fontFamily: 'Nunito, sans-serif', fontSize: '24px', fontStyle: 'bold',
-            color: '#FFD700'
-        }).setOrigin(0.5);
-        this.add.text(W / 2, panelY + 52, '🪙 Coins: ' + this._coins, {
-            fontFamily: 'Nunito, sans-serif', fontSize: '18px', color: '#FFD700'
-        }).setOrigin(0.5);
-        this.add.text(W / 2, panelY + 80, '⭐ Stars: ' + this._stars + ' / 3', {
-            fontFamily: 'Nunito, sans-serif', fontSize: '18px', color: '#FFFFFF'
-        }).setOrigin(0.5);
+        // Format time taken
+        var mins = Math.floor(this._timeTaken / 60);
+        var secs = this._timeTaken % 60;
+        var timeStr = (mins > 0 ? mins + 'm ' : '') + secs + 's';
 
-        // Educational tip box
-        var tipIndex = (this._levelNum - 1) * 2;
-        var tip = LoadingTips[tipIndex % LoadingTips.length];
-        var tipBg = this.add.graphics();
-        tipBg.fillStyle(0xFFB347, 0.15);
-        tipBg.fillRoundedRect(80, 348, W - 160, 60, 8);
-        tipBg.lineStyle(2, 0xFFB347, 0.5);
-        tipBg.strokeRoundedRect(80, 348, W - 160, 60, 8);
-        this.add.text(W / 2, 378, '💡 ' + tip, {
-            fontFamily: 'Nunito, sans-serif', fontSize: '12px', color: '#FFE8C0',
-            wordWrap: { width: W - 200 }, align: 'center'
-        }).setOrigin(0.5);
+        var row = panelY + 18;
+        var gap = 26;
+        var lblStyle = { fontFamily: 'Nunito, sans-serif', fontSize: '14px', color: '#AAAAAA' };
+        var valStyle = { fontFamily: 'Nunito, sans-serif', fontSize: '14px', fontStyle: 'bold', color: '#FFFFFF' };
 
-        // Badges earned notification
-        var badges = SaveManager.get('progress.collectedBadges') || [];
-        if (badges.length > 0) {
-            this.add.text(W / 2, 425, '🏅 Badges Earned: ' + badges.length, {
-                fontFamily: 'Nunito, sans-serif', fontSize: '14px', color: '#FFD700'
-            }).setOrigin(0.5);
-        }
+        this.add.text(panelX + 16, row, '🪙 Coins',       lblStyle);
+        this.add.text(panelX + panelW - 16, row, '+' + (this._coins * 10), valStyle).setOrigin(1, 0);
+        row += gap;
+        this.add.text(panelX + 16, row, '⏱ Masa (' + timeStr + ')', lblStyle);
+        this.add.text(panelX + panelW - 16, row, '+' + this._timeBonus, { fontFamily: 'Nunito, sans-serif', fontSize: '14px', fontStyle: 'bold', color: this._timeBonus > 0 ? '#44FF88' : '#888888' }).setOrigin(1, 0);
+        row += gap;
+        this.add.text(panelX + 16, row, '❤️ Nyawa tinggal',  lblStyle);
+        this.add.text(panelX + panelW - 16, row, '+' + this._heartBonus, { fontFamily: 'Nunito, sans-serif', fontSize: '14px', fontStyle: 'bold', color: this._heartBonus > 0 ? '#FF6666' : '#888888' }).setOrigin(1, 0);
+        row += gap;
+
+        // Divider
+        var div = this.add.graphics();
+        div.lineStyle(1, 0xFFB347, 0.4);
+        div.strokeLineShape(new Phaser.Geom.Line(panelX + 12, row, panelX + panelW - 12, row));
+        row += 10;
+
+        this.add.text(panelX + 16, row, 'Jumlah Markah', { fontFamily: 'Nunito, sans-serif', fontSize: '16px', fontStyle: 'bold', color: '#FFB347' });
+        this.add.text(panelX + panelW - 16, row, this._score, { fontFamily: 'Nunito, sans-serif', fontSize: '20px', fontStyle: 'bold', color: '#FFD700' }).setOrigin(1, 0);
 
         // 4 buttons in a 2x2 grid
-        var btnY1 = 420;
-        var btnY2 = 475;
+        var btnY1 = 390;
+        var btnY2 = 445;
         var btnL  = W / 2 - 175;
         var btnR  = W / 2 + 15;
 
