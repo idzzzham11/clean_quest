@@ -14,37 +14,39 @@ var TitleScene = class extends Phaser.Scene {
         // Animated background elements
         this._createAnimatedBg(W, H);
 
-        // Logo
-        var logo = this.add.text(W / 2, H / 2 - 130, 'CleanQuest', {
+        var scene = this;
+        var hasSave = SaveManager.isLevelUnlocked(2);
+
+        // ── Fixed positions from top ──────────────────────────────
+        // Logo area: top quarter
+        var logo = this.add.text(W / 2, 60, 'CleanQuest', {
             fontFamily: 'Nunito, sans-serif',
-            fontSize: '72px', fontStyle: 'bold',
+            fontSize: '58px', fontStyle: 'bold',
             color: '#FFB347',
             stroke: '#CC6600', strokeThickness: 6,
-            shadow: { offsetX: 4, offsetY: 4, color: '#000000', blur: 8, fill: true }
+            shadow: { offsetX: 3, offsetY: 3, color: '#000000', blur: 6, fill: true }
         }).setOrigin(0.5);
 
-        var subtitle = this.add.text(W / 2, H / 2 - 62, 'Workplace Hero', {
+        this.add.text(W / 2, 120, 'Workplace Hero', {
             fontFamily: 'Nunito, sans-serif',
-            fontSize: '32px', fontStyle: 'bold',
-            color: '#AACCFF',
-            stroke: '#000033', strokeThickness: 4
+            fontSize: '24px', fontStyle: 'bold',
+            color: '#AACCFF', stroke: '#000033', strokeThickness: 3
         }).setOrigin(0.5);
 
-        var tagline = this.add.text(W / 2, H / 2 - 22, 'Learn Workplace Hygiene Through Adventure!', {
+        this.add.text(W / 2, 152, 'Amalan Kebersihan dan Penampilan Diri', {
             fontFamily: 'Nunito, sans-serif',
-            fontSize: '15px', color: '#88AACC'
+            fontSize: '13px', color: '#88AACC'
         }).setOrigin(0.5);
 
-        // Logo bounce animation
         this.tweens.add({
-            targets: logo, y: logo.y - 10, duration: 1500,
+            targets: logo, y: logo.y - 8, duration: 1500,
             yoyo: true, repeat: -1, ease: 'Sine.easeInOut'
         });
 
-        // Show current player name
+        // Player name display
         var currentName = SaveManager.getCharacter().name || '';
-        var nameDisplay = this.add.text(W / 2, H / 2 + 5, currentName ? '👤 ' + currentName : '👤 Tetapkan nama anda', {
-            fontFamily: 'Nunito, sans-serif', fontSize: '16px',
+        var nameDisplay = this.add.text(W / 2, 192, currentName ? '👤 ' + currentName : '👤 Tetapkan nama anda', {
+            fontFamily: 'Nunito, sans-serif', fontSize: '15px',
             color: currentName ? '#AAFFAA' : '#FFAAAA'
         }).setOrigin(0.5).setInteractive({ useHandCursor: true });
         nameDisplay.on('pointerdown', function () {
@@ -54,49 +56,45 @@ var TitleScene = class extends Phaser.Scene {
             });
         });
 
-        // Menu buttons
-        var btnY = H / 2 + 35;
-        var hasSave = SaveManager.isLevelUnlocked(2);
-        var scene = this;
+        // ── Buttons — evenly spaced from y=220 ───────────────────
+        var GAP = 52;
+        var startY = 228;
+        var row = 0;
 
-        this._makeMenuButton(W / 2, btnY, '🎮  Play Now', 0xFFB347, function () {
+        var doPlay = function () {
             AudioManager.initOnGesture();
             var name = SaveManager.getCharacter().name || '';
             if (!name || name === 'Player 1') {
                 scene._showNameInput(function () {
                     scene.cameras.main.fadeOut(400);
-                    scene.time.delayedCall(400, function () {
-                        scene.scene.start(CONSTANTS.SCENES.LEVEL_SELECT);
-                    });
+                    scene.time.delayedCall(400, function () { scene.scene.start(CONSTANTS.SCENES.LEVEL_SELECT); });
                 });
             } else {
                 scene.cameras.main.fadeOut(400);
-                scene.time.delayedCall(400, function () {
-                    scene.scene.start(CONSTANTS.SCENES.LEVEL_SELECT);
-                });
+                scene.time.delayedCall(400, function () { scene.scene.start(CONSTANTS.SCENES.LEVEL_SELECT); });
             }
-        });
+        };
+
+        this._makeMenuButton(W / 2, startY + GAP * row++, '🎮  Main', 0xFFB347, doPlay);
 
         if (hasSave) {
-            this._makeMenuButton(W / 2, btnY + 60, '▶  Continue', 0x2ECC71, function () {
+            this._makeMenuButton(W / 2, startY + GAP * row++, '▶  Teruskan', 0x2ECC71, function () {
                 AudioManager.initOnGesture();
                 scene.cameras.main.fadeOut(400);
-                scene.time.delayedCall(400, function () {
-                    scene.scene.start(CONSTANTS.SCENES.LEVEL_SELECT);
-                });
+                scene.time.delayedCall(400, function () { scene.scene.start(CONSTANTS.SCENES.LEVEL_SELECT); });
             });
         }
 
-        this._makeMenuButton(W / 2, btnY + (hasSave ? 120 : 60), '🏆  Leaderboard', 0x4169E1, function () {
+        this._makeMenuButton(W / 2, startY + GAP * row++, '🏆  Papan Kedudukan', 0x4169E1, function () {
             scene.scene.start(CONSTANTS.SCENES.LEADERBOARD);
         });
 
-        this._makeMenuButton(W / 2, btnY + (hasSave ? 180 : 120), '🎬  Credits', 0x888888, function () {
+        this._makeMenuButton(W / 2, startY + GAP * row++, '🎬  Kredit', 0x888888, function () {
             scene.scene.start(CONSTANTS.SCENES.CREDITS);
         });
 
         if (hasSave) {
-            this._makeMenuButton(W / 2, btnY + 240, '🔄  Reset Progress', 0xFF4444, function () {
+            this._makeMenuButton(W / 2, startY + GAP * row++, '🔄  Reset', 0xFF4444, function () {
                 scene._confirmReset();
             });
         }
