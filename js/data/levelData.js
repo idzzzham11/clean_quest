@@ -137,15 +137,19 @@ var LevelData = (function () {
         });
     })();
     var L3_ENEMIES = [
+        // Ground enemies
         { type: 'germ',        x: 200,  y: 410 },
-        { type: 'smell_cloud', x: 340,  y: 410 },
         { type: 'hair_monster',x: 920,  y: 410 },
         { type: 'germ',        x: 1040, y: 410 },
         { type: 'dirty_robot', x: 1700, y: 410 },
-        { type: 'smell_cloud', x: 1800, y: 410 },
         { type: 'germ',        x: 2460, y: 410 },
         { type: 'hair_monster',x: 2580, y: 410 },
-        { type: 'dirty_robot', x: 2960, y: 410 }
+        { type: 'dirty_robot', x: 2960, y: 410 },
+        // Flying enemies above each platform (smell_cloud floats)
+        { type: 'smell_cloud', x: 312,  y: 270 },  // above platform row7 cols5-7
+        { type: 'smell_cloud', x: 960,  y: 220 },  // above platform row6 cols19-21
+        { type: 'smell_cloud', x: 1728, y: 270 },  // above platform row7 cols35-37
+        { type: 'smell_cloud', x: 2496, y: 220 }   // above platform row6 cols51-53
     ];
     var L3_ITEMS = [
         { type: 'coin',          x: 130,  y: 395 },
@@ -199,19 +203,23 @@ var LevelData = (function () {
         });
     })();
     var L4_ENEMIES = [
+        // Ground enemies
         { type: 'germ',        x: 180,  y: 410 },
-        { type: 'smell_cloud', x: 320,  y: 410 },
         { type: 'hair_monster',x: 920,  y: 410 },
         { type: 'germ',        x: 1040, y: 410 },
         { type: 'dirty_robot', x: 1700, y: 410 },
-        { type: 'smell_cloud', x: 1800, y: 410 },
         { type: 'germ',        x: 2460, y: 410 },
         { type: 'hair_monster',x: 2560, y: 410 },
         { type: 'dirty_robot', x: 3160, y: 410 },
-        { type: 'smell_cloud', x: 3240, y: 410 },
         { type: 'germ',        x: 3440, y: 410 },
         { type: 'hair_monster',x: 3540, y: 410 },
-        { type: 'dirty_robot', x: 3640, y: 410 }
+        { type: 'dirty_robot', x: 3640, y: 410 },
+        // Flying enemies above each platform
+        { type: 'smell_cloud', x: 312,  y: 270 },  // above platform row7 cols5-7
+        { type: 'smell_cloud', x: 960,  y: 220 },  // above platform row6 cols19-21
+        { type: 'smell_cloud', x: 1728, y: 270 },  // above platform row7 cols35-37
+        { type: 'smell_cloud', x: 2496, y: 220 },  // above platform row6 cols51-53
+        { type: 'smell_cloud', x: 3264, y: 270 }   // above platform row7 cols67-69
     ];
     var L4_ITEMS = [
         { type: 'coin',          x: 110,  y: 395 },
