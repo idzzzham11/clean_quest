@@ -1,21 +1,22 @@
-// Manages quiz question selection, validation, and reward/penalty dispatch.
-// Each level's questions are shuffled once at level start (initLevel).
-// Each door calls show() to ask exactly 1 question from the queue.
+// Quiz Manager — timer, streak bonus, 50/50 lifeline
 var QuizManager = {
     _currentQuestion: null,
     _attempts: 0,
     _maxAttempts: 3,
     _onComplete: null,
     _levelKey: null,
-    _queue: [],          // shuffled questions for this level, consumed door by door
-    _queueTotal: 0,      // total doors / questions for the level
-    _queueIndex: 0,      // how many have been asked so far
+    _queue: [],
+    _queueTotal: 0,
+    _queueIndex: 0,
+    _allCorrect: true,      // tracks perfect-quiz streak for this level
+    _fiftyUsed: false,      // one 50/50 per level
 
-    // Call once when a level scene starts to prepare the shuffled question order
     initLevel: function (levelKey) {
-        this._levelKey = levelKey;
+        this._levelKey  = levelKey;
+        this._allCorrect = true;
+        this._fiftyUsed  = false;
+
         var questions = QuizData[levelKey] || [];
-        // Fisher-Yates shuffle of the level's question pool
         this._queue = questions.slice();
         for (var i = this._queue.length - 1; i > 0; i--) {
             var j = Math.floor(Math.random() * (i + 1));
@@ -23,17 +24,28 @@ var QuizManager = {
         }
         this._queueTotal = this._queue.length;
         this._queueIndex = 0;
+
+        // Wire 50/50 button
+        var self = this;
+        var fiftyBtn = document.getElementById('quiz-fifty');
+        if (fiftyBtn) {
+            fiftyBtn.onclick = null;
+            fiftyBtn.onclick = function () {
+                if (!self._fiftyUsed && self._currentQuestion) {
+                    self._fiftyUsed = true;
+                    QuizOverlay.applyFiftyFifty(self._currentQuestion.correctIndex);
+                }
+            };
+        }
     },
 
-    // Call once per door touch — asks exactly 1 question
     show: function (scene, levelKey, onComplete) {
-        // Re-init if the level changed or queue is empty
         if (levelKey !== this._levelKey || this._queue.length === 0) {
             this.initLevel(levelKey);
         }
 
         this._onComplete = onComplete;
-        this._attempts = 0;
+        this._attempts   = 0;
 
         if (this._queue.length === 0) {
             onComplete && onComplete(true);
@@ -43,16 +55,32 @@ var QuizManager = {
         this._currentQuestion = this._queue.shift();
         this._queueIndex++;
 
+        // Reset 50/50 button availability per question (but only 1 use per level)
+        var fiftyBtn = document.getElementById('quiz-fifty');
+        if (fiftyBtn) fiftyBtn.disabled = this._fiftyUsed;
+
         scene.scene.pause(scene.scene.key);
 
         var progress = 'Soalan ' + this._queueIndex + ' / ' + this._queueTotal;
+        var self = this;
+
         QuizOverlay.show(this._currentQuestion, function (selectedIndex) {
             QuizManager._handleAnswer(scene, selectedIndex);
-        }, progress);
+        }, progress, function () {
+            // Timer ran out — lose a heart, mark wrong, fail door
+            self._allCorrect = false;
+            GameState.takeDamage(1);
+            GameState.quizWrong();
+            setTimeout(function () {
+                QuizOverlay.hide();
+                scene.scene.resume(scene.scene.key);
+                QuizManager._onComplete && QuizManager._onComplete(false);
+            }, 2000);
+        });
     },
 
     _handleAnswer: function (scene, selectedIndex) {
-        var q = this._currentQuestion;
+        var q       = this._currentQuestion;
         var correct = selectedIndex === q.correctIndex;
         this._attempts++;
 
@@ -61,14 +89,18 @@ var QuizManager = {
             GameState.quizCorrect();
 
             if (q.reward) {
-                if (q.reward.type === 'coins') {
-                    GameState.addCoins(q.reward.amount || 30);
-                } else if (q.reward.type === 'star') {
-                    GameState.addHygieneStar();
-                }
+                if (q.reward.type === 'coins') GameState.addCoins(q.reward.amount || 30);
+                else if (q.reward.type === 'star') GameState.addHygieneStar();
             }
 
             AudioManager && AudioManager.playQuizCorrect && AudioManager.playQuizCorrect();
+
+            // Check if this was the last question — award streak bonus
+            var isLastQuestion = QuizManager._queue.length === 0;
+            if (isLastQuestion && QuizManager._allCorrect) {
+                GameState.addScore(200);
+                QuizOverlay.showFeedback(true, (q.explanation || 'Betul!') + ' 🔥 +200 Bonus Sempurna!');
+            }
 
             setTimeout(function () {
                 QuizOverlay.hide();
@@ -77,11 +109,12 @@ var QuizManager = {
             }, 1800);
 
         } else {
+            this._allCorrect = false;
             GameState.quizWrong();
             AudioManager && AudioManager.playQuizWrong && AudioManager.playQuizWrong();
 
             if (this._attempts >= this._maxAttempts) {
-                QuizOverlay.showFeedback(false, 'Jawapan yang betul ialah: ' + q.options[q.correctIndex]);
+                QuizOverlay.showFeedback(false, 'Jawapan betul: ' + q.options[q.correctIndex]);
                 setTimeout(function () {
                     QuizOverlay.hide();
                     scene.scene.resume(scene.scene.key);
