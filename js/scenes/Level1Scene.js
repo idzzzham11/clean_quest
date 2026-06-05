@@ -37,6 +37,9 @@ var LevelSceneCore = {
         LevelSceneCore._spawnEnemies(scene, data.enemies);
         LevelSceneCore._spawnItems(scene, data.items);
         LevelSceneCore._spawnHazards(scene, data.hazards);
+        if (data.movingPlatforms) {
+            LevelSceneCore._spawnMovingPlatforms(scene, data.movingPlatforms);
+        }
 
         // Spawn just above the ground (row 9 * 48 = 432; player height ~44px)
         scene._player = new Player(scene, 80, 380, null);
@@ -97,6 +100,7 @@ var LevelSceneCore = {
         scene._hudCoins = null;
         scene._hudStars = null;
         scene._hudScore = null;
+        scene._movingPlatforms = null;
         MobileControls.hide();
         AudioManager.stopBGM();
     },
@@ -170,6 +174,57 @@ var LevelSceneCore = {
         scene._hudCoins.setText(GameState.getCoins());
         scene._hudStars.setText(GameState.getHygieneStars());
         scene._hudScore.setText('Score: ' + GameState.getScore());
+    },
+
+    _spawnMovingPlatforms: function (scene, platformData) {
+        scene._movingPlatforms = scene._movingPlatforms || [];
+        platformData.forEach(function (pd) {
+            // Draw platform graphic
+            var gfx = scene.add.graphics();
+            gfx.fillStyle(0x99A8B0, 1);
+            gfx.fillRect(0, 0, pd.width, 16);
+            gfx.lineStyle(2, 0xFFFFFF, 0.3);
+            gfx.strokeLineShape(new Phaser.Geom.Line(3, 4, pd.width - 6, 4));
+
+            // Physics body
+            var plat = scene.physics.add.image(pd.x + pd.width / 2, pd.y, '__DEFAULT');
+            plat.setDisplaySize(pd.width, 16);
+            plat.setAlpha(0);
+            plat.body.allowGravity = false;
+            plat.body.immovable = true;
+            plat.body.setSize(pd.width, 16);
+
+            // Visible graphic follows physics body
+            var update = function () {
+                gfx.setPosition(plat.x - pd.width / 2, plat.y - 8);
+            };
+            scene.events.on('update', update);
+
+            // Tween the physics body
+            var tweenProps = {};
+            var targetKey = pd.moveAxis === 'x' ? 'x' : 'y';
+            tweenProps[targetKey] = pd.moveAxis === 'x'
+                ? pd.x + pd.width / 2 + pd.distance
+                : pd.y + pd.distance;
+
+            scene.tweens.add({
+                targets: plat,
+                props: tweenProps,
+                duration: pd.speed,
+                yoyo: true,
+                repeat: -1,
+                ease: 'Sine.easeInOut'
+            });
+
+            // Player collider
+            scene.physics.add.collider(scene._player, plat, function () {
+                if (pd.moveAxis === 'x') {
+                    scene._player.body.x += plat.body.velocity.x * (1 / 60);
+                }
+            });
+
+            scene._movingPlatforms.push({ plat: plat, gfx: gfx });
+        });
     },
 
     _buildBackground: function (scene, levelWidth, H) {
