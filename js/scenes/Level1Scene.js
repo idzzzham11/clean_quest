@@ -92,19 +92,6 @@ var LevelSceneCore = {
     },
 
     shutdown: function (scene) {
-        try {
-            GameState.off('playerDied', null, scene);
-            GameState.off('gameOver', null, scene);
-            GameState.off('pauseToggle', null, scene);
-            GameState.off('healthChanged', null, scene);
-            GameState.off('coinsChanged', null, scene);
-            GameState.off('starsChanged', null, scene);
-            GameState.off('scoreChanged', null, scene);
-        } catch (e) {}
-        scene._hudHearts = null;
-        scene._hudCoins = null;
-        scene._hudStars = null;
-        scene._hudScore = null;
         MobileControls.hide();
         AudioManager.stopBGM();
     },
@@ -154,22 +141,36 @@ var LevelSceneCore = {
             .setInteractive({ useHandCursor: true });
         scene._pauseBtn.on('pointerdown', function () { GameState.emit('pauseToggle'); });
 
-        // Wire GameState events
-        GameState.on('healthChanged', function (h) {
+        // Wire GameState events — store references so we can remove them on shutdown
+        scene._onHealthChanged = function (h) {
             if (!scene._hudHearts) return;
             scene._hudHearts.forEach(function (hrt, i) {
                 hrt.setTexture(i < h ? 'heart_full' : 'heart_empty');
             });
-        }, scene);
-        GameState.on('coinsChanged', function (c) {
-            scene._hudCoins && scene._hudCoins.setText(c);
-        }, scene);
-        GameState.on('starsChanged', function (s) {
-            scene._hudStars && scene._hudStars.setText(s);
-        }, scene);
-        GameState.on('scoreChanged', function (s) {
-            scene._hudScore && scene._hudScore.setText('Score: ' + s);
-        }, scene);
+        };
+        scene._onCoinsChanged  = function (c) { scene._hudCoins  && scene._hudCoins.setText(c); };
+        scene._onStarsChanged  = function (s) { scene._hudStars  && scene._hudStars.setText(s); };
+        scene._onScoreChanged  = function (s) { scene._hudScore  && scene._hudScore.setText('Score: ' + s); };
+
+        GameState.on('healthChanged', scene._onHealthChanged, scene);
+        GameState.on('coinsChanged',  scene._onCoinsChanged,  scene);
+        GameState.on('starsChanged',  scene._onStarsChanged,  scene);
+        GameState.on('scoreChanged',  scene._onScoreChanged,  scene);
+
+        // Remove listeners when scene shuts down
+        scene.events.once('shutdown', function () {
+            GameState.off('healthChanged', scene._onHealthChanged, scene);
+            GameState.off('coinsChanged',  scene._onCoinsChanged,  scene);
+            GameState.off('starsChanged',  scene._onStarsChanged,  scene);
+            GameState.off('scoreChanged',  scene._onScoreChanged,  scene);
+            GameState.off('playerDied',    null, scene);
+            GameState.off('gameOver',      null, scene);
+            GameState.off('pauseToggle',   null, scene);
+            scene._hudHearts = null;
+            scene._hudCoins  = null;
+            scene._hudStars  = null;
+            scene._hudScore  = null;
+        });
 
         // Initial values
         scene._hudHearts.forEach(function (hrt, i) {
