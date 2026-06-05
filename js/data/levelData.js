@@ -23,214 +23,215 @@ var LevelData = (function () {
         return map;
     }
 
-    // ── Level 1: Office ── 30 cols (1440px) ──────────────────────────────────
-    // 1 door at col 15, exit col 29
-    var L1_MAP = buildMap(30, T.OF, T.PW,
+    // ── Level 1 ── 36 cols (1728px) ──────────────────────────────────────────
+    // door col15=744px, exit col35=1704px
+    // Clear zones: 544-944 (door), 1504-1728 (exit)
+    var L1_MAP = buildMap(36, T.OF, T.PW,
         [
             { cols: [5, 6, 7],    row: 7 },
             { cols: [18, 19, 20], row: 6 },
-            { cols: [25, 26, 27], row: 7 }
+            { cols: [28, 29, 30], row: 7 }
         ],
         [{ col: 15, row: 8 }],
-        { col: 29, row: 8 }
+        { col: 35, row: 8 }
     );
     var L1_ENEMIES = [
         { type: 'germ',        x: 280,  y: 410 },
-        { type: 'smell_cloud', x: 600,  y: 410 },
-        { type: 'germ',        x: 900,  y: 410 },
+        { type: 'smell_cloud', x: 420,  y: 410 },
+        { type: 'germ',        x: 1050, y: 410 },
         { type: 'smell_cloud', x: 1200, y: 410 },
         { type: 'germ',        x: 1380, y: 410 }
     ];
     var L1_ITEMS = [
         { type: 'coin',          x: 140,  y: 395 },
-        { type: 'coin',          x: 210,  y: 395 },
+        { type: 'coin',          x: 220,  y: 395 },
         { type: 'soap',          x: 360,  y: 395 },
-        { type: 'coin',          x: 700,  y: 395 },
-        { type: 'hygiene_star',  x: 980,  y: 395 },
-        { type: 'coin',          x: 1050, y: 395 },
-        { type: 'uniform_clean', x: 1300, y: 395 }
+        { type: 'coin',          x: 480,  y: 395 },
+        { type: 'hygiene_star',  x: 1000, y: 395 },
+        { type: 'coin',          x: 1100, y: 395 },
+        { type: 'coin',          x: 1280, y: 395 },
+        { type: 'uniform_clean', x: 1380, y: 395 }
     ];
     var L1_HAZARDS = [
-        { type: 'dirty_cloud', x: 500,  y: 415 },
-        { type: 'dirty_cloud', x: 1200, y: 415 }
+        { type: 'dirty_cloud', x: 340,  y: 415 },
+        { type: 'dirty_cloud', x: 1180, y: 415 }
     ];
 
-    // ── Level 2: Salon ── 40 cols (1920px) ───────────────────────────────────
-    // 2 doors evenly: col 13 and col 26, exit col 39
-    var L2_MAP = buildMap(40, T.SF, T.SP,
+    // ── Level 2 ── 48 cols (2304px) ──────────────────────────────────────────
+    // doors col13=648, col30=1464, exit col47=2280
+    // Clear zones: 448-848, 1264-1664, 2080-2304
+    // hole col20-21 (between door1 and door2)
+    var L2_MAP = buildMap(48, T.SF, T.SP,
         [
             { cols: [5, 6, 7],    row: 7 },
-            { cols: [16, 17, 18], row: 6 },
-            { cols: [28, 29, 30], row: 7 },
-            { cols: [35, 36, 37], row: 6 }
+            { cols: [18, 19, 20], row: 6 },
+            { cols: [35, 36, 37], row: 7 },
+            { cols: [42, 43, 44], row: 6 }
         ],
         [
             { col: 13, row: 8 },
-            { col: 26, row: 8 }
+            { col: 30, row: 8 }
         ],
-        { col: 39, row: 8 }
+        { col: 47, row: 8 }
     );
-    // 1 hole between door 1 (col13) and door 2 (col26): col 20-21
     (function () {
         for (var r = 9; r <= 11; r++) {
-            L2_MAP[r][20] = 0;
-            L2_MAP[r][21] = 0;
+            L2_MAP[r][23] = 0;
+            L2_MAP[r][24] = 0;
         }
     })();
-    // L2 exclusions — doors:448-848,1072-1472 | hole:810-1158
+    // hole center=1128px, clear 978-1278. door2=1464px clear 1264-1664. exit=2280px clear 2080-2304
     var L2_ENEMIES = [
         { type: 'germ',        x: 200,  y: 410 },
-        { type: 'smell_cloud', x: 420,  y: 410 },
-        { type: 'germ',        x: 700,  y: 410 },  // before door1 zone
-        { type: 'hair_monster',x: 1180, y: 410 },  // moved from 960 (hole)
-        { type: 'smell_cloud', x: 1500, y: 410 },  // after door2 zone
-        { type: 'germ',        x: 1700, y: 410 },
-        { type: 'hair_monster',x: 1860, y: 410 }
+        { type: 'smell_cloud', x: 340,  y: 410 },
+        { type: 'germ',        x: 920,  y: 410 },
+        { type: 'hair_monster',x: 1700, y: 410 },
+        { type: 'smell_cloud', x: 1860, y: 410 },
+        { type: 'germ',        x: 1980, y: 410 }
     ];
     var L2_ITEMS = [
         { type: 'coin',          x: 130,  y: 395 },
-        { type: 'coin',          x: 210,  y: 395 },
-        { type: 'soap',          x: 320,  y: 395 },
-        { type: 'coin',          x: 560,  y: 395 },
-        { type: 'hygiene_star',  x: 740,  y: 395 },  // before hole zone
-        { type: 'coin',          x: 1280, y: 395 },
-        { type: 'uniform_clean', x: 1580, y: 395 },
+        { type: 'coin',          x: 220,  y: 395 },
+        { type: 'soap',          x: 340,  y: 395 },
+        { type: 'coin',          x: 480,  y: 395 },
+        { type: 'hygiene_star',  x: 880,  y: 395 },
+        { type: 'coin',          x: 1000, y: 395 },
         { type: 'coin',          x: 1720, y: 395 },
-        { type: 'hygiene_star',  x: 1860, y: 395 }
+        { type: 'uniform_clean', x: 1860, y: 395 },
+        { type: 'coin',          x: 1980, y: 395 }
     ];
     var L2_HAZARDS = [
-        { type: 'dirty_cloud', x: 480,  y: 415 },
-        { type: 'dirty_cloud', x: 1340, y: 415 },
-        { type: 'dirty_cloud', x: 1820, y: 415 }
+        { type: 'dirty_cloud', x: 300,  y: 415 },
+        { type: 'dirty_cloud', x: 900,  y: 415 },
+        { type: 'dirty_cloud', x: 1780, y: 415 }
     ];
 
-    // ── Level 3: Kitchen ── 52 cols (2496px) — MOVING PLATFORMS ─────────────
-    // 3 doors: col 13, 26, 39 → exit col 51
-    var L3_MAP = buildMap(52, T.KF, T.PM,
+    // ── Level 3 ── 62 cols (2976px) ──────────────────────────────────────────
+    // doors col13=648, col29=1416, col45=2184, exit col61=2952
+    // Clear zones: 448-848, 1216-1616, 1984-2384, 2752-2976
+    // holes col21-22, col37-38, col53-54
+    var L3_MAP = buildMap(62, T.KF, T.PM,
         [
             { cols: [5, 6, 7],    row: 7 },
-            { cols: [17, 18, 19], row: 6 },
-            { cols: [31, 32, 33], row: 7 },
-            { cols: [44, 45, 46], row: 6 }
+            { cols: [19, 20, 21], row: 6 },
+            { cols: [35, 36, 37], row: 7 },
+            { cols: [51, 52, 53], row: 6 }
         ],
         [
             { col: 13, row: 8 },
-            { col: 26, row: 8 },
-            { col: 39, row: 8 }
+            { col: 29, row: 8 },
+            { col: 45, row: 8 }
         ],
-        { col: 51, row: 8 }
+        { col: 61, row: 8 }
     );
-    // 3 holes: between seg1-2 (col 20-21), seg2-3 (col 33-34), seg3-4 (col 46-47)
     (function () {
-        [[20,21],[33,34],[46,47]].forEach(function (pair) {
+        [[21,22],[37,38],[53,54]].forEach(function (pair) {
             for (var r = 9; r <= 11; r++) {
                 L3_MAP[r][pair[0]] = 0;
                 L3_MAP[r][pair[1]] = 0;
             }
         });
     })();
-    // L3 exclusions — doors:448-848,1072-1472,1696-2096 | holes:810-1158,1434-1782,2058-2406
+    // hole1 center=1056px clear 906-1206, hole2=1824 clear 1674-1974, hole3=2592 clear 2442-2742
     var L3_ENEMIES = [
         { type: 'germ',        x: 200,  y: 410 },
-        { type: 'smell_cloud', x: 380,  y: 410 },
-        { type: 'hair_monster',x: 620,  y: 410 },  // before door1 zone
-        { type: 'germ',        x: 900,  y: 410 },  // before hole1 zone
-        { type: 'dirty_robot', x: 1200, y: 410 },  // after hole1, before door2
-        { type: 'smell_cloud', x: 1500, y: 410 },  // moved from 1380 (door2 zone)
-        { type: 'germ',        x: 1650, y: 410 },  // after door2, before hole2
-        { type: 'hair_monster',x: 2120, y: 410 },  // moved from 1900 (door3 zone)
-        { type: 'dirty_robot', x: 2430, y: 410 },  // after hole3
-        { type: 'smell_cloud', x: 2450, y: 410 }
+        { type: 'smell_cloud', x: 340,  y: 410 },
+        { type: 'hair_monster',x: 920,  y: 410 },
+        { type: 'germ',        x: 1050, y: 410 },
+        { type: 'dirty_robot', x: 1700, y: 410 },
+        { type: 'smell_cloud', x: 1840, y: 410 },
+        { type: 'germ',        x: 2460, y: 410 },
+        { type: 'hair_monster',x: 2600, y: 410 },
+        { type: 'dirty_robot', x: 2760, y: 410 }
     ];
     var L3_ITEMS = [
         { type: 'coin',          x: 130,  y: 395 },
-        { type: 'coin',          x: 210,  y: 395 },
-        { type: 'soap',          x: 320,  y: 395 },
-        { type: 'coin',          x: 540,  y: 395 },
-        { type: 'hygiene_star',  x: 750,  y: 395 },  // before hole1 zone
-        { type: 'coin',          x: 1280, y: 395 },
-        { type: 'uniform_clean', x: 1560, y: 395 },
-        { type: 'coin',          x: 1720, y: 395 },
-        { type: 'soap',          x: 1860, y: 395 },
-        { type: 'hygiene_star',  x: 2050, y: 395 },
-        { type: 'coin',          x: 2360, y: 395 },
-        { type: 'coin',          x: 2470, y: 395 }
+        { type: 'coin',          x: 220,  y: 395 },
+        { type: 'soap',          x: 360,  y: 395 },
+        { type: 'coin',          x: 480,  y: 395 },
+        { type: 'hygiene_star',  x: 880,  y: 395 },
+        { type: 'coin',          x: 1000, y: 395 },
+        { type: 'coin',          x: 1680, y: 395 },
+        { type: 'uniform_clean', x: 1840, y: 395 },
+        { type: 'coin',          x: 2460, y: 395 },
+        { type: 'hygiene_star',  x: 2600, y: 395 },
+        { type: 'coin',          x: 2760, y: 395 },
+        { type: 'coin',          x: 2880, y: 395 }
     ];
     var L3_HAZARDS = [
-        { type: 'dirty_cloud', x: 420,  y: 415 },
-        { type: 'dirty_cloud', x: 1340, y: 415 },
-        { type: 'dirty_cloud', x: 1820, y: 415 },
-        { type: 'dirty_cloud', x: 2300, y: 415 }
+        { type: 'dirty_cloud', x: 300,  y: 415 },
+        { type: 'dirty_cloud', x: 900,  y: 415 },
+        { type: 'dirty_cloud', x: 1760, y: 415 },
+        { type: 'dirty_cloud', x: 2560, y: 415 }
     ];
 
-    // ── Level 4: Customer Service ── 68 cols (3264px) — MORE MOVING PLATFORMS ─
-    // 4 doors: col 13, 26, 39, 52 → exit col 67
-    var L4_MAP = buildMap(68, T.CF, T.PG,
+    // ── Level 4 ── 80 cols (3840px) ──────────────────────────────────────────
+    // doors col13=648, col29=1416, col45=2184, col61=2952, exit col79=3816
+    // Clear zones: 448-848, 1216-1616, 1984-2384, 2752-3152, 3616-3840
+    // holes col21-22, col37-38, col53-54, col69-70, col75-76
+    var L4_MAP = buildMap(80, T.CF, T.PG,
         [
             { cols: [5, 6, 7],    row: 7 },
-            { cols: [17, 18, 19], row: 6 },
-            { cols: [30, 31, 32], row: 7 },
-            { cols: [43, 44, 45], row: 6 },
-            { cols: [58, 59, 60], row: 7 }
+            { cols: [19, 20, 21], row: 6 },
+            { cols: [35, 36, 37], row: 7 },
+            { cols: [51, 52, 53], row: 6 },
+            { cols: [67, 68, 69], row: 7 }
         ],
         [
             { col: 13, row: 8 },
-            { col: 26, row: 8 },
-            { col: 39, row: 8 },
-            { col: 52, row: 8 }
+            { col: 29, row: 8 },
+            { col: 45, row: 8 },
+            { col: 61, row: 8 }
         ],
-        { col: 67, row: 8 }
+        { col: 79, row: 8 }
     );
-    // 5 holes spread across 5 segments: cols 20-21, 33-34, 46-47, 58-59, 63-64
     (function () {
-        [[20,21],[33,34],[46,47],[58,59],[63,64]].forEach(function (pair) {
+        [[21,22],[37,38],[53,54],[69,70],[75,76]].forEach(function (pair) {
             for (var r = 9; r <= 11; r++) {
                 L4_MAP[r][pair[0]] = 0;
                 L4_MAP[r][pair[1]] = 0;
             }
         });
     })();
-    // L4 exclusions — doors:448-848,1072-1472,1696-2096,2320-2720
-    // holes:810-1158,1434-1782,2058-2406,2634-2982,2874-3222
     var L4_ENEMIES = [
         { type: 'germ',        x: 180,  y: 410 },
-        { type: 'smell_cloud', x: 340,  y: 410 },
-        { type: 'hair_monster',x: 560,  y: 410 },  // before door1 zone
-        { type: 'germ',        x: 750,  y: 410 },  // before hole1 zone
-        { type: 'dirty_robot', x: 1200, y: 410 },  // after hole1, before door2
-        { type: 'smell_cloud', x: 1500, y: 410 },  // after door2, before hole2
-        { type: 'germ',        x: 1820, y: 410 },  // after hole2, before door3
-        { type: 'hair_monster',x: 2120, y: 410 },  // after door3, before hole3
-        { type: 'dirty_robot', x: 2450, y: 410 },  // after hole3, before door4
-        { type: 'smell_cloud', x: 2750, y: 410 },  // moved from 2600 (hole3 zone)
-        { type: 'germ',        x: 3050, y: 410 },  // moved from 2850 (hole4 zone)
-        { type: 'hair_monster',x: 3150, y: 410 },  // moved from 3100
-        { type: 'dirty_robot', x: 3220, y: 410 }
+        { type: 'smell_cloud', x: 320,  y: 410 },
+        { type: 'hair_monster',x: 920,  y: 410 },
+        { type: 'germ',        x: 1060, y: 410 },
+        { type: 'dirty_robot', x: 1680, y: 410 },
+        { type: 'smell_cloud', x: 1820, y: 410 },
+        { type: 'germ',        x: 2460, y: 410 },
+        { type: 'hair_monster',x: 2600, y: 410 },
+        { type: 'dirty_robot', x: 3220, y: 410 },
+        { type: 'smell_cloud', x: 3360, y: 410 },
+        { type: 'germ',        x: 3480, y: 410 },
+        { type: 'hair_monster',x: 3600, y: 410 },
+        { type: 'dirty_robot', x: 3720, y: 410 }
     ];
     var L4_ITEMS = [
         { type: 'coin',          x: 110,  y: 395 },
         { type: 'coin',          x: 200,  y: 395 },
-        { type: 'soap',          x: 310,  y: 395 },
-        { type: 'coin',          x: 490,  y: 395 },
-        { type: 'hygiene_star',  x: 720,  y: 395 },  // before hole1 zone
-        { type: 'coin',          x: 1120, y: 395 },
-        { type: 'uniform_clean', x: 1280, y: 395 },
-        { type: 'coin',          x: 1580, y: 395 },
-        { type: 'soap',          x: 1740, y: 395 },
-        { type: 'coin',          x: 2050, y: 395 },
-        { type: 'hygiene_star',  x: 2540, y: 395 },
-        { type: 'coin',          x: 2670, y: 395 },
-        { type: 'uniform_clean', x: 2970, y: 395 },
-        { type: 'hygiene_star',  x: 3090, y: 395 },
-        { type: 'coin',          x: 3170, y: 395 }
+        { type: 'soap',          x: 320,  y: 395 },
+        { type: 'coin',          x: 460,  y: 395 },
+        { type: 'hygiene_star',  x: 880,  y: 395 },
+        { type: 'coin',          x: 1000, y: 395 },
+        { type: 'coin',          x: 1660, y: 395 },
+        { type: 'uniform_clean', x: 1820, y: 395 },
+        { type: 'coin',          x: 2460, y: 395 },
+        { type: 'hygiene_star',  x: 2620, y: 395 },
+        { type: 'coin',          x: 3220, y: 395 },
+        { type: 'coin',          x: 3380, y: 395 },
+        { type: 'uniform_clean', x: 3500, y: 395 },
+        { type: 'hygiene_star',  x: 3620, y: 395 },
+        { type: 'coin',          x: 3740, y: 395 }
     ];
     var L4_HAZARDS = [
-        { type: 'dirty_cloud', x: 420,  y: 415 },
-        { type: 'dirty_cloud', x: 1350, y: 415 },
-        { type: 'dirty_cloud', x: 1900, y: 415 },
-        { type: 'dirty_cloud', x: 2620, y: 415 },
-        { type: 'dirty_cloud', x: 2850, y: 415 },
-        { type: 'dirty_cloud', x: 3230, y: 415 }
+        { type: 'dirty_cloud', x: 280,  y: 415 },
+        { type: 'dirty_cloud', x: 940,  y: 415 },
+        { type: 'dirty_cloud', x: 1760, y: 415 },
+        { type: 'dirty_cloud', x: 2560, y: 415 },
+        { type: 'dirty_cloud', x: 3300, y: 415 },
+        { type: 'dirty_cloud', x: 3560, y: 415 }
     ];
 
     return {

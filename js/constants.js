@@ -26,10 +26,10 @@ var CONSTANTS = {
 
     // Level dimensions (width in px) — cols x 48px
     LEVEL_WIDTHS: {
-        1: 1440,   // 30 cols
-        2: 1920,   // 40 cols
-        3: 2496,   // 52 cols
-        4: 3264    // 68 cols
+        1: 1728,   // 36 cols
+        2: 2304,   // 48 cols
+        3: 2976,   // 62 cols
+        4: 3840    // 80 cols
     },
     LEVEL_HEIGHT: 576,
 
