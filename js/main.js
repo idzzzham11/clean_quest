@@ -1,11 +1,26 @@
 // CleanQuest: Workplace Hero — Entry Point
 
-// Resize the game container to fill the full screen (controls float on top)
+// Size the container to the largest 16:9 box that fits the screen,
+// then let Phaser's FIT mode scale its 960x540 canvas to fill it.
 function resizeGameContainer() {
     var container = document.getElementById('game-container');
     if (!container) return;
-    container.style.width  = window.innerWidth + 'px';
-    container.style.height = window.innerHeight + 'px';
+
+    var availW = window.innerWidth;
+    var availH = window.innerHeight;
+
+    var w = availW;
+    var h = Math.round(w * 9 / 16);
+    if (h > availH) {
+        h = availH;
+        w = Math.round(h * 16 / 9);
+    }
+
+    container.style.width  = w + 'px';
+    container.style.height = h + 'px';
+
+    // Center horizontally if narrower than screen
+    container.style.marginLeft = Math.round((availW - w) / 2) + 'px';
 
     if (window._game && window._game.scale) {
         window._game.scale.refresh();
@@ -18,7 +33,7 @@ window.addEventListener('orientationchange', function () {
 });
 
 window.addEventListener('load', function () {
-    resizeGameContainer();
+    resizeGameContainer(); // size container before Phaser reads it
     GameState.init();
     MissionManager.init();
 
@@ -31,7 +46,9 @@ window.addEventListener('load', function () {
         scale: {
             mode: Phaser.Scale.FIT,
             autoCenter: Phaser.Scale.CENTER_BOTH,
-            expandParent: false
+            expandParent: false,
+            width: CONSTANTS.WIDTH,
+            height: CONSTANTS.HEIGHT
         },
         physics: {
             default: 'arcade',
