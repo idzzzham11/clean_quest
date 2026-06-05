@@ -451,14 +451,14 @@ var LevelSceneCore = {
 
         scene._player.body.setVelocity(0, 0);
 
-        // Time bonus — faster completion = more points
+        // Time bonus — always awarded, faster = higher (1000 down to 50)
         var elapsed = Date.now() - (scene._levelStartTime || Date.now());
-        var timeBonus = 0;
-        if (elapsed < CONSTANTS.TIME_BONUS_THRESHOLD) {
-            timeBonus = Math.round(
-                CONSTANTS.TIME_BONUS_MAX * (1 - elapsed / CONSTANTS.TIME_BONUS_THRESHOLD)
-            );
-        }
+        var cap = CONSTANTS.TIME_BONUS_CAP;
+        var ratio = Math.max(0, 1 - elapsed / cap);  // 1.0 at 0s → 0.0 at 5min
+        var timeBonus = Math.round(
+            CONSTANTS.TIME_BONUS_MIN +
+            (CONSTANTS.TIME_BONUS_MAX - CONSTANTS.TIME_BONUS_MIN) * ratio
+        );
 
         // Heart bonus — remaining health × 100
         var heartBonus = GameState.getHealth() * CONSTANTS.HEART_BONUS;

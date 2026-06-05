@@ -24,8 +24,9 @@ var CONSTANTS = {
     QUIZ_CORRECT_BONUS: 50,
     STOMP_BONUS: 25,
     HEART_BONUS: 100,       // bonus per remaining heart at level end
-    TIME_BONUS_MAX: 500,    // max time bonus (full bonus if completed under TIME_BONUS_THRESHOLD)
-    TIME_BONUS_THRESHOLD: 60000,  // 60 seconds — complete faster for more bonus
+    TIME_BONUS_MAX: 1000,   // max time bonus awarded for fastest completion
+    TIME_BONUS_MIN: 50,     // minimum bonus even for very slow completion
+    TIME_BONUS_CAP: 300000  // 5 minutes — at this point bonus = TIME_BONUS_MIN
 
     // Level dimensions (width in px) — cols x 48px
     LEVEL_WIDTHS: {

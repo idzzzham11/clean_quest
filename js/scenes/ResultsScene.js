@@ -76,7 +76,7 @@ var ResultsScene = class extends Phaser.Scene {
         this.add.text(panelX + panelW - 16, row, '+' + (this._coins * 10), valStyle).setOrigin(1, 0);
         row += gap;
         this.add.text(panelX + 16, row, '⏱ Masa (' + timeStr + ')', lblStyle);
-        this.add.text(panelX + panelW - 16, row, '+' + this._timeBonus, { fontFamily: 'Nunito, sans-serif', fontSize: '14px', fontStyle: 'bold', color: this._timeBonus > 0 ? '#44FF88' : '#888888' }).setOrigin(1, 0);
+        this.add.text(panelX + panelW - 16, row, '+' + this._timeBonus, { fontFamily: 'Nunito, sans-serif', fontSize: '14px', fontStyle: 'bold', color: '#44FF88' }).setOrigin(1, 0);
         row += gap;
         this.add.text(panelX + 16, row, '❤️ Nyawa tinggal',  lblStyle);
         this.add.text(panelX + panelW - 16, row, '+' + this._heartBonus, { fontFamily: 'Nunito, sans-serif', fontSize: '14px', fontStyle: 'bold', color: this._heartBonus > 0 ? '#FF6666' : '#888888' }).setOrigin(1, 0);
