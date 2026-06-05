@@ -102,8 +102,17 @@ button, .quiz-btn, .dpad-btn, #btn-jump {
     50%       { transform: rotate(15deg); }
 }
 
-/* Portrait mode: hide rotate prompt, allow play in any orientation */
-#rotate-prompt { display: none !important; }
+/* Portrait mode only — show rotate prompt when in landscape on mobile */
+#rotate-prompt { display: none; }
+
+@media (orientation: landscape) and (max-height: 600px) {
+    #rotate-prompt {
+        display: flex !important;
+    }
+    #layout { display: none !important; }
+    #mobile-controls { display: none !important; }
+    #quiz-overlay { display: none !important; }
+}
 
 /* ===== MOBILE CONTROLS — fixed overlay at bottom of screen ===== */
 #mobile-controls {
@@ -195,20 +204,6 @@ button, .quiz-btn, .dpad-btn, #btn-jump {
     transform: scale(0.92);
 }
 
-/* Very short landscape — shrink buttons */
-@media (max-height: 420px) {
-    .dpad-btn {
-        width: 60px;
-        height: 60px;
-        font-size: 22px;
-        border-radius: 12px;
-    }
-    #btn-jump {
-        width: 68px;
-        height: 68px;
-        font-size: 24px;
-    }
-}
 
 /* ===== QUIZ OVERLAY ===== */
 #quiz-overlay {
