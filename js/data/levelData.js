@@ -70,6 +70,13 @@ var LevelData = (function () {
         ],
         { col: 39, row: 8 }
     );
+    // 1 hole between door 1 (col13) and door 2 (col26): col 20-21
+    (function () {
+        for (var r = 9; r <= 11; r++) {
+            L2_MAP[r][20] = 0;
+            L2_MAP[r][21] = 0;
+        }
+    })();
     var L2_ENEMIES = [
         { type: 'germ',        x: 200,  y: 410 },
         { type: 'smell_cloud', x: 420,  y: 410 },
@@ -113,6 +120,15 @@ var LevelData = (function () {
         ],
         { col: 51, row: 8 }
     );
+    // 3 holes: between seg1-2 (col 20-21), seg2-3 (col 33-34), seg3-4 (col 46-47)
+    (function () {
+        [[20,21],[33,34],[46,47]].forEach(function (pair) {
+            for (var r = 9; r <= 11; r++) {
+                L3_MAP[r][pair[0]] = 0;
+                L3_MAP[r][pair[1]] = 0;
+            }
+        });
+    })();
     var L3_ENEMIES = [
         { type: 'germ',        x: 200,  y: 410 },
         { type: 'smell_cloud', x: 380,  y: 410 },
@@ -164,6 +180,15 @@ var LevelData = (function () {
         ],
         { col: 67, row: 8 }
     );
+    // 5 holes spread across 5 segments: cols 20-21, 33-34, 46-47, 58-59, 63-64
+    (function () {
+        [[20,21],[33,34],[46,47],[58,59],[63,64]].forEach(function (pair) {
+            for (var r = 9; r <= 11; r++) {
+                L4_MAP[r][pair[0]] = 0;
+                L4_MAP[r][pair[1]] = 0;
+            }
+        });
+    })();
     var L4_ENEMIES = [
         { type: 'germ',        x: 180,  y: 410 },
         { type: 'smell_cloud', x: 340,  y: 410 },
