@@ -3,6 +3,13 @@ var SupabaseService = (function () {
     var URL  = 'https://hpxwbaollpyqylwqezdx.supabase.co/rest/v1';
     var KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhweHdiYW9sbHB5cXlsd3FlemR4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2NjgyMjMsImV4cCI6MjA5NjI0NDIyM30._LjRGNsJ7wfrmNtJhyv5ghEtq4DpEqk9rWAf7BDGcS0';
 
+    // Unique session ID per browser tab — persists across levels in the same session
+    var _sessionId = localStorage.getItem('cq_session');
+    if (!_sessionId) {
+        _sessionId = 'sess_' + Date.now() + '_' + Math.random().toString(36).substr(2, 8);
+        localStorage.setItem('cq_session', _sessionId);
+    }
+
     var HEADERS = {
         'apikey': KEY,
         'Authorization': 'Bearer ' + KEY,
@@ -11,12 +18,14 @@ var SupabaseService = (function () {
     };
 
     return {
+        getSessionId: function () { return _sessionId; },
+
         // Insert a score entry
         submitScore: function (name, score, level, onDone) {
             fetch(URL + '/leaderboard', {
                 method: 'POST',
                 headers: HEADERS,
-                body: JSON.stringify({ name: name, score: score, level: level })
+                body: JSON.stringify({ name: name, score: score, level: level, session_id: _sessionId })
             })
             .then(function (res) {
                 if (onDone) onDone(res.ok, null);

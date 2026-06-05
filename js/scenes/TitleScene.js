@@ -41,17 +41,40 @@ var TitleScene = class extends Phaser.Scene {
             yoyo: true, repeat: -1, ease: 'Sine.easeInOut'
         });
 
+        // Show current player name
+        var currentName = SaveManager.getCharacter().name || '';
+        var nameDisplay = this.add.text(W / 2, H / 2 + 5, currentName ? '👤 ' + currentName : '👤 Tetapkan nama anda', {
+            fontFamily: 'Nunito, sans-serif', fontSize: '16px',
+            color: currentName ? '#AAFFAA' : '#FFAAAA'
+        }).setOrigin(0.5).setInteractive({ useHandCursor: true });
+        nameDisplay.on('pointerdown', function () {
+            scene._showNameInput(function (name) {
+                nameDisplay.setText('👤 ' + name);
+                nameDisplay.setColor('#AAFFAA');
+            });
+        });
+
         // Menu buttons
-        var btnY = H / 2 + 20;
+        var btnY = H / 2 + 35;
         var hasSave = SaveManager.isLevelUnlocked(2);
         var scene = this;
 
         this._makeMenuButton(W / 2, btnY, '🎮  Play Now', 0xFFB347, function () {
             AudioManager.initOnGesture();
-            scene.cameras.main.fadeOut(400);
-            scene.time.delayedCall(400, function () {
-                scene.scene.start(CONSTANTS.SCENES.LEVEL_SELECT);
-            });
+            var name = SaveManager.getCharacter().name || '';
+            if (!name || name === 'Player 1') {
+                scene._showNameInput(function () {
+                    scene.cameras.main.fadeOut(400);
+                    scene.time.delayedCall(400, function () {
+                        scene.scene.start(CONSTANTS.SCENES.LEVEL_SELECT);
+                    });
+                });
+            } else {
+                scene.cameras.main.fadeOut(400);
+                scene.time.delayedCall(400, function () {
+                    scene.scene.start(CONSTANTS.SCENES.LEVEL_SELECT);
+                });
+            }
         });
 
         if (hasSave) {
@@ -140,6 +163,75 @@ var TitleScene = class extends Phaser.Scene {
                 }
             });
         }
+    }
+
+    _showNameInput(onSave) {
+        var scene = this;
+        var W = CONSTANTS.WIDTH, H = CONSTANTS.HEIGHT;
+
+        // Overlay
+        var overlay = this.add.rectangle(W / 2, H / 2, W, H, 0x000000, 0.8).setDepth(60);
+
+        // Box
+        var box = this.add.graphics().setDepth(61);
+        box.fillStyle(0x1a1a2e, 1);
+        box.fillRoundedRect(W / 2 - 220, H / 2 - 110, 440, 220, 16);
+        box.lineStyle(3, 0xFFB347, 1);
+        box.strokeRoundedRect(W / 2 - 220, H / 2 - 110, 440, 220, 16);
+
+        var title = this.add.text(W / 2, H / 2 - 75, '👤 Masukkan Nama Anda', {
+            fontFamily: 'Nunito, sans-serif', fontSize: '20px', fontStyle: 'bold', color: '#FFB347'
+        }).setOrigin(0.5).setDepth(62);
+
+        var sub = this.add.text(W / 2, H / 2 - 45, 'Nama akan dipaparkan di papan kedudukan', {
+            fontFamily: 'Nunito, sans-serif', fontSize: '13px', color: '#AAAAAA'
+        }).setOrigin(0.5).setDepth(62);
+
+        // HTML input field
+        var input = document.createElement('input');
+        input.type = 'text';
+        input.maxLength = 20;
+        input.placeholder = 'Nama pelajar...';
+        input.value = SaveManager.getCharacter().name !== 'Player 1' ? SaveManager.getCharacter().name : '';
+        input.style.cssText = [
+            'position:fixed',
+            'left:50%', 'top:50%',
+            'transform:translate(-50%,-50%) translateY(-10px)',
+            'width:280px', 'padding:12px 16px',
+            'font-size:18px', 'font-family:Nunito,sans-serif',
+            'border:3px solid #FFB347', 'border-radius:10px',
+            'background:#0a0a2e', 'color:#FFFFFF',
+            'text-align:center', 'outline:none',
+            'z-index:9000'
+        ].join(';');
+        document.body.appendChild(input);
+        input.focus();
+
+        // Save button
+        var saveBg = this.add.graphics().setDepth(62);
+        saveBg.fillStyle(0xFFB347, 1);
+        saveBg.fillRoundedRect(W / 2 - 100, H / 2 + 50, 200, 44, 10);
+        var saveBtn = this.add.text(W / 2, H / 2 + 72, '✔  Simpan', {
+            fontFamily: 'Nunito, sans-serif', fontSize: '18px', fontStyle: 'bold', color: '#FFFFFF'
+        }).setOrigin(0.5).setDepth(63).setInteractive({ useHandCursor: true });
+
+        var doSave = function () {
+            var name = input.value.trim();
+            if (!name) { input.style.borderColor = '#FF4444'; return; }
+            document.body.removeChild(input);
+            SaveManager.saveCharacter(name,
+                SaveManager.getCharacter().skinTone,
+                SaveManager.getCharacter().hairColor,
+                SaveManager.getCharacter().uniformColor
+            );
+            [overlay, box, title, sub, saveBg, saveBtn].forEach(function (o) { o.destroy(); });
+            if (onSave) onSave(name);
+        };
+
+        saveBtn.on('pointerdown', doSave);
+        input.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') doSave();
+        });
     }
 
     _confirmReset() {
