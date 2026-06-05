@@ -17,46 +17,45 @@ var TitleScene = class extends Phaser.Scene {
         var scene = this;
         var hasSave = SaveManager.isLevelUnlocked(2);
 
-        // ── Fixed positions from top ──────────────────────────────
-        // Logo area: top quarter
-        var logo = this.add.text(W / 2, 60, 'CleanQuest', {
+        // ── Logo area ─────────────────────────────────────────────
+        var logo = this.add.text(W / 2, 80, 'CleanQuest', {
             fontFamily: 'Nunito, sans-serif',
-            fontSize: '58px', fontStyle: 'bold',
+            fontSize: '76px', fontStyle: 'bold',
             color: '#FFB347',
-            stroke: '#CC6600', strokeThickness: 6,
-            shadow: { offsetX: 3, offsetY: 3, color: '#000000', blur: 6, fill: true }
+            stroke: '#CC6600', strokeThickness: 7,
+            shadow: { offsetX: 4, offsetY: 4, color: '#000000', blur: 8, fill: true }
         }).setOrigin(0.5);
 
-        this.add.text(W / 2, 120, 'Workplace Hero', {
+        this.add.text(W / 2, 160, 'Workplace Hero', {
             fontFamily: 'Nunito, sans-serif',
-            fontSize: '24px', fontStyle: 'bold',
+            fontSize: '32px', fontStyle: 'bold',
             color: '#AACCFF', stroke: '#000033', strokeThickness: 3
         }).setOrigin(0.5);
 
-        this.add.text(W / 2, 152, 'Amalan Kebersihan dan Penampilan Diri', {
+        this.add.text(W / 2, 202, 'Amalan Kebersihan dan Penampilan Diri', {
             fontFamily: 'Nunito, sans-serif',
-            fontSize: '13px', color: '#88AACC'
+            fontSize: '17px', color: '#88AACC'
         }).setOrigin(0.5);
 
         this.tweens.add({
-            targets: logo, y: logo.y - 8, duration: 1500,
+            targets: logo, y: logo.y - 10, duration: 1500,
             yoyo: true, repeat: -1, ease: 'Sine.easeInOut'
         });
 
-        // Player name box — looks like an input field, tap to change
+        // ── Player name box ───────────────────────────────────────
         var currentName = SaveManager.getCharacter().name || '';
         var hasName = currentName && currentName !== 'Player 1';
 
         var nameBg = this.add.graphics();
-        var nameBoxW = 280, nameBoxH = 36, nameBoxX = W / 2 - nameBoxW / 2, nameBoxY = 178;
+        var nameBoxW = 360, nameBoxH = 50, nameBoxX = W / 2 - nameBoxW / 2, nameBoxY = 234;
         nameBg.fillStyle(0x0a0a2e, 0.85);
-        nameBg.fillRoundedRect(nameBoxX, nameBoxY, nameBoxW, nameBoxH, 8);
-        nameBg.lineStyle(2, hasName ? 0x44FF88 : 0xFF6644, 1);
-        nameBg.strokeRoundedRect(nameBoxX, nameBoxY, nameBoxW, nameBoxH, 8);
+        nameBg.fillRoundedRect(nameBoxX, nameBoxY, nameBoxW, nameBoxH, 10);
+        nameBg.lineStyle(3, hasName ? 0x44FF88 : 0xFF6644, 1);
+        nameBg.strokeRoundedRect(nameBoxX, nameBoxY, nameBoxW, nameBoxH, 10);
 
         var nameDisplay = this.add.text(W / 2, nameBoxY + nameBoxH / 2,
             hasName ? '👤  ' + currentName : '👤  Klik untuk masukkan nama...', {
-            fontFamily: 'Nunito, sans-serif', fontSize: '15px', fontStyle: hasName ? 'bold' : 'normal',
+            fontFamily: 'Nunito, sans-serif', fontSize: '20px', fontStyle: hasName ? 'bold' : 'normal',
             color: hasName ? '#AAFFAA' : '#FFB347'
         }).setOrigin(0.5).setInteractive({ useHandCursor: true });
 
@@ -66,15 +65,15 @@ var TitleScene = class extends Phaser.Scene {
                 nameDisplay.setStyle({ fontStyle: 'bold', color: '#AAFFAA' });
                 nameBg.clear();
                 nameBg.fillStyle(0x0a0a2e, 0.85);
-                nameBg.fillRoundedRect(nameBoxX, nameBoxY, nameBoxW, nameBoxH, 8);
-                nameBg.lineStyle(2, 0x44FF88, 1);
-                nameBg.strokeRoundedRect(nameBoxX, nameBoxY, nameBoxW, nameBoxH, 8);
+                nameBg.fillRoundedRect(nameBoxX, nameBoxY, nameBoxW, nameBoxH, 10);
+                nameBg.lineStyle(3, 0x44FF88, 1);
+                nameBg.strokeRoundedRect(nameBoxX, nameBoxY, nameBoxW, nameBoxH, 10);
             });
         });
 
-        // ── Buttons — evenly spaced from y=232 ───────────────────
-        var GAP = 52;
-        var startY = 236;
+        // ── Buttons — evenly spaced ───────────────────────────────
+        var GAP = 68;
+        var startY = 318;
         var row = 0;
 
         var doPlay = function () {
@@ -128,12 +127,12 @@ var TitleScene = class extends Phaser.Scene {
     }
 
     _makeMenuButton(x, y, label, color, callback) {
-        var w = 240, h = 48;
+        var w = 320, h = 62;
         var bg = this.add.graphics();
         bg.fillStyle(color, 0.9);
-        bg.fillRoundedRect(x - w / 2, y - h / 2, w, h, 10);
+        bg.fillRoundedRect(x - w / 2, y - h / 2, w, h, 14);
         bg.lineStyle(2, 0xFFFFFF, 0.2);
-        bg.strokeRoundedRect(x - w / 2, y - h / 2, w, h, 10);
+        bg.strokeRoundedRect(x - w / 2, y - h / 2, w, h, 14);
 
         // Shine
         var bg2 = this.add.graphics();
@@ -141,7 +140,7 @@ var TitleScene = class extends Phaser.Scene {
         bg2.fillRoundedRect(x - w / 2 + 4, y - h / 2 + 4, w - 8, h / 2 - 4, 6);
 
         var btn = this.add.text(x, y, label, {
-            fontFamily: 'Nunito, sans-serif', fontSize: '18px', fontStyle: 'bold',
+            fontFamily: 'Nunito, sans-serif', fontSize: '24px', fontStyle: 'bold',
             color: '#FFFFFF', stroke: '#000000', strokeThickness: 2
         }).setOrigin(0.5).setInteractive({ useHandCursor: true });
 
