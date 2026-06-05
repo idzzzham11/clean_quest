@@ -1,7 +1,7 @@
 // CleanQuest: Workplace Hero — Entry Point
 
-var CONTROLS_HEIGHT = 110; // px reserved for mobile controls bar
-
+// Size the container to the largest 16:9 box that fits the screen,
+// then let Phaser's FIT mode scale its 960x540 canvas to fill it.
 function resizeGameContainer() {
     var container = document.getElementById('game-container');
     if (!container) return;
@@ -9,33 +9,18 @@ function resizeGameContainer() {
     var availW = window.innerWidth;
     var availH = window.innerHeight;
 
-    var w, h;
-    var isPortrait = availH > availW;
-
-    if (isPortrait) {
-        // Portrait: use full width, height = width * 9/16
-        // But ensure it's at least half the screen height
-        w = availW;
-        h = Math.round(w * 9 / 16);
-        var minH = Math.round(availH * 0.55);
-        if (h < minH) {
-            h = minH;
-            w = Math.round(h * 16 / 9);
-        }
-    } else {
-        // Landscape: largest 16:9 box that fits
-        w = availW;
-        h = Math.round(w * 9 / 16);
-        if (h > availH) {
-            h = availH;
-            w = Math.round(h * 16 / 9);
-        }
+    var w = availW;
+    var h = Math.round(w * 9 / 16);
+    if (h > availH) {
+        h = availH;
+        w = Math.round(h * 16 / 9);
     }
 
-    container.style.width      = w + 'px';
-    container.style.height     = h + 'px';
+    container.style.width  = w + 'px';
+    container.style.height = h + 'px';
+
+    // Center horizontally if narrower than screen
     container.style.marginLeft = Math.round((availW - w) / 2) + 'px';
-    container.style.marginTop  = '0px';
 
     if (window._game && window._game.scale) {
         window._game.scale.refresh();
@@ -48,6 +33,7 @@ window.addEventListener('orientationchange', function () {
 });
 
 window.addEventListener('load', function () {
+    resizeGameContainer(); // size container before Phaser reads it
     GameState.init();
     MissionManager.init();
 
@@ -60,22 +46,37 @@ window.addEventListener('load', function () {
         scale: {
             mode: Phaser.Scale.FIT,
             autoCenter: Phaser.Scale.CENTER_BOTH,
-            expandParent: false
+            expandParent: false,
+            width: CONSTANTS.WIDTH,
+            height: CONSTANTS.HEIGHT
         },
         physics: {
             default: 'arcade',
-            arcade: { gravity: { y: CONSTANTS.GRAVITY }, debug: false }
+            arcade: {
+                gravity: { y: CONSTANTS.GRAVITY },
+                debug: false
+            }
         },
         scene: [
-            BootScene, TitleScene, CharSelectScene, LevelSelectScene,
-            HUDScene, Level1Scene, Level2Scene, Level3Scene, Level4Scene,
-            BossScene, QuizScene, ResultsScene, LeaderboardScene, CreditsScene
+            BootScene,
+            TitleScene,
+            CharSelectScene,
+            LevelSelectScene,
+            HUDScene,
+            Level1Scene,
+            Level2Scene,
+            Level3Scene,
+            Level4Scene,
+            BossScene,
+            QuizScene,
+            ResultsScene,
+            LeaderboardScene,
+            CreditsScene
         ]
     };
 
     var game = new Phaser.Game(config);
-    window._game = game;
 
-    // Initial resize after Phaser sets up
-    setTimeout(resizeGameContainer, 100);
+    // Expose for debugging
+    window._game = game;
 });
