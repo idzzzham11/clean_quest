@@ -511,7 +511,7 @@ var LevelSceneCore = {
         SaveManager.saveLevelResult(scene._levelNum, stars, GameState.getScore());
         MissionManager.checkLevelComplete(scene._levelNum, scene._noHazardsTouched, scene._noDamageTaken);
 
-        var celebration = scene.add.text(CONSTANTS.WIDTH / 2, CONSTANTS.HEIGHT / 2, 'âœ¨ Level Complete! âœ¨', {
+        var celebration = scene.add.text(CONSTANTS.WIDTH / 2, CONSTANTS.HEIGHT / 2, 'Level Complete!', {
             fontFamily: 'Nunito, sans-serif', fontSize: '36px', fontStyle: 'bold',
             color: '#FFD700', stroke: '#000000', strokeThickness: 5
         }).setOrigin(0.5).setScrollFactor(0).setDepth(50).setAlpha(0);

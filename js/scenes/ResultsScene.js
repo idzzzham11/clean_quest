@@ -73,7 +73,7 @@ var ResultsScene = class extends Phaser.Scene {
         var valStyle = { fontFamily: 'Nunito, sans-serif', fontSize: '14px', fontStyle: 'bold', color: '#FFFFFF' };
 
         this.add.text(panelX + 16, row, '🪙 Coins',       lblStyle);
-        this.add.text(panelX + panelW - 16, row, '+' + (this._coins * 10), valStyle).setOrigin(1, 0);
+        this.add.text(panelX + panelW - 16, row, this._coins + ' x ' + CONSTANTS.COIN_VALUE + ' = +' + (this._coins * CONSTANTS.COIN_VALUE), valStyle).setOrigin(1, 0);
         row += gap;
         this.add.text(panelX + 16, row, '⏱ Masa (' + timeStr + ')', lblStyle);
         this.add.text(panelX + panelW - 16, row, '+' + this._timeBonus, { fontFamily: 'Nunito, sans-serif', fontSize: '14px', fontStyle: 'bold', color: '#44FF88' }).setOrigin(1, 0);
