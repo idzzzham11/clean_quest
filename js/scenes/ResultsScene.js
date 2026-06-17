@@ -180,9 +180,10 @@ var ResultsScene = class extends Phaser.Scene {
 
     _promptLeaderboard() {
         var playerName = SaveManager.getCharacter().name || 'Player 1';
-        // Submit cumulative total score so higher levels always rank higher
         var totalScore = SaveManager.getTotalScore();
-        SupabaseService.submitScore(playerName, totalScore, this._levelNum);
+        SupabaseService.submitScore(playerName, totalScore, this._levelNum, function (ok, err) {
+            if (!ok) console.warn('Leaderboard submit failed:', err);
+        });
         SaveManager.addLeaderboardEntry(playerName, totalScore);
     }
 };

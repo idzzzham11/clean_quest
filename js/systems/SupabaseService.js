@@ -20,11 +20,11 @@ var SupabaseService = (function () {
     return {
         getSessionId: function () { return _sessionId; },
 
-        // Upsert a score entry — updates existing row for this session rather than inserting duplicates
+        // Insert a score entry
         submitScore: function (name, score, level, onDone) {
-            fetch(URL + '/leaderboard?on_conflict=session_id', {
+            fetch(URL + '/leaderboard', {
                 method: 'POST',
-                headers: Object.assign({}, HEADERS, { 'Prefer': 'resolution=merge-duplicates,return=minimal' }),
+                headers: HEADERS,
                 body: JSON.stringify({ name: name, score: score, level: level, session_id: _sessionId })
             })
             .then(function (res) {
@@ -36,9 +36,9 @@ var SupabaseService = (function () {
             });
         },
 
-        // Fetch top 10 scores sorted by score desc
+        // Fetch top 10 scores — one best entry per session, sorted by score desc
         getTopScores: function (onDone) {
-            fetch(URL + '/leaderboard?select=name,score,level,created_at&order=score.desc&limit=10', {
+            fetch(URL + '/leaderboard?select=name,score,level,created_at&order=score.desc&limit=50', {
                 method: 'GET',
                 headers: {
                     'apikey': KEY,

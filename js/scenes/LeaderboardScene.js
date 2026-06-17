@@ -43,7 +43,15 @@ var LeaderboardScene = class extends Phaser.Scene {
                 return;
             }
 
-            scene._drawTable(data);
+            // Deduplicate: keep only the best score per player name
+            var seen = {};
+            var deduped = [];
+            data.forEach(function (entry) {
+                var key = (entry.name || '').toLowerCase();
+                if (!seen[key]) { seen[key] = true; deduped.push(entry); }
+            });
+
+            scene._drawTable(deduped.slice(0, 10));
         });
     }
 
