@@ -170,7 +170,7 @@ var LevelSceneCore = {
         }).setOrigin(0.5, 0.5).setScrollFactor(0).setDepth(21);
 
         // Pause button
-        scene._pauseBtn = scene.add.text(W - pad, row2, 'â¸', {
+        scene._pauseBtn = scene.add.text(W - pad, row2, '||', {
             fontFamily: 'Nunito, sans-serif', fontSize: '20px', color: '#FFFFFF'
         }).setOrigin(1, 0.5).setScrollFactor(0).setDepth(21)
             .setInteractive({ useHandCursor: true });
@@ -555,7 +555,7 @@ var LevelSceneCore = {
                 color: '#FF4444', stroke: '#000000', strokeThickness: 5
             }).setOrigin(0.5).setScrollFactor(0).setDepth(91);
 
-            var restartBtn = scene.add.text(W / 2, H / 2 + 30, 'â–¶  Mula Semula', {
+            var restartBtn = scene.add.text(W / 2, H / 2 + 30, '>  Mula Semula', {
                 fontFamily: 'Nunito, sans-serif', fontSize: '24px', fontStyle: 'bold',
                 color: '#FFFFFF', backgroundColor: '#FF8800', padding: { x: 20, y: 10 }
             }).setOrigin(0.5).setScrollFactor(0).setDepth(91).setInteractive({ useHandCursor: true });
