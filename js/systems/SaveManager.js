@@ -14,7 +14,8 @@ var SaveManager = {
             },
             progress: {
                 unlockedLevels: [1],
-                levelStars: { 1: 0, 2: 0, 3: 0, 4: 0 },
+                levelStars:  { 1: 0, 2: 0, 3: 0, 4: 0 },
+                levelScores: { 1: 0, 2: 0, 3: 0, 4: 0 },
                 collectedBadges: [],
                 certificates: [],
                 totalCoins: 0,
@@ -83,9 +84,13 @@ var SaveManager = {
         if (stars > current) {
             data.progress.levelStars[levelNum] = stars;
         }
+        // Store best score per level — never accumulate blindly
+        if (!data.progress.levelScores) data.progress.levelScores = {};
+        var currentScore = data.progress.levelScores[levelNum] || 0;
+        if (score > currentScore) {
+            data.progress.levelScores[levelNum] = score;
+        }
         data.progress.totalCoins = (data.progress.totalCoins || 0) + GameState.getCoins();
-        // Accumulate total score across all levels
-        data.progress.totalScore = (data.progress.totalScore || 0) + score;
         this.save(data);
 
         // Auto-unlock next level
@@ -95,7 +100,11 @@ var SaveManager = {
     },
 
     getTotalScore: function () {
-        return this.load().progress.totalScore || 0;
+        var data = this.load();
+        var scores = data.progress.levelScores || {};
+        var total = 0;
+        for (var lv in scores) { total += scores[lv]; }
+        return total;
     },
 
     addBadge: function (badgeKey) {
