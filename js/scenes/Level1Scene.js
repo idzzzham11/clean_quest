@@ -170,11 +170,16 @@ var LevelSceneCore = {
         }).setOrigin(0.5, 0.5).setScrollFactor(0).setDepth(21);
 
         // Pause button
-        scene._pauseBtn = scene.add.text(W - pad, row2, '||', {
-            fontFamily: 'Nunito, sans-serif', fontSize: '20px', color: '#FFFFFF'
-        }).setOrigin(1, 0.5).setScrollFactor(0).setDepth(21)
+        var pauseBtnBg = scene.add.rectangle(W - pad - 4, row2, 44, 36, 0x000000, 0.45)
+            .setOrigin(1, 0.5).setScrollFactor(0).setDepth(21)
             .setInteractive({ useHandCursor: true });
-        scene._pauseBtn.on('pointerdown', function () { GameState.emit('pauseToggle'); });
+        scene._pauseBtn = scene.add.text(W - pad - 26, row2, '||', {
+            fontFamily: 'Nunito, sans-serif', fontSize: '22px', fontStyle: 'bold', color: '#FFFFFF',
+            stroke: '#000000', strokeThickness: 2
+        }).setOrigin(0.5, 0.5).setScrollFactor(0).setDepth(22);
+        pauseBtnBg.on('pointerdown', function () { GameState.emit('pauseToggle'); });
+        pauseBtnBg.on('pointerover', function () { pauseBtnBg.setFillStyle(0x444444, 0.7); });
+        pauseBtnBg.on('pointerout',  function () { pauseBtnBg.setFillStyle(0x000000, 0.45); });
 
         // Wire GameState events â€” store references so we can remove them on shutdown
         scene._onHealthChanged = function (h) {

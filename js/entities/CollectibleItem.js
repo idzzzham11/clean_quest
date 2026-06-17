@@ -41,7 +41,7 @@ var CollectibleItem = class extends Phaser.GameObjects.Sprite {
         });
 
         // Score popup text
-        var scoreText = scene.add.text(this.x, this.y - 20, '+10', {
+        var scoreText = scene.add.text(this.x, this.y - 20, '+' + (this.itemType === CONSTANTS.ITEMS.COIN ? CONSTANTS.COIN_VALUE : 0), {
             fontFamily: 'Nunito, sans-serif',
             fontSize: '16px',
             fontStyle: 'bold',
