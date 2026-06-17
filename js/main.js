@@ -1,7 +1,7 @@
 // CleanQuest: Workplace Hero — Entry Point
 
-// Size the container to the largest 16:9 box that fits the screen,
-// then let Phaser's FIT mode scale its 960x540 canvas to fill it.
+// Size the container to the largest 4:3 box that fits the screen,
+// then let Phaser's FIT mode scale its 960x720 canvas to fill it.
 function resizeGameContainer() {
     var container = document.getElementById('game-container');
     if (!container) return;
@@ -20,8 +20,9 @@ function resizeGameContainer() {
     container.style.width  = w + 'px';
     container.style.height = h + 'px';
 
-    // Center horizontally if narrower than screen
+    // Center both horizontally and vertically
     container.style.marginLeft = Math.round((availW - w) / 2) + 'px';
+    container.style.marginTop  = Math.round((availH - h) / 2) + 'px';
 
     if (window._game && window._game.scale) {
         window._game.scale.refresh();

@@ -20,11 +20,11 @@ var SupabaseService = (function () {
     return {
         getSessionId: function () { return _sessionId; },
 
-        // Insert a score entry
+        // Upsert a score entry — updates existing row for this session rather than inserting duplicates
         submitScore: function (name, score, level, onDone) {
-            fetch(URL + '/leaderboard', {
+            fetch(URL + '/leaderboard?on_conflict=session_id', {
                 method: 'POST',
-                headers: HEADERS,
+                headers: Object.assign({}, HEADERS, { 'Prefer': 'resolution=merge-duplicates,return=minimal' }),
                 body: JSON.stringify({ name: name, score: score, level: level, session_id: _sessionId })
             })
             .then(function (res) {

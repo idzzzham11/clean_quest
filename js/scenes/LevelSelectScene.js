@@ -89,8 +89,9 @@ var LevelSelectScene = class extends Phaser.Scene {
 
         // Total progress
         var totalStars = 0;
-        for (var lv = 1; lv <= 4; lv++) { totalStars += SaveManager.getLevelStars(lv); }
-        this.add.text(W / 2, H - 62, '⭐ Total Stars: ' + totalStars + ' / 12', {
+        for (var lv = 1; lv <= pathPoints.length; lv++) { totalStars += SaveManager.getLevelStars(lv); }
+        var maxStars = pathPoints.length * 3;
+        this.add.text(W / 2, H - 62, '⭐ Total Stars: ' + totalStars + ' / ' + maxStars, {
             fontFamily: 'Nunito, sans-serif', fontSize: '22px', color: '#FFD700'
         }).setOrigin(0.5);
 
