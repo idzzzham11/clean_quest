@@ -58,6 +58,9 @@ var GameState = (function () {
 
         resetLevel: function () {
             _state.health = CONSTANTS.PLAYER_MAX_HEALTH;
+            _state.score = 0;
+            _state.coins = 0;
+            _state.hygieneStars = 0;
             _state.germsStopped = 0;
             _state.quizCorrectStreak = 0;
             _state.hazardsTouched = 0;

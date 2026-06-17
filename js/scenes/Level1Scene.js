@@ -445,11 +445,9 @@ var LevelSceneCore = {
 
     _togglePause: function (scene) {
         if (scene._paused) {
-            scene.scene.resume(scene.scene.key);
             scene._paused = false;
             if (scene._pauseContainer) { scene._pauseContainer.destroy(); scene._pauseContainer = null; }
         } else {
-            scene.scene.pause(scene.scene.key);
             scene._paused = true;
             LevelSceneCore._showPauseScreen(scene);
         }
