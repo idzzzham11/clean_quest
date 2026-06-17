@@ -28,6 +28,11 @@ var SupabaseService = (function () {
                 body: JSON.stringify({ name: name, score: score, level: level, session_id: _sessionId })
             })
             .then(function (res) {
+                if (!res.ok) {
+                    res.text().then(function (body) {
+                        console.warn('Supabase insert failed [' + res.status + ']:', body);
+                    });
+                }
                 if (onDone) onDone(res.ok, null);
             })
             .catch(function (err) {
